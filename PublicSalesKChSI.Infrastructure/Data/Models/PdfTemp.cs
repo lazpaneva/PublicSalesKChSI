@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models
@@ -24,6 +25,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Range(PdfTempSizeOfFileMin, PdfTempSizeOfFileMax)]
         public int SizeOfFile { get; set; }
 
-
+        [Required]
+        public int HtmlTempId { get; set; }
+        [ForeignKey(nameof(HtmlTempId))]
+        public HtmlTemp HtmlTemp { get; set; } = null!;
     }
 }
