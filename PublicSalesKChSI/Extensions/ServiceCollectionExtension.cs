@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PublicSalesKChSI.Data;
-using System.Runtime.CompilerServices;
+using PublicSalesKChSI.Infrastructure.Data;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

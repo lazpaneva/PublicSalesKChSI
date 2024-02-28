@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace PublicSalesKChSI.Data
+namespace PublicSalesKChSI.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
