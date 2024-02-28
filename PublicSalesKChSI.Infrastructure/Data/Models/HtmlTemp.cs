@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models
 {
@@ -24,8 +20,11 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public DateTime CreatedOn { get; set; }
 
         [Required]
+        [Range(HtmlTempNumberInSiteMin, int.MaxValue)]
         public int NumberInSite { get; set; }
 
+        //Да го видя как да бъде
         public int BrsFileId { get; set; }
+
     }
 }
