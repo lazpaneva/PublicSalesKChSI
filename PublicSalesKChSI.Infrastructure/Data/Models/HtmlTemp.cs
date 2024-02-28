@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models
@@ -23,8 +24,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Range(HtmlTempNumberInSiteMin, int.MaxValue)]
         public int NumberInSite { get; set; }
 
-        //Да го видя как да бъде
         public int BrsFileId { get; set; }
+        [ForeignKey(nameof(BrsFileId))]
+        public BrsFile BrsFile { get; set; } = null!;
 
     }
 }

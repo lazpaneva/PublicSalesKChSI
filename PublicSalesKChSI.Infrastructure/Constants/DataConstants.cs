@@ -20,3 +20,23 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int PdfTempNameMax = 16;
     }
 }
+/*
+ * ..FUNC:
+1
+..TYPE:
+6
+..MTOM:
+48
+..MRAZ:
+36
+..SCOD:
+11
+..CODV:
+99
+..CODA:
+..SORC:
+Кама░а на ╖а▒▓ни▓е ▒║дебни изп║лни▓ели
+..IMEF:
+
+
+ */
