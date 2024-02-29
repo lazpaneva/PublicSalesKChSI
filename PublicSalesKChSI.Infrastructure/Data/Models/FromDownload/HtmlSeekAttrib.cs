@@ -7,6 +7,10 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
 {
     public class HtmlSeekAttrib
     {
+        [Key]
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         [StringLength(DateLengthMax)]
         public string Published { get; set; } = null!;
@@ -45,6 +49,15 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         [Required]
         [StringLength(HtmlSeekAttribReceiverMax)]
         public string Receiver { get; set; } = null!;
+
+        [Required]
+        [StringLength(HtmlSeekAttribPropertyNumMax)]
+        public string PropertyNum { get; set; } = null!;
+
+        [Required]
+        public int HtmlTempId { get; set; }
+        [ForeignKey(nameof(HtmlTempId))]
+        public HtmlTemp HtmlTemp { get; set; } = null!;
 
     }
 }

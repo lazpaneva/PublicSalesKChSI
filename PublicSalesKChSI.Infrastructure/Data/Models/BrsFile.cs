@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models
@@ -23,7 +26,8 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Required]
         public DateOnly Date { get; set; }
 
-        [Required] 
+        [Required]
+        [Comment("to be fill when file is Ready again")]
         public DateOnly Time { get; set; }
 
         [Required]
@@ -36,6 +40,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Required]
         public string Text { get; set; } = null!;
 
+        [Required]
+        public bool IsFindDeptor { get; set; }
+
         [StringLength(BrsFileScreMax)]
         public string? Scre { get; set; }
 
@@ -44,7 +51,10 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
 
         [StringLength(BrsFileTelfMax)]
         public string? Telf { get; set; }
-
+                
+        public string EmployeeId { get; set; } = null!;
+        [ForeignKey(nameof(EmployeeId))]
+        public IdentityUser Employee { get; set; } = null!;
     }
 }
 

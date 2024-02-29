@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +57,20 @@ namespace PublicSalesKChSI.Infrastructure.Constants
 
         public const int HtmlSeekAttribReceiverMin = 5;
         public const int HtmlSeekAttribReceiverMax = 200;
+
+        public const int HtmlSeekAttribPropertyNumMin = 4;
+        public const int HtmlSeekAttribPropertyNumMax = 70;
+
+
+        //for DeptorOld
+        public const int DeptorOldNameMax = 250;
+
+        public const int DeptorOldCourtExtractFromKlasMin = 2;
+        public const int DeptorOldCourtExtractFromKlasMax = 2;
+
+        public const int DeptorOldDeptorsInfoMax = 10000; //about 128 row
+        
+        
 
         public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters long";
         public const string ValueRangeErrorMessage = "Value for {0} must be between {1} and {2}.";

@@ -9,5 +9,11 @@ namespace PublicSalesKChSI.Infrastructure.Data
             : base(options)
         {
         }
+
+        //      modelBuilder.Entity<BrsFIle>()
+        //.HasOne(e => e.Employee)
+        //.WithMany(d => d.BrsFIle)
+        //.HasForeignKey(e => e.EmployeeId);
+
     }
 }
