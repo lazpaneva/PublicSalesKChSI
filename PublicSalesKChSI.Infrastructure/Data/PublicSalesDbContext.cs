@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PublicSalesKChSI.Infrastructure.Data.Models;
 using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
+using System.Reflection.Emit;
 
 namespace PublicSalesKChSI.Infrastructure.Data
 {
@@ -26,7 +27,14 @@ namespace PublicSalesKChSI.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-              base.OnModelCreating(builder);
+            builder.Entity<TempHtml>()
+                    .HasOne(f => f.BrsFile)
+                    .WithMany(h=>h.HtmlFiles)
+                    .HasForeignKey(f => f.BrsFileId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+
+            base.OnModelCreating(builder);
         }
 
  

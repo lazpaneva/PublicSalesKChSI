@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
@@ -21,17 +22,18 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public string Klas { get; set; } = null!;
 
         [Required]
-        public DateOnly Dcng { get; set; }
+        [StringLength(DateLengthMax)]
+        public string Dcng { get; set; } = null!;
 
         [Required]
-        public DateOnly Date { get; set; }
+        [StringLength(DateLengthMax)]
+        public string Date { get; set; } = null!;
 
-        [Required]
         [Comment("to be fill when file is Ready again")]
-        public DateOnly Time { get; set; }
+        public DateTime? Time { get; set; }
 
-        [Required]
-        public DateOnly Dpos { get; set; } 
+        [Comment("to be fill when file is Ready again")]
+        public DateTime? Dpos { get; set; } 
 
         [Required]
         [StringLength(BrsFileNameMax)]
@@ -55,6 +57,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public string EmployeeId { get; set; } = null!;
         [ForeignKey(nameof(EmployeeId))]
         public IdentityUser Employee { get; set; } = null!;
+
+        public ICollection<TempHtml> HtmlFiles { get; set; } =
+            new List<TempHtml>();
     }
 }
 
