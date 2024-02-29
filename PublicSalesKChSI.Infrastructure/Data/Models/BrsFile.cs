@@ -10,56 +10,39 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
+        [Range(BrsFileCodeMin, BrsFileCodeMax)]
         public int Code { get; set; }
 
         [Required]
+        [StringLength(BrsFileKlasMax)]
         public string Klas { get; set; } = null!;
 
         [Required]
-        public string Dcng { get; set; } = null!;
+        public DateOnly Dcng { get; set; }
 
         [Required]
-        public string Date { get; set; } = null!;
+        public DateOnly Date { get; set; }
 
         [Required] 
-        public string Time { get; set; } = null!;
+        public DateOnly Time { get; set; }
 
         [Required]
-        public string Dpos { get; set; } = null!;
+        public DateOnly Dpos { get; set; } 
 
         [Required]
+        [StringLength(BrsFileNameMax)]
         public string Name { get; set; } = null!;
-
-        [Required]
-        public string Published { get; set; } = null!;
-
-        [Required]
-        public string Price { get; set; } = null!;
-
-        [Required]
-        public string City { get; set; } = null!;
-
-        [Required]
-        public string Court { get; set; } = null!;
-
-        [Required]
-        public string EndDate { get; set; } = null!;
-
-        [Required]
-        public string SaleDate { get; set; } = null!;
-
-        [Required]
-        public string Address { get; set; } = null!;
-
-        public double Area { get; set; }
 
         [Required]
         public string Text { get; set; } = null!;
 
+        [StringLength(BrsFileScreMax)]
         public string? Scre { get; set; }
 
+        [StringLength(BrsFileLicaMax)]
         public string? Lica { get; set; }
 
+        [StringLength(BrsFileTelfMax)]
         public string? Telf { get; set; }
 
     }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
-namespace PublicSalesKChSI.Infrastructure.Data.Models
+namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
 {
     public class PdfTemp
     {
