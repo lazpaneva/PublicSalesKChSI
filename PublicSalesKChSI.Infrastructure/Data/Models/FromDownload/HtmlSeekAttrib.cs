@@ -55,9 +55,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         public string PropertyNum { get; set; } = null!;
 
         [Required]
-        public int HtmlTempId { get; set; }
-        [ForeignKey(nameof(HtmlTempId))]
-        public HtmlTemp HtmlTemp { get; set; } = null!;
+        public int TempHtmlId { get; set; }
+        [ForeignKey(nameof(TempHtmlId))]
+        public TempHtml TempHtml { get; set; } = null!;
 
     }
 }

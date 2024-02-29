@@ -1,3 +1,4 @@
+In Hoses - decimal - ConvertValueInInvariantCulture = true -‚ Range „Ó ÒÎÓÊË
                  case AT("Œ –⁄∆≈Õ —⁄ƒ: ¡À¿√Œ≈¬√–¿ƒ",ll) != 0
                   aadd (mraz,"KSI20_"+"01")
                  case AT("Œ –⁄∆≈Õ —⁄ƒ: ¡”–√¿—",ll) != 0
@@ -56,3 +57,80 @@
                   aadd (mraz,"KSI20_"+"27")
                  case at("Œ –⁄∆≈Õ —⁄ƒ: —Œ‘»ﬂ Œ –⁄√",ll) != 0
                   aadd (mraz,"KSI20_"+"28")
+
+
+public class YourDbContext : DbContext
+{
+    public DbSet<BrsFile> BrsFiles { get; set; }
+    public DbSet<EmployeeFile> EmployeeFiles { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Configure the one-to-many relationship between BrsFile and EmployeeFile
+        modelBuilder.Entity<EmployeeFile>()
+            .HasOne(e => e.Employee)
+            .WithMany(f => f.Files)
+            .HasForeignKey(f => f.EmployeeId);
+
+        base.OnModelCreating(modelBuilder);
+    }
+}
+
+public class BrsFile
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    public string EmployeeId { get; set; } = null!;
+    
+    [ForeignKey(nameof(EmployeeId))]
+    public IdentityUser Employee { get; set; } = null!;
+}
+
+public class EmployeeFile
+{
+    [Key]
+    public int Id { get; set; }
+
+    // Other properties of EmployeeFile
+
+    public string EmployeeId { get; set; }
+
+    [ForeignKey(nameof(EmployeeId))]
+    public IdentityUser Employee { get; set; }
+
+    // Navigation property for the one-to-many relationship
+    public ICollection<BrsFile> Files { get; set; }
+}
+
+-------------
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PublicSalesKChSI.Infrastructure.Data.Models
+{
+    public class EmployeeFile
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public DateOnly WorkingDate { get; set; }
+
+        public string EmployeeId { get; set; } = null!;
+        [ForeignKey(nameof(EmployeeId))]
+        public IdentityUser Employee { get; set; } = null!;
+
+        // Navigation property for the one-to-many relationship
+        public ICollection<BrsFile> Files { get; set; } = new 
+            List<BrsFile>();  
+    }
+}

@@ -11,7 +11,7 @@ using PublicSalesKChSI.Infrastructure.Data;
 
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(PublicSalesDbContext))]
     [Migration("20240228093351_InitialMigration")]
     partial class InitialMigration
     {

@@ -7,7 +7,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Required]
         [StringLength(CourtTownMax)]

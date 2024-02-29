@@ -4,7 +4,7 @@ using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
 {
-    public class HtmlTemp
+    public class TempHtml
     {
         [Key]
         [Required]

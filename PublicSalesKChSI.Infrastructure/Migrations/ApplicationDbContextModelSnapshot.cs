@@ -10,7 +10,7 @@ using PublicSalesKChSI.Infrastructure.Data;
 
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(PublicSalesDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -4,7 +4,7 @@ using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
 namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
 {
-    public class PdfTemp
+    public class TempPdf
     {
         [Key]
         [Required]
@@ -26,8 +26,8 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         public int SizeOfFile { get; set; }
 
         [Required]
-        public int HtmlTempId { get; set; }
-        [ForeignKey(nameof(HtmlTempId))]
-        public HtmlTemp HtmlTemp { get; set; } = null!;
+        public int TempHtmlId { get; set; }
+        [ForeignKey(nameof(TempHtmlId))]
+        public TempHtml TempHtml { get; set; } = null!;
     }
 }
