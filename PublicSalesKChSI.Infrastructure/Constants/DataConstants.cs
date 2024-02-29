@@ -69,8 +69,14 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int DeptorOldCourtExtractFromKlasMax = 2;
 
         public const int DeptorOldDeptorsInfoMax = 10000; //about 128 row
-        
-        
+
+        //for Court
+        public const int CourtTownMin = 3;
+        public const int CourtTownMax = 15;
+
+        public const int CourtNumberMin = 2;
+        public const int CourtNumberMax = 2;
+
 
         public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters long";
         public const string ValueRangeErrorMessage = "Value for {0} must be between {1} and {2}.";

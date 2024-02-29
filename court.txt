@@ -1,0 +1,58 @@
+                 case AT("нйпзфем язд: акюцнебцпюд",ll) != 0
+                  aadd (mraz,"KSI20_"+"01")
+                 case AT("нйпзфем язд: аспцюя",ll) != 0
+                  aadd (mraz,"KSI20_"+"35")
+                 case AT("нйпзфем язд: бюпмю",ll) != 0
+                  aadd (mraz,"KSI20_"+"02")
+                 case AT("нйпзфем язд: бекхйн рзпмнбн", ll) != 0
+                  aadd (mraz,"KSI20_"+"03")
+                 case at("нйпзфем язд: бхдхм",ll) != 0
+                  aadd (mraz,"KSI20_"+"04")
+                 case at("нйпзфем язд: бпюжю",ll) != 0
+                  aadd (mraz,"KSI20_"+"05")
+                 case at("нйпзфем язд: цюапнбн",ll) != 0
+                  aadd (mraz,"KSI20_"+"06")
+                 case at("нйпзфем язд: днапхв",ll) != 0
+                  aadd (mraz,"KSI20_"+"08")
+                 case at("нйпзфем язд: йзпдфюкх",ll) != 0
+                  aadd (mraz,"KSI20_"+"09")
+                 case at("нйпзфем язд: йчяремдхк",ll) != 0
+                  aadd (mraz,"KSI20_"+"10")
+                 case at("нйпзфем язд: кнбев",ll) != 0
+                  aadd (mraz,"KSI20_"+"11")
+                 case at("нйпзфем язд: лнмрюмю",ll) != 0
+                  aadd (mraz,"KSI20_"+"12")
+                 case at("нйпзфем язд: оюгюпдфхй",ll) != 0
+                  aadd (mraz,"KSI20_"+"13")
+                 case at("нйпзфем язд: оепмхй",ll) != 0
+                  aadd (mraz,"KSI20_"+"14")
+                 case at("нйпзфем язд: окебем",ll) != 0
+                  aadd (mraz,"KSI20_"+"15")
+                 case at("нйпзфем язд: окнбдхб",ll) != 0
+                  aadd (mraz,"KSI20_"+"16")
+                 case at("нйпзфем язд: пюгцпюд",ll) != 0
+                  aadd (mraz,"KSI20_"+"17")
+                 case at("нйпзфем язд: псяе",ll) != 0
+                  aadd (mraz,"KSI20_"+"18")
+                 case at("нйпзфем язд: яхкхярпю",ll) != 0
+                  aadd (mraz,"KSI20_"+"19")
+                 case at("нйпзфем язд: якхбем",ll) != 0
+                  aadd (mraz,"KSI20_"+"20")
+                 case at("нйпзфем язд: ялнкъм",ll) != 0
+                  aadd (mraz,"KSI20_"+"21")
+                 case at("нйпзфем язд: ярюпю гюцнпю",ll) != 0
+                  aadd (mraz,"KSI20_"+"22")
+                 case at("нйпзфем язд: рзпцнбхые",ll) != 0
+                  aadd (mraz,"KSI20_"+"23")
+                 case at("нйпзфем язд: уюяйнбн",ll) != 0
+                  aadd (mraz,"KSI20_"+"24")
+                 case at("нйпзфем язд: ьслем",ll) != 0
+                  aadd (mraz,"KSI20_"+"25")
+                 case at("нйпзфем язд: ъланк",ll) != 0
+                  aadd (mraz,"KSI20_"+"26")
+                 case at("нйпзфем язд: янтхъ цпюд",ll) != 0
+                  aadd (mraz,"KSI20_"+"27")
+                 case at("нйпзфем язд: янтхъ /яця/",ll) != 0
+                  aadd (mraz,"KSI20_"+"27")
+                 case at("нйпзфем язд: янтхъ нйпзц",ll) != 0
+                  aadd (mraz,"KSI20_"+"28")
