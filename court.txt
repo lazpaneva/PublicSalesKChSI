@@ -134,3 +134,82 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
             List<BrsFile>();  
     }
 }
+--------------
+using Microsoft.AspNetCore.Identity;
+using PublicSalesKChSI.Infrastructure.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PublicSalesKChSI.Infrastructure.Data.SeedDb
+{
+    internal class SeedData
+    {
+        public IdentityUser EmployeeUser { get; set; }
+                
+        public Court Court { get; set; }
+
+        //public Category CottageCategory { get; set; }
+
+        //public Category SingleCategory { get; set; }
+
+        //public Category DuplexCategory { get; set; }
+
+        //public House FirstHouse { get; set; }
+
+        //public House SecondHouse { get; set; }
+
+        //public House ThirdHouse { get; set; }
+
+        public SeedData()
+        {
+            SeedUsers();
+            SeedCourt();
+        }
+
+        private void SeedUsers()
+        {
+            var hasher = new PasswordHasher<IdentityUser>();
+
+            EmployeeUser = new IdentityUser()
+            {
+                Id = "dea12856-c198-4129-b3f3-b893d8395082",
+                UserName = "agent@mail.com",
+                NormalizedUserName = "agent@mail.com",
+                Email = "agent@mail.com",
+                NormalizedEmail = "agent@mail.com"
+            };
+
+            EmployeeUser.PasswordHash =
+                 hasher.HashPassword(EmployeeUser, "agent123");
+
+            //GuestUser = new IdentityUser()
+            //{
+            //    Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+            //    UserName = "guest@mail.com",
+            //    NormalizedUserName = "guest@mail.com",
+            //    Email = "guest@mail.com",
+            //    NormalizedEmail = "guest@mail.com"
+            //};
+
+            //GuestUser.PasswordHash =
+            //hasher.HashPassword(AgentUser, "guest123");
+        }
+
+        private void SeedCourt()
+        {
+            Court courtBla = new Court()
+            {
+                Id = 1,
+                Town = "¡À¿√Œ≈¬√–¿ƒ",
+                Number = "01"
+            };
+
+            ///?????
+        }
+
+
+    }
+}

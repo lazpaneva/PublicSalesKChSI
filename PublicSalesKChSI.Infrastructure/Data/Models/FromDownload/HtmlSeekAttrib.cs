@@ -12,6 +12,10 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         public int Id { get; set; }
 
         [Required]
+        [StringLength(DateLengthMax)]
+        public string Published { get; set; } = null!;
+
+        [Required]
         [StringLength(HtmlSeekAttribPriceMax)]
         public string Price { get; set; } = null!;
 

@@ -39,6 +39,10 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int PdfTempNameMin = 5;
         public const int PdfTempNameMax = 16;
 
+        //for LastDownNumber
+        public const int LastDownNumberSaleTypeMin = 5;
+        public const int LastDownNumberSaleTypeMax = 15;
+
         //for HtmlSeekAttrib
         public const int HtmlSeekAttribPriceMin = 1;
         public const int HtmlSeekAttribPriceMax = 18;
