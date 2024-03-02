@@ -1,0 +1,215 @@
+In Hoses - decimal - ConvertValueInInvariantCulture = true -â Range ãî ñëîæè
+                 case AT("ÎÊĞÚÆÅÍ ÑÚÄ: ÁËÀÃÎÅÂÃĞÀÄ",ll) != 0
+                  aadd (mraz,"KSI20_"+"01")
+                 case AT("ÎÊĞÚÆÅÍ ÑÚÄ: ÁÓĞÃÀÑ",ll) != 0
+                  aadd (mraz,"KSI20_"+"35")
+                 case AT("ÎÊĞÚÆÅÍ ÑÚÄ: ÂÀĞÍÀ",ll) != 0
+                  aadd (mraz,"KSI20_"+"02")
+                 case AT("ÎÊĞÚÆÅÍ ÑÚÄ: ÂÅËÈÊÎ ÒÚĞÍÎÂÎ", ll) != 0
+                  aadd (mraz,"KSI20_"+"03")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÂÈÄÈÍ",ll) != 0
+                  aadd (mraz,"KSI20_"+"04")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÂĞÀÖÀ",ll) != 0
+                  aadd (mraz,"KSI20_"+"05")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÃÀÁĞÎÂÎ",ll) != 0
+                  aadd (mraz,"KSI20_"+"06")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÄÎÁĞÈ×",ll) != 0
+                  aadd (mraz,"KSI20_"+"08")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÊÚĞÄÆÀËÈ",ll) != 0
+                  aadd (mraz,"KSI20_"+"09")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÊŞÑÒÅÍÄÈË",ll) != 0
+                  aadd (mraz,"KSI20_"+"10")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ËÎÂÅ×",ll) != 0
+                  aadd (mraz,"KSI20_"+"11")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÌÎÍÒÀÍÀ",ll) != 0
+                  aadd (mraz,"KSI20_"+"12")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÏÀÇÀĞÄÆÈÊ",ll) != 0
+                  aadd (mraz,"KSI20_"+"13")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÏÅĞÍÈÊ",ll) != 0
+                  aadd (mraz,"KSI20_"+"14")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÏËÅÂÅÍ",ll) != 0
+                  aadd (mraz,"KSI20_"+"15")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÏËÎÂÄÈÂ",ll) != 0
+                  aadd (mraz,"KSI20_"+"16")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ĞÀÇÃĞÀÄ",ll) != 0
+                  aadd (mraz,"KSI20_"+"17")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ĞÓÑÅ",ll) != 0
+                  aadd (mraz,"KSI20_"+"18")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÈËÈÑÒĞÀ",ll) != 0
+                  aadd (mraz,"KSI20_"+"19")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑËÈÂÅÍ",ll) != 0
+                  aadd (mraz,"KSI20_"+"20")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÌÎËßÍ",ll) != 0
+                  aadd (mraz,"KSI20_"+"21")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÒÀĞÀ ÇÀÃÎĞÀ",ll) != 0
+                  aadd (mraz,"KSI20_"+"22")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÒÚĞÃÎÂÈÙÅ",ll) != 0
+                  aadd (mraz,"KSI20_"+"23")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÕÀÑÊÎÂÎ",ll) != 0
+                  aadd (mraz,"KSI20_"+"24")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ØÓÌÅÍ",ll) != 0
+                  aadd (mraz,"KSI20_"+"25")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ßÌÁÎË",ll) != 0
+                  aadd (mraz,"KSI20_"+"26")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÎÔÈß ÃĞÀÄ",ll) != 0
+                  aadd (mraz,"KSI20_"+"27")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÎÔÈß /ÑÃÑ/",ll) != 0
+                  aadd (mraz,"KSI20_"+"27")
+                 case at("ÎÊĞÚÆÅÍ ÑÚÄ: ÑÎÔÈß ÎÊĞÚÃ",ll) != 0
+                  aadd (mraz,"KSI20_"+"28")
+
+
+public class YourDbContext : DbContext
+{
+    public DbSet<BrsFile> BrsFiles { get; set; }
+    public DbSet<EmployeeFile> EmployeeFiles { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Configure the one-to-many relationship between BrsFile and EmployeeFile
+        modelBuilder.Entity<EmployeeFile>()
+            .HasOne(e => e.Employee)
+            .WithMany(f => f.Files)
+            .HasForeignKey(f => f.EmployeeId);
+
+        base.OnModelCreating(modelBuilder);
+    }
+}
+
+public class BrsFile
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    public string EmployeeId { get; set; } = null!;
+    
+    [ForeignKey(nameof(EmployeeId))]
+    public IdentityUser Employee { get; set; } = null!;
+}
+
+public class EmployeeFile
+{
+    [Key]
+    public int Id { get; set; }
+
+    // Other properties of EmployeeFile
+
+    public string EmployeeId { get; set; }
+
+    [ForeignKey(nameof(EmployeeId))]
+    public IdentityUser Employee { get; set; }
+
+    // Navigation property for the one-to-many relationship
+    public ICollection<BrsFile> Files { get; set; }
+}
+
+-------------
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PublicSalesKChSI.Infrastructure.Data.Models
+{
+    public class EmployeeFile
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public DateOnly WorkingDate { get; set; }
+
+        public string EmployeeId { get; set; } = null!;
+        [ForeignKey(nameof(EmployeeId))]
+        public IdentityUser Employee { get; set; } = null!;
+
+        // Navigation property for the one-to-many relationship
+        public ICollection<BrsFile> Files { get; set; } = new 
+            List<BrsFile>();  
+    }
+}
+--------------
+using Microsoft.AspNetCore.Identity;
+using PublicSalesKChSI.Infrastructure.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PublicSalesKChSI.Infrastructure.Data.SeedDb
+{
+    internal class SeedData
+    {
+        public IdentityUser EmployeeUser { get; set; }
+                
+        public Court Court { get; set; }
+
+        //public Category CottageCategory { get; set; }
+
+        //public Category SingleCategory { get; set; }
+
+        //public Category DuplexCategory { get; set; }
+
+        //public House FirstHouse { get; set; }
+
+        //public House SecondHouse { get; set; }
+
+        //public House ThirdHouse { get; set; }
+
+        public SeedData()
+        {
+            SeedUsers();
+            SeedCourt();
+        }
+
+        private void SeedUsers()
+        {
+            var hasher = new PasswordHasher<IdentityUser>();
+
+            EmployeeUser = new IdentityUser()
+            {
+                Id = "dea12856-c198-4129-b3f3-b893d8395082",
+                UserName = "agent@mail.com",
+                NormalizedUserName = "agent@mail.com",
+                Email = "agent@mail.com",
+                NormalizedEmail = "agent@mail.com"
+            };
+
+            EmployeeUser.PasswordHash =
+                 hasher.HashPassword(EmployeeUser, "agent123");
+
+            //GuestUser = new IdentityUser()
+            //{
+            //    Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+            //    UserName = "guest@mail.com",
+            //    NormalizedUserName = "guest@mail.com",
+            //    Email = "guest@mail.com",
+            //    NormalizedEmail = "guest@mail.com"
+            //};
+
+            //GuestUser.PasswordHash =
+            //hasher.HashPassword(AgentUser, "guest123");
+        }
+
+        private void SeedCourt()
+        {
+            Court courtBla = new Court()
+            {
+                Id = 1,
+                Town = "ÁËÀÃÎÅÂÃĞÀÄ",
+                Number = "01"
+            };
+
+            ///?????
+        }
+
+
+    }
+}
