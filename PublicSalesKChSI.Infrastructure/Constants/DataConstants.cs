@@ -67,12 +67,26 @@ namespace PublicSalesKChSI.Infrastructure.Constants
 
 
         //for DeptorOld
-        public const int DeptorOldNameMax = 250;
-
         public const int DeptorOldCourtExtractFromKlasMin = 2;
         public const int DeptorOldCourtExtractFromKlasMax = 2;
 
-        public const int DeptorOldDeptorsInfoMax = 10000; //about 128 row
+        public const int DeptorOldNameMax = 250;
+
+        public const int DeptorOldPlaceMax = 50;
+
+        public const int DeptorOldSreetAndComplexMax = 100;
+        public const int DeptorOldSreetNumberMax = 6;
+        public const int DeptorOldBuildingAndEntranceMax = 5;
+        public const int DeptorOldFloorMax = 2;
+        public const int DeptorOldTerrainAndPINumberMax = 60;
+
+        public const int DeptorOldAppartmentMin = 1;
+        public const int DeptorOldAppartmentMax = 3;
+
+        public const int DeptorOldTypePlaceMin = 0;
+        public const int DeptorOldTypePlaceMax = 1;
+
+        public const int DeptorOldDeptorsInfoMax = 10000; //about 128 rows
 
         //for Court
         public const int CourtTownMin = 3;

@@ -57,7 +57,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public string EmployeeId { get; set; } = null!;
         [ForeignKey(nameof(EmployeeId))]
         public IdentityUser Employee { get; set; } = null!;
-
+        //foreign key - по конвенция https://learn.microsoft.com/en-us/ef/core/modeling/relationships/conventions
+        public int? DeptorOldID { get; set; } 
+        public DeptorOld? DeptorOld { get; set; }
         public ICollection<TempHtml> HtmlFiles { get; set; } =
             new List<TempHtml>();
     }

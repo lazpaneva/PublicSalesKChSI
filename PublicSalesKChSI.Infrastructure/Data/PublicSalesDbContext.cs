@@ -37,10 +37,10 @@ namespace PublicSalesKChSI.Infrastructure.Data
                     .HasForeignKey(f => f.BrsFileId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                     builder.ApplyConfiguration(new UserConfiguration());
-                     builder.ApplyConfiguration(new LastDownNumberConfiguration());
-                     builder.ApplyConfiguration(new CourtConfiguration());
-                
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new LastDownNumberConfiguration());
+            builder.ApplyConfiguration(new CourtConfiguration());
+
             base.OnModelCreating(builder);
         }
     }
