@@ -12,8 +12,8 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    [Migration("20240301085936_MigrWithLastNumbersAndUserSeed")]
-    partial class MigrWithLastNumbersAndUserSeed
+    [Migration("20240302073759_WithColPublishedInLastNumber")]
+    partial class WithColPublishedInLastNumber
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,40 +139,6 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "dea12856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "ae4bd1ec-0edc-4e47-918d-03578e022abe",
-                            Email = "ja.iv@abv.bg",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "JA.IV@ABV.BG",
-                            NormalizedUserName = "JA.IV@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEB5uym39RPVfKYhqWfEE+fHY49bInnS8I2kJXnhI0viZADLAgfSNeuFhB0R3QQF+g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "7444a3b0-a90c-4486-b968-9395d901692d",
-                            TwoFactorEnabled = false,
-                            UserName = "ja.iv@abv.bg"
-                        },
-                        new
-                        {
-                            Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "afa39921-b6f6-4713-b90d-57e80857913d",
-                            Email = "ira1970@abv.bg",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "IRA1970@ABV.BG",
-                            NormalizedUserName = "IRA1970@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJGipGk4xLbuH0R8DjqtH0ArKIezsqpzLw01kOLwyflIWYw62Nc4t52x0Ncgxi5Rhg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "9150f21d-0866-48a3-acab-6ff2fc9bd8d0",
-                            TwoFactorEnabled = false,
-                            UserName = "ira1970@abv.bg"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

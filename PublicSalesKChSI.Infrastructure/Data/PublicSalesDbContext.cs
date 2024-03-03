@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PublicSalesKChSI.Infrastructure.Data.Models;
 using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
+using PublicSalesKChSI.Infrastructure.Data.SeedDb;
 using System.Reflection.Emit;
 
 namespace PublicSalesKChSI.Infrastructure.Data
@@ -36,7 +37,11 @@ namespace PublicSalesKChSI.Infrastructure.Data
                     .HasForeignKey(f => f.BrsFileId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                   base.OnModelCreating(builder);
+                     builder.ApplyConfiguration(new UserConfiguration());
+                     builder.ApplyConfiguration(new LastDownNumberConfiguration());
+                     builder.ApplyConfiguration(new CourtConfiguration());
+                
+            base.OnModelCreating(builder);
         }
     }
 }

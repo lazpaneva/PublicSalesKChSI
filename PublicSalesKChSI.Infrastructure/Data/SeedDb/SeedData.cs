@@ -42,6 +42,12 @@ namespace PublicSalesKChSI.Infrastructure.Data.SeedDb
         public IdentityUser EmloyeeFirst { get; set; } = null!;
 
         public IdentityUser EmloyeeSecond { get; set; } = null!;
+        public SeedData()
+        {
+            SeedUsers();
+            SeedCourts();
+            SeedLastDownNumbers();
+        }
 
         private void SeedUsers()
         {
