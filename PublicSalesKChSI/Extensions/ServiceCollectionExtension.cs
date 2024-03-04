@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PublicSalesKChSI.Core.Contracts;
+using PublicSalesKChSI.Core.Services;
 using PublicSalesKChSI.Infrastructure.Data;
+using PublicSalesKChSI.Infrastructure.Data.Common;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -8,6 +11,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IHtmlPdfService, HtmlPdfService>();
+
             return services;
         }
 

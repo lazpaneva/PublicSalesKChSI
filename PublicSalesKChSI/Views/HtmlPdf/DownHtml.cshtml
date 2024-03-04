@@ -1,0 +1,55 @@
+﻿@model LastNumbersHtmlFormModel
+
+@{
+    ViewBag.TitleBegin = "Последно свалени номера за: Имущество, МПС, Имоти";
+    ViewBag.TitleEnd = "ВЪВЕДИ последните номера от днес в BCPEA за: Имущество, МПС, Имоти";
+}
+
+
+<h2 class="text-center">@ViewBag.TitleBegin</h2>
+<hr />
+
+<div class="row" asp-action="DownHtml">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <div class="mb-2">
+            <p>Последен номер в Имущество:   @Model.BeforeLastNumberAsset</p>
+        </div>
+        <div class="mb-2">
+            <p>Последен номер в Коли:   @Model.BeforeLastNumberVechicle</p>
+        </div>
+        <div class="mb-2">
+            <p>Последен номер в Имоти:   @Model.BeforeLastNumberProperties</p>
+        </div>
+    </div>
+</div>
+
+<hr />
+<h2 class="text-center">@ViewBag.TitleEnd</h2>
+
+<div class="row" asp-action="DownHtml">
+         <form asp-action="DownHtml" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.LastNumberAsset" class="form-label-add-edit">Последният от днес номер в Имущество</label>
+            <input asp-for="@Model.LastNumberAsset" class="form-control" aria-required="true" value=@(@Model.BeforeLastNumberAsset+1) />
+                <span asp-validation-for="@Model.LastNumberAsset" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.LastNumberVechicle" class="form-label-add-edit">Последният от днес номер в Коли</label>
+            <input asp-for="@Model.LastNumberVechicle" class="form-control" aria-required="true" value=@(@Model.BeforeLastNumberVechicle+1) />
+                <span asp-validation-for="@Model.LastNumberVechicle" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.LastNumberProperties" class="form-label-add-edit">Последният от днес номер в Имоти</label>
+            <input asp-for="@Model.LastNumberProperties" class="form-control" aria-required="true" value=@(@Model.BeforeLastNumberProperties+1) />
+                <span asp-validation-for="@Model.LastNumberProperties" class="text-danger"></span>
+            </div>
+        <div class="mb-3">
+            <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Submit" />
+        </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

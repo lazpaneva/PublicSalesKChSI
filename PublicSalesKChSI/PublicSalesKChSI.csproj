@@ -19,4 +19,11 @@
     <ProjectReference Include="..\PublicSalesKChSI.Core\PublicSalesKChSI.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\BrsFile\" />
+    <Folder Include="Views\Deptor\" />
+    <Folder Include="Views\Statistics\" />
+    <Folder Include="Views\Sale\" />
+  </ItemGroup>
+
 </Project>

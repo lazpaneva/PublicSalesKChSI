@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PublicSalesKChSI.Core.Contracts;
+using PublicSalesKChSI.Core.Services;
 using PublicSalesKChSI.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
