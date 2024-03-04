@@ -3,4 +3,13 @@
         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
     </li>
    
+    @if (this.User?.Identity?.IsAuthenticated ?? false)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="HtmlPdf" asp-action="LastNumbersToDown">Last Numbers in Bcpea</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="BrsFile" asp-action="NewBrsFiles">Generate new BRS files</a>
+        </li>
+    }
 </ul>
