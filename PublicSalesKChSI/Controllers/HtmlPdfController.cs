@@ -29,12 +29,17 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public IActionResult DownHtml(LastNumbersHtmlFormModel model)
         {
-            
-            //var LastNumbers = htmlPdfService.GetLastNumbers();
+            var LastNumbers = htmlPdfService.GetLastNumbers();
 
-            //model.BeforeLastNumberAsset = LastNumbers.Result[0];
-            //model.BeforeLastNumberVechicle = LastNumbers.Result[1];
-            //model.BeforeLastNumberProperties = LastNumbers.Result[2];
+            model.BeforeLastNumberAsset = LastNumbers.Result[0];
+            model.BeforeLastNumberVechicle = LastNumbers.Result[1];
+            model.BeforeLastNumberProperties = LastNumbers.Result[2];
+            //todo some проверки, ако LastNumber е преди Before
+
+            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, 1);
+            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, 2);
+            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, 3);
+
             return View(model);
         }
     }

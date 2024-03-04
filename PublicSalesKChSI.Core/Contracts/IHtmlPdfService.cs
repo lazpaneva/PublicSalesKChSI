@@ -9,5 +9,6 @@ namespace PublicSalesKChSI.Core.Contracts
     public interface IHtmlPdfService
     {
         Task<int[]> GetLastNumbers();
+        Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, int type);
     }
 }
