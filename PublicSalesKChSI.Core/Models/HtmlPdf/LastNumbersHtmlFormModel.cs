@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PublicSalesKChSI.Infrastructure.Data.Common;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using static PublicSalesKChSI.Infrastructure.Constants.DataConstants;
 
@@ -6,6 +8,7 @@ namespace PublicSalesKChSI.Core.Models.HtmlPdf
 {
     public class LastNumbersHtmlFormModel
     {
+
         [Required]
         [Comment("Взима id=1 от таблица LastDownNumber")]
         public int BeforeLastNumberAsset { get; set; }

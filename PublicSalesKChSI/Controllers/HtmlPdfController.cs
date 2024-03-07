@@ -32,24 +32,41 @@ namespace PublicSalesKChSI.Controllers
         {
             var LastNumbers = await htmlPdfService.GetLastNumbers();
             bool lastDownloading = false;
-
+                                                
             model.BeforeLastNumberAsset = LastNumbers[0];
             model.BeforeLastNumberVechicle = LastNumbers[1];
             model.BeforeLastNumberProperties = LastNumbers[2];
-            //todo some проверки, ако LastNumber е преди Before
+
+            //проверки дали въведения номер е по-голям от предишния последен номер, който е свалян
+            if (model.BeforeLastNumberAsset >= model.LastNumberAsset)
+            {
+                ModelState.AddModelError(nameof(model.LastNumberAsset), "Въведеният номер трябва да бъде по-голям от последно сваления номер за Имущество!");
+            }
+            if (model.BeforeLastNumberVechicle >= model.LastNumberVechicle)
+            {
+                ModelState.AddModelError(nameof(model.LastNumberVechicle), "Въведеният номер трябва да бъде по-голям от последно сваления номер за Коли!");
+            }
+            if (model.BeforeLastNumberProperties >= model.LastNumberProperties)
+            {
+                ModelState.AddModelError(nameof(model.LastNumberProperties), "Въведеният номер трябва да бъде по-голям от последно сваления номер за Имоти!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
             await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
             lastDownloading = await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
-            //if (lastDownloading)
-            //{
-            //    return RedirectToAction(nameof(Index), nameof(HomeController));
-            //}
-            //else
-            //{
+
+            if (lastDownloading)
+            {
+                return RedirectToAction(nameof(Index), nameof(HomeController));
+            }
+            else
+            {
                 return View(model);
-            //}
-            
+            }
         }
 
 

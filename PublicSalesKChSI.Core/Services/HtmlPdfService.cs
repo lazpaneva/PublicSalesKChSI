@@ -44,6 +44,13 @@ namespace PublicSalesKChSI.Core.Services
             lastNumsForThreeDifferentTypes[1] = lastDownNumberVevhicle.LastNumber;
             lastNumsForThreeDifferentTypes[2] = lastDownNumberProperties.LastNumber;
 
+            //delete table TempHtmls, use like transint table. old not necessary
+            var htmls = repo.All<TempHtml>();
+            foreach (var html in htmls)
+            {
+                repo.Delete(html);
+            }
+
             return lastNumsForThreeDifferentTypes;
         }
 
@@ -54,6 +61,7 @@ namespace PublicSalesKChSI.Core.Services
             int sizeUrls = numberEnd - numberBegin + 1;
             string[] urls = new string[sizeUrls];
             string typeBcpeaPath = string.Empty;
+
             switch (type)
             {
                 case "Asset":
