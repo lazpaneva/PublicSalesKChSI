@@ -18,6 +18,7 @@ using static PublicSalesKChSI.Core.DataConstantsCore;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Html;
+using System.Security.Cryptography;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -127,9 +128,9 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         [HttpGet]
-        public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles()
+        public async Task FillTempPDf()
         {
-            var htmlsContent = repo.AllReadOnly<TempHtml>()
+            var pdfContents = repo.AllReadOnly<TempHtml>()
                 .Select(html => new PdfOrigNameAndHtmlId()
                 {
                     OriginalName = TakePdfName(html.Content),
@@ -138,27 +139,50 @@ namespace PublicSalesKChSI.Core.Services
                 })
                 .ToList();
 
-            return htmlsContent;
+            int count = 1;
+            foreach (var item in pdfContents)
+            {
+                TempPdf tempPdf = new TempPdf();
+                string numbString = count.ToString("D4");
+
+                tempPdf.TempHtmlId = item.TempHtmlId;
+                tempPdf.Url = item.UrlPdf;
+                tempPdf.OriginalName = item.OriginalName;
+                tempPdf.Name = numbString + "_" + item.OriginalName;
+
+                await repo.AddAsync(tempPdf);
+                await repo.SaveChangesAsync();
+
+                count++;
+            }
         }
 
-        private string TakePdfUrl(string content)
+        private static string TakePdfUrl(string content)
         {
             string result = string.Empty;
             int beginPos = content.IndexOf(beginPosScanedFile);
-            int endPos = content.IndexOf(endPosScanedFile)-1;
+            //content = content.Substring(beginPos);
+            int endPos = content.IndexOf(endPosScanedFile, beginPos);
             
-            if (beginPos == -1)
+            if (beginPos != -1)
             {
                 content = content.Substring(beginPos, endPos - beginPos);
                 int posOfHref = content.IndexOf("href=\"");
                 result = content.Substring(posOfHref+6);
+                result = result.Substring(1, result.LastIndexOf("\">")-1).Trim();
             }
             return result;
         }
 
-        private string TakePdfName(string content)
+        private static string TakePdfName(string content)
         {
-            throw new NotImplementedException();
+            string result = TakePdfUrl(content);
+            if (result.LastIndexOf("/") != -1)
+            {
+                result = result.Substring(result.LastIndexOf("/")+1);
+            }
+            
+            return result;
         }
 
         private string RemoveScriptContent(string input)

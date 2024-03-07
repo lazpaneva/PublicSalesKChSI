@@ -12,6 +12,7 @@ namespace PublicSalesKChSI.Core.Contracts
         Task<int[]> GetLastNumbers();
         Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, string type);
 
-        public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();
+        Task FillTempPDf();
+        //public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();
     }
 }

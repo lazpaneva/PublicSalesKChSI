@@ -11,10 +11,10 @@ namespace PublicSalesKChSI.Controllers
                 htmlPdfServices = _htmlPdfServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var listSth = htmlPdfServices.DownLoadPdfFiles();
-            return View();
+           await htmlPdfServices.FillTempPDf();
+           return View();
         }
     }
 }

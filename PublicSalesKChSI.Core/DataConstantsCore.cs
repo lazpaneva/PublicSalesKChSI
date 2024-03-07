@@ -17,6 +17,7 @@ namespace PublicSalesKChSI.Core
 
         public const string beginPosScanedFile = "<div class=\"label\">Сканирани обявления</div>";
         public const string endPosScanedFile = "</a></li>";
+        public const string posHref = "href=\"";
         
     }
 }
