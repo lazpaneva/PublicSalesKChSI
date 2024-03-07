@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Please = "МОЛЯ, ИЗЧАКАЙТЕ!";
+    ViewBag.Downloading = "СВАЛЯТ СЕ PDF-файловете ...";
+}
+
+<div class="row mt-auto mb-auto" asp-controller="Pdf" asp-action="Index">
+
+    <h3 class="text-center">@ViewBag.Please</h3>
+    <h3 class="text-center">@ViewBag.Downloading</h3>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

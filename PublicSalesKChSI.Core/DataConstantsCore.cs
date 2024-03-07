@@ -14,6 +14,9 @@ namespace PublicSalesKChSI.Core
 
         public const string beginPosContentInHtml = "<div class=\"content\">";
         public const string endPosContentInHtml = "<div class=\"regions__container\">";
+
+        public const string beginPosScanedFile = "<div class=\"label\">Сканирани обявления</div>";
+        public const string endPosScanedFile = "</a></li>";
         
     }
 }

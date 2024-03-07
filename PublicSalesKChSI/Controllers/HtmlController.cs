@@ -6,10 +6,10 @@ using PublicSalesKChSI.Core.Models.HtmlPdf;
 namespace PublicSalesKChSI.Controllers
 {
     [Authorize]
-    public class HtmlPdfController : Controller
+    public class HtmlController : Controller
     {
         private readonly IHtmlPdfService htmlPdfService;
-        public HtmlPdfController(IHtmlPdfService _htmlPdfService)
+        public HtmlController(IHtmlPdfService _htmlPdfService)
         {
             htmlPdfService = _htmlPdfService;
         }
@@ -61,16 +61,12 @@ namespace PublicSalesKChSI.Controllers
 
             if (lastDownloading)
             {
-                return RedirectToAction(nameof(Index), nameof(HomeController));
+                return RedirectToAction(nameof(Index), nameof(PdfController));
             }
             else
             {
                 return View(model);
             }
         }
-
-
-        
     }
-
 }

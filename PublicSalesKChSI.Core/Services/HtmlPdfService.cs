@@ -13,8 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+using static PublicSalesKChSI.Core.DataConstantsCore;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.AspNetCore.Html;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -88,8 +91,7 @@ namespace PublicSalesKChSI.Core.Services
             {
                 string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
                     +".html";
-                //string filePath = Path.Combine(Server.MapPath("~/App_Data"), fileName);
-                //to do, ако се качи в нета
+                //string filePath = Path.Combine(Server.MapPath("~/App_Data"), fileName); //to do, ако се качи в нета
                 string filePath = Path.Combine(DataConstantsCore.pathDownloadHtm, fileName);
                                 
                 TempHtml htmlAdd = new TempHtml();
@@ -97,16 +99,16 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     try
                     {
-                        string htmlContent = await client.DownloadStringTaskAsync(urlAddress);
-                        
+                        string htmlContent = await client.DownloadStringTaskAsync(urlAddress); 
+                        string htmlAddForDb = RemoveScriptContent(htmlContent); //delete от <script to </script
+
                         htmlAdd = new TempHtml()
                         {
                             Type = type,
-                            Content = htmlContent,
+                            Content = htmlAddForDb,
                             CreatedOn = DateTime.Now,
                             NumberInSite = int.Parse(urlAddress.Substring(urlAddress.LastIndexOf('/') + 1).Trim()),
                         };
-                        string htmlAddForDb = ShrinkHtmlContent(htmlContent);
                         htmlList.Add(htmlAdd);
 
                         await repo.AddAsync(htmlAdd);
@@ -124,24 +126,48 @@ namespace PublicSalesKChSI.Core.Services
             return result;
         }
 
-        private string ShrinkHtmlContent(string htmContent)
+        [HttpGet]
+        public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles()
         {
-            string result = String.Empty;
+            var htmlsContent = repo.AllReadOnly<TempHtml>()
+                .Select(html => new PdfOrigNameAndHtmlId()
+                {
+                    OriginalName = TakePdfName(html.Content),
+                    UrlPdf = TakePdfUrl(html.Content),
+                    TempHtmlId = html.Id
+                })
+                .ToList();
 
-            int posOfScript = htmContent.IndexOf("<script");
-            while (posOfScript != -1)
-            {
-                int posOfEndScript = htmContent.IndexOf("</script>");
-                htmContent = htmContent.Remove(posOfScript, posOfEndScript - posOfScript);
-                posOfScript = htmContent.IndexOf("<script");
-            }
+            return htmlsContent;
+        }
+
+        private string TakePdfUrl(string content)
+        {
+            string result = string.Empty;
+            int beginPos = content.IndexOf(beginPosScanedFile);
+            int endPos = content.IndexOf(endPosScanedFile)-1;
             
-            int begPos = htmContent.IndexOf(DataConstantsCore.beginPosContentInHtml);
-            int endPos = htmContent.IndexOf(DataConstantsCore.endPosContentInHtml);
-            result = htmContent.Substring(begPos, endPos - begPos);
+            if (beginPos == -1)
+            {
+                content = content.Substring(beginPos, endPos - beginPos);
+                int posOfHref = content.IndexOf("href=\"");
+                result = content.Substring(posOfHref+6);
+            }
             return result;
         }
 
+        private string TakePdfName(string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string RemoveScriptContent(string input)
+        {
+            string pattern = @"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>"; //from chat gpt 
+            Regex regex = new Regex(pattern);
+            return regex.Replace(input, "");
+        }
+        
         private void DeleteAndCreateDirectory(string filePathDirectory)
         {
             if (Directory.Exists(filePathDirectory))
