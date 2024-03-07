@@ -15,6 +15,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         public string Type { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "ntext")] //string не можеше да побере съдържанието на html-a
         public string Content { get; set; } = null!;
 
         [Required]

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -50,6 +51,9 @@ namespace PublicSalesKChSI.Core.Services
             {
                 repo.Delete(html);
             }
+            //delete directories for downloading if exists
+            string filePathDirectoryHtml = DataConstantsCore.pathDownloadHtm;
+            DeleteAndCreateDirectory(filePathDirectoryHtml);
 
             return lastNumsForThreeDifferentTypes;
         }
@@ -79,19 +83,22 @@ namespace PublicSalesKChSI.Core.Services
 
             urls = fillUrlsArray(numberBegin, numberEnd, urls, typeBcpeaPath);
             List<TempHtml> htmlList = new List<TempHtml>();
-
+            
             foreach (string urlAddress in urls)
             {
                 string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
                     +".html";
                 //string filePath = Path.Combine(Server.MapPath("~/App_Data"), fileName);
-                string filePath = Path.Combine("c:/ksi/", fileName);
+                //to do, ако се качи в нета
+                string filePath = Path.Combine(DataConstantsCore.pathDownloadHtm, fileName);
+                                
                 TempHtml htmlAdd = new TempHtml();
                 using (WebClient client = new WebClient())
                 {
                     try
                     {
                         string htmlContent = await client.DownloadStringTaskAsync(urlAddress);
+                        
                         htmlAdd = new TempHtml()
                         {
                             Type = type,
@@ -99,23 +106,49 @@ namespace PublicSalesKChSI.Core.Services
                             CreatedOn = DateTime.Now,
                             NumberInSite = int.Parse(urlAddress.Substring(urlAddress.LastIndexOf('/') + 1).Trim()),
                         };
+                        string htmlAddForDb = ShrinkHtmlContent(htmlContent);
                         htmlList.Add(htmlAdd);
-                        //await dbContext.TempHtmls.AddAsync(htmlAdd);
-                        //await dbContext.SaveChangesAsync();
+
                         await repo.AddAsync(htmlAdd);
                         await repo.SaveChangesAsync();
-                        System.IO.File.WriteAllText(filePath, htmlContent);
+                        File.WriteAllText(filePath, htmlContent);
                     }
                     catch (WebException ex)
                     {
                         Console.WriteLine($"Error downloading {urlAddress}: {ex.Message}");
                     }
                 }
-                
             }
 
             result = true;
             return result;
+        }
+
+        private string ShrinkHtmlContent(string htmContent)
+        {
+            string result = String.Empty;
+
+            int posOfScript = htmContent.IndexOf("<script");
+            while (posOfScript != -1)
+            {
+                int posOfEndScript = htmContent.IndexOf("</script>");
+                htmContent = htmContent.Remove(posOfScript, posOfEndScript - posOfScript);
+                posOfScript = htmContent.IndexOf("<script");
+            }
+            
+            int begPos = htmContent.IndexOf(DataConstantsCore.beginPosContentInHtml);
+            int endPos = htmContent.IndexOf(DataConstantsCore.endPosContentInHtml);
+            result = htmContent.Substring(begPos, endPos - begPos);
+            return result;
+        }
+
+        private void DeleteAndCreateDirectory(string filePathDirectory)
+        {
+            if (Directory.Exists(filePathDirectory))
+            {
+                Directory.Delete(filePathDirectory, true);
+            }
+            Directory.CreateDirectory(filePathDirectory);
         }
 
         private string[] fillUrlsArray(int numberBegin, int numberEnd, string[] urlsArr,
