@@ -33,7 +33,7 @@ namespace PublicSalesKChSI.Infrastructure.Data
         {
             builder.Entity<TempHtml>()
                     .HasOne(f => f.BrsFile)
-                    .WithMany(h=>h.HtmlFiles)
+                    .WithMany(h => h.HtmlFiles)
                     .HasForeignKey(f => f.BrsFileId)
                     .OnDelete(DeleteBehavior.Restrict);
 

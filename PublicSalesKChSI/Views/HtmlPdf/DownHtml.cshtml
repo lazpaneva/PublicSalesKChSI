@@ -5,26 +5,19 @@
     ViewBag.TitleEnd = "ВЪВЕДИ последните номера от днес в BCPEA за: Имущество, МПС, Имоти";
 }
 
-
-<h2 class="text-center">@ViewBag.TitleBegin</h2>
-<hr />
-
 <div class="row" asp-action="DownHtml">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <div class="mb-2">
-            <p>Последен номер в Имущество:   @Model.BeforeLastNumberAsset</p>
-        </div>
-        <div class="mb-2">
-            <p>Последен номер в Коли:   @Model.BeforeLastNumberVechicle</p>
-        </div>
-        <div class="mb-2">
-            <p>Последен номер в Имоти:   @Model.BeforeLastNumberProperties</p>
+    <h3 class="text-center">@ViewBag.TitleBegin</h3>
+    <div class="col-sm-12">
+        <div class="mb-2 text-center">
+            <span class="pe-2">Последен номер в Имущество:   @Model.BeforeLastNumberAsset</span>
+            <span class="pe-2">Последен номер в Коли:   @Model.BeforeLastNumberVechicle</span>
+            <span class="pe-2">Последен номер в Имоти:   @Model.BeforeLastNumberProperties</span>
         </div>
     </div>
 </div>
 
 <hr />
-<h2 class="text-center">@ViewBag.TitleEnd</h2>
+<h3 class="text-center">@ViewBag.TitleEnd</h3>
 
 <div class="row" asp-action="DownHtml">
          <form asp-action="DownHtml" method="post">
@@ -44,11 +37,22 @@
                 <span asp-validation-for="@Model.LastNumberProperties" class="text-danger"></span>
             </div>
         <div class="mb-3">
-            <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Submit" />
+            <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" id="submit-numbers" type="submit" value="Submit" />
+            
         </div>
         </form>
-    </div>
+    <h2 id="pleaseWaitMessage" style="display: none;" class="text-center text-danger pt-2 pb-2">МОЛЯ, ИЗЧАКАЙТЕ! СВАЛЯТ СЕ HTML-ите ...</h2>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#submit-numbers').click(function () {
+            // Show "Please wait!" message
+            $('#pleaseWaitMessage').show();
+        });
+    });
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

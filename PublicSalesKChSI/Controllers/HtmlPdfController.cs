@@ -13,34 +13,47 @@ namespace PublicSalesKChSI.Controllers
         {
             htmlPdfService = _htmlPdfService;
         }
+        
         [HttpGet]
-        public IActionResult DownHtml()
+        public async Task <IActionResult> DownHtml()
         {
             LastNumbersHtmlFormModel model = new LastNumbersHtmlFormModel();
-            var LastNumbers = htmlPdfService.GetLastNumbers();
+            var LastNumbers = await htmlPdfService.GetLastNumbers();
 
-            model.BeforeLastNumberAsset = LastNumbers.Result[0];
-            model.BeforeLastNumberVechicle = LastNumbers.Result[1];
-            model.BeforeLastNumberProperties = LastNumbers.Result[2];
+            model.BeforeLastNumberAsset = LastNumbers[0];
+            model.BeforeLastNumberVechicle = LastNumbers[1];
+            model.BeforeLastNumberProperties = LastNumbers[2];
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult DownHtml(LastNumbersHtmlFormModel model)
+        public async Task<IActionResult> DownHtml(LastNumbersHtmlFormModel model)
         {
-            var LastNumbers = htmlPdfService.GetLastNumbers();
+            var LastNumbers = await htmlPdfService.GetLastNumbers();
+            bool lastDownloading = false;
 
-            model.BeforeLastNumberAsset = LastNumbers.Result[0];
-            model.BeforeLastNumberVechicle = LastNumbers.Result[1];
-            model.BeforeLastNumberProperties = LastNumbers.Result[2];
+            model.BeforeLastNumberAsset = LastNumbers[0];
+            model.BeforeLastNumberVechicle = LastNumbers[1];
+            model.BeforeLastNumberProperties = LastNumbers[2];
             //todo some проверки, ако LastNumber е преди Before
 
-            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, 1);
-            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, 2);
-            htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, 3);
-
-            return View(model);
+            await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
+            await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
+            lastDownloading = await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
+            //if (lastDownloading)
+            //{
+            //    return RedirectToAction(nameof(Index), nameof(HomeController));
+            //}
+            //else
+            //{
+                return View(model);
+            //}
+            
         }
+
+
+        
     }
+
 }

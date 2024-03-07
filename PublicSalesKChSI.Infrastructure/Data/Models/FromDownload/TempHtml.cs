@@ -24,9 +24,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         [Range(HtmlTempNumberInSiteMin, int.MaxValue)]
         public int NumberInSite { get; set; }
 
-        public int BrsFileId { get; set; }
+        public int? BrsFileId { get; set; }
         [ForeignKey(nameof(BrsFileId))]
-        public BrsFile BrsFile { get; set; } = null!;
+        public BrsFile? BrsFile { get; set; } = null!;
 
     }
 }

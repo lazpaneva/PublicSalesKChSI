@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Models.HtmlPdf;
+using PublicSalesKChSI.Infrastructure.Data;
 using PublicSalesKChSI.Infrastructure.Data.Common;
 using PublicSalesKChSI.Infrastructure.Data.Models;
 using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
@@ -17,12 +20,15 @@ namespace PublicSalesKChSI.Core.Services
     public class HtmlPdfService : IHtmlPdfService
     {
         private readonly IRepository repo;
+        //private readonly PublicSalesDbContext dbContext;
 
         public HtmlPdfService(IRepository _repository)
         {
             repo = _repository;
+            //dbContext = _dbContext;
         }
 
+        [HttpGet]
         public async Task<int[]> GetLastNumbers()
         {
             int[] lastNumsForThreeDifferentTypes = new int[3];
@@ -41,79 +47,78 @@ namespace PublicSalesKChSI.Core.Services
             return lastNumsForThreeDifferentTypes;
         }
 
-        public async Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, int type)
+        [HttpPost]
+        public async Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, string type)
         {
             bool result = false;
             int sizeUrls = numberEnd - numberBegin + 1;
             string[] urls = new string[sizeUrls];
             string typeBcpeaPath = string.Empty;
-            string stringType = string.Empty;
             switch (type)
             {
-                case 1:
+                case "Asset":
                     typeBcpeaPath = "https://sales.bcpea.org/asset/";
-                    stringType = "Asset";
                     break;
-                case 2:
+                case "Vechicle":
                     typeBcpeaPath = "https://sales.bcpea.org/vehicles/";
-                    stringType = "Vehicles";
                     break;
-                case 3:
+                case "Property":
                     typeBcpeaPath = "https://sales.bcpea.org/properties/";
-                    stringType = "Properties";
                     break;
                 default:
                     break;
             }
 
             urls = fillUrlsArray(numberBegin, numberEnd, urls, typeBcpeaPath);
-            foreach (string url in urls)
+            List<TempHtml> htmlList = new List<TempHtml>();
+
+            foreach (string urlAddress in urls)
             {
-                //string fileName = "html_"+ url.Substring(url.LastIndexOf('/')+1).Trim()
-                //    +".html";
+                string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
+                    +".html";
                 //string filePath = Path.Combine(Server.MapPath("~/App_Data"), fileName);
-                //string filePath = Path.Combine("c:/ksi/", fileName);
+                string filePath = Path.Combine("c:/ksi/", fileName);
+                TempHtml htmlAdd = new TempHtml();
                 using (WebClient client = new WebClient())
                 {
                     try
                     {
-                        string htmlContent = await client.DownloadStringTaskAsync(url);
-                        var htmlAdd = new TempHtml()
+                        string htmlContent = await client.DownloadStringTaskAsync(urlAddress);
+                        htmlAdd = new TempHtml()
                         {
-                            Type = stringType,
+                            Type = type,
                             Content = htmlContent,
                             CreatedOn = DateTime.Now,
-                            NumberInSite = int.Parse(url.Substring(url.LastIndexOf('/') + 1).Trim()),
-                            BrsFileId = -1 //"-1" - means not fill in BRS file yet
-
+                            NumberInSite = int.Parse(urlAddress.Substring(urlAddress.LastIndexOf('/') + 1).Trim()),
                         };
+                        htmlList.Add(htmlAdd);
+                        //await dbContext.TempHtmls.AddAsync(htmlAdd);
+                        //await dbContext.SaveChangesAsync();
                         await repo.AddAsync(htmlAdd);
-                        // System.IO.File.WriteAllText(filePath, htmlContent);
+                        await repo.SaveChangesAsync();
+                        System.IO.File.WriteAllText(filePath, htmlContent);
                     }
                     catch (WebException ex)
                     {
-                        // Handle any errors that may occur during the download
-                        // For example, log the error or take appropriate action
-                        Console.WriteLine($"Error downloading {url}: {ex.Message}");
+                        Console.WriteLine($"Error downloading {urlAddress}: {ex.Message}");
                     }
-                    await repo.SaveChangesAsync();
                 }
+                
             }
 
             result = true;
-
             return result;
         }
 
-        private string[] fillUrlsArray(int numberBegin, int numberEnd, string[] urls,
+        private string[] fillUrlsArray(int numberBegin, int numberEnd, string[] urlsArr,
             string typeBcpeaPath)
         {
             for (int i = numberBegin; i <= numberEnd; i++)
             {
-                urls[i-numberBegin] = typeBcpeaPath + i.ToString();
+                urlsArr[i-numberBegin] = typeBcpeaPath + i.ToString();
             }
 
-            return urls;
+            return urlsArr;
         }
     }
 }

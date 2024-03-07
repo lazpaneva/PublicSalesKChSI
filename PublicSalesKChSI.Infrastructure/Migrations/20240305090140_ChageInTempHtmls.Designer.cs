@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublicSalesKChSI.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240305090140_ChageInTempHtmls")]
+    partial class ChageInTempHtmls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,15 +145,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e1e03e8c-2189-4a5e-b1ed-00776b58cf06",
+                            ConcurrencyStamp = "48b87a06-64cd-4ced-8906-f8b04d8f356a",
                             Email = "ja.iv@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JA.IV@ABV.BG",
                             NormalizedUserName = "JA.IV@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAELhz8O1gLo63NV+Gltskt4H2yMA7WGcS/4bwF2jxgIhqwz5GkocrdmK/wBLYd2fQQw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJFEMcE++AG+Ydq8zulskozTw110JVfCXd5UO7HhrfLMaFPFUuauAK9pmGq9UADBcQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72522c34-0ff8-47ca-9eea-8fe54ede481c",
+                            SecurityStamp = "de679547-7e44-4769-be11-e6e643ac40f9",
                             TwoFactorEnabled = false,
                             UserName = "ja.iv@abv.bg"
                         },
@@ -159,15 +161,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7a115986-b476-415a-899e-b48f58b2ae24",
+                            ConcurrencyStamp = "d4048b6d-fe85-44a4-a644-e0512b6f3a54",
                             Email = "ira1970@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "IRA1970@ABV.BG",
                             NormalizedUserName = "IRA1970@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKyAX/HvoDVQAmvToFWO7VUBmt4O6So29NPwHgB5lXbEIfI387sPSS4VHYRpJ4eeIQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHjH/RYkfPua7AWky3nFPtJoWaOEM/5TsiBrYkgcxyrtkPpq8feY8eCtTR+g5gjlDw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f1a296da-8ef2-42ea-aa35-51c016fc7e9d",
+                            SecurityStamp = "2e6e0a85-eac3-4938-8211-02baa34e64cb",
                             TwoFactorEnabled = false,
                             UserName = "ira1970@abv.bg"
                         });
@@ -865,7 +867,8 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                 {
                     b.HasOne("PublicSalesKChSI.Infrastructure.Data.Models.BrsFile", "BrsFile")
                         .WithMany("HtmlFiles")
-                        .HasForeignKey("BrsFileId");
+                        .HasForeignKey("BrsFileId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("BrsFile");
                 });
