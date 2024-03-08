@@ -26,7 +26,6 @@ namespace PublicSalesKChSI.Core.Services
     {
         private readonly IRepository repo;
         //private readonly PublicSalesDbContext dbContext;
-
         public HtmlPdfService(IRepository _repository)
         {
             repo = _repository;
@@ -86,8 +85,9 @@ namespace PublicSalesKChSI.Core.Services
             }
 
             urls = fillUrlsArray(numberBegin, numberEnd, urls, typeBcpeaPath);
-            List<TempHtml> htmlList = new List<TempHtml>();
-            
+            int lastNumberInSiteForType = 0;
+            //List<TempHtml> htmlList = new List<TempHtml>();
+
             foreach (string urlAddress in urls)
             {
                 string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
@@ -96,11 +96,12 @@ namespace PublicSalesKChSI.Core.Services
                 string filePath = Path.Combine(PathDownloadHtm, fileName);
                                 
                 TempHtml htmlAdd = new TempHtml();
+                int numberInSite = int.Parse(urlAddress.Substring(urlAddress.LastIndexOf('/') + 1).Trim());
                 using (WebClient client = new WebClient())
                 {
                     try
                     {
-                        string htmlContent = await client.DownloadStringTaskAsync(urlAddress); 
+                        string htmlContent = await client.DownloadStringTaskAsync(urlAddress);
                         string htmlAddForDb = RemoveScriptContent(htmlContent); //delete от <script to </script
 
                         htmlAdd = new TempHtml()
@@ -108,13 +109,14 @@ namespace PublicSalesKChSI.Core.Services
                             Type = type,
                             Content = htmlAddForDb,
                             CreatedOn = DateTime.Now,
-                            NumberInSite = int.Parse(urlAddress.Substring(urlAddress.LastIndexOf('/') + 1).Trim()),
+                            NumberInSite = numberInSite,
                         };
-                        htmlList.Add(htmlAdd);
+                        //htmlList.Add(htmlAdd);
 
                         await repo.AddAsync(htmlAdd);
                         await repo.SaveChangesAsync();
                         File.WriteAllText(filePath, htmlContent);
+                        lastNumberInSiteForType = numberInSite;
                     }
                     catch (WebException ex)
                     {
@@ -122,6 +124,7 @@ namespace PublicSalesKChSI.Core.Services
                     }
                 }
             }
+            await updateLastDownNumbers(type, lastNumberInSiteForType);
 
             result = true;
             return result;
@@ -154,6 +157,30 @@ namespace PublicSalesKChSI.Core.Services
                 await repo.SaveChangesAsync();
 
                 count++;
+            }
+        }
+
+        private async Task updateLastDownNumbers(string type, int lastNumberForType)
+        {
+            var firstRowAsset = await repo.GetByIdAsync<LastDownNumber>(1);
+            var secondRowVechicle = await repo.GetByIdAsync<LastDownNumber>(2);
+            var thirdRowProperty = await repo.GetByIdAsync<LastDownNumber>(3);
+            switch (type)
+            {
+                case "Asset":
+                    firstRowAsset.LastNumber = lastNumberForType;
+                    await repo.SaveChangesAsync();
+                    break;
+                case "Vechicle":
+                    secondRowVechicle.LastNumber = lastNumberForType;
+                    await repo.SaveChangesAsync();
+                    break;
+                case "Property":
+                    thirdRowProperty.LastNumber = lastNumberForType;
+                    await repo.SaveChangesAsync();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -211,5 +238,6 @@ namespace PublicSalesKChSI.Core.Services
 
             return urlsArr;
         }
+       
     }
 }

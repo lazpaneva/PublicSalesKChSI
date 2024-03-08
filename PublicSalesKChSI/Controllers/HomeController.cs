@@ -15,8 +15,14 @@ namespace PublicSalesKChSI.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("DownHtml", "Html");
+            }
+
             return View();
         }
 

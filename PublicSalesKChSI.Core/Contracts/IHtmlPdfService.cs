@@ -11,8 +11,9 @@ namespace PublicSalesKChSI.Core.Contracts
     {
         Task<int[]> GetLastNumbers();
         Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, string type);
-
         Task FillTempPDf();
+
+        //Task updateLastDownNumbers(int lastNumberAsset, int lastNumberVechicle, int lastNumberProperty);
         //public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();
     }
 }
