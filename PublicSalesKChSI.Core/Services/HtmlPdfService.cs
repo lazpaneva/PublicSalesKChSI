@@ -56,7 +56,7 @@ namespace PublicSalesKChSI.Core.Services
                 repo.Delete(html);
             }
             //delete directories for downloading if exists
-            string filePathDirectoryHtml = DataConstantsCore.pathDownloadHtm;
+            string filePathDirectoryHtml = PathDownloadHtm;
             DeleteAndCreateDirectory(filePathDirectoryHtml);
 
             return lastNumsForThreeDifferentTypes;
@@ -73,13 +73,13 @@ namespace PublicSalesKChSI.Core.Services
             switch (type)
             {
                 case "Asset":
-                    typeBcpeaPath = "https://sales.bcpea.org/asset/";
+                    typeBcpeaPath = BcpeaPathAsset;
                     break;
                 case "Vechicle":
-                    typeBcpeaPath = "https://sales.bcpea.org/vehicles/";
+                    typeBcpeaPath = BcpeaPathVechicle;
                     break;
                 case "Property":
-                    typeBcpeaPath = "https://sales.bcpea.org/properties/";
+                    typeBcpeaPath = BcpeaPathProperty;
                     break;
                 default:
                     break;
@@ -93,7 +93,7 @@ namespace PublicSalesKChSI.Core.Services
                 string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
                     +".html";
                 //string filePath = Path.Combine(Server.MapPath("~/App_Data"), fileName); //to do, ако се качи в нета
-                string filePath = Path.Combine(DataConstantsCore.pathDownloadHtm, fileName);
+                string filePath = Path.Combine(PathDownloadHtm, fileName);
                                 
                 TempHtml htmlAdd = new TempHtml();
                 using (WebClient client = new WebClient())
@@ -160,14 +160,14 @@ namespace PublicSalesKChSI.Core.Services
         private static string TakePdfUrl(string content)
         {
             string result = string.Empty;
-            int beginPos = content.IndexOf(beginPosScanedFile);
+            int beginPos = content.IndexOf(BeginPosScanedFile);
             //content = content.Substring(beginPos);
-            int endPos = content.IndexOf(endPosScanedFile, beginPos);
+            int endPos = content.IndexOf(EndPosScanedFile, beginPos);
             
             if (beginPos != -1)
             {
                 content = content.Substring(beginPos, endPos - beginPos);
-                int posOfHref = content.IndexOf("href=\"");
+                int posOfHref = content.IndexOf(PosHref);
                 result = content.Substring(posOfHref+6);
                 result = result.Substring(1, result.LastIndexOf("\">")-1).Trim();
             }
@@ -187,7 +187,7 @@ namespace PublicSalesKChSI.Core.Services
 
         private string RemoveScriptContent(string input)
         {
-            string pattern = @"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>"; //from chat gpt 
+            string pattern = @"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>";
             Regex regex = new Regex(pattern);
             return regex.Replace(input, "");
         }

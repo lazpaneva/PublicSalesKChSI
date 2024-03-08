@@ -8,16 +8,21 @@ namespace PublicSalesKChSI.Core
 {
     public class DataConstantsCore
     {
-        //директории за сваляне на html-ите и pdf-ите 
-        public const string pathDownloadHtm = "c:/ksi_html";
-        public const string pathDownloadPdf = "c:/ksi_Pdf";
+        //for HtmlPdfService
+        public const string PathDownloadHtm = "c:/ksi_html";
+        public const string PathDownloadPdf = "c:/ksi_Pdf";
 
-        public const string beginPosContentInHtml = "<div class=\"content\">";
-        public const string endPosContentInHtml = "<div class=\"regions__container\">";
+        public const string BcpeaPathAsset = "https://sales.bcpea.org/asset/";
+        public const string BcpeaPathVechicle = "https://sales.bcpea.org/vehicles/";
+        public const string BcpeaPathProperty = "https://sales.bcpea.org/properties/";
 
-        public const string beginPosScanedFile = "<div class=\"label\">Сканирани обявления</div>";
-        public const string endPosScanedFile = "</a></li>";
-        public const string posHref = "href=\"";
+        public const string BeginPosContentInHtml = "<div class=\"content\">";
+        public const string EndPosContentInHtml = "<div class=\"regions__container\">";
+
+        public const string BeginPosScanedFile = "<div class=\"label\">Сканирани обявления</div>";
+        public const string EndPosScanedFile = "</a></li>";
+        public const string PosHref = "href=\"";
         
+
     }
 }
