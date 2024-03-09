@@ -137,7 +137,7 @@ namespace PublicSalesKChSI.Core.Services
                 .Select(html => new PdfOrigNameAndHtmlId()
                 {
                     OriginalName = TakePdfName(html.Content),
-                    UrlPdf = TakePdfUrl(html.Content),
+                    UrlPdf = "https://sales.bcpea.org/"+TakePdfUrl(html.Content),
                     TempHtmlId = html.Id,
                     DublicatedFileNameNum = 0
                 })
@@ -193,7 +193,7 @@ namespace PublicSalesKChSI.Core.Services
                     {
                         string numbString = count.ToString("D4");
                         string fileName = folderPath + numbString + "_" + item.OriginalName;
-                        await DownloadFileAsync("https://sales.bcpea.org/" + item.Url,
+                        await DownloadFileAsync( item.Url,
                             fileName);
                         item.SizeOfFile = GetFileSize(fileName);
                         count++;
