@@ -133,7 +133,7 @@ namespace PublicSalesKChSI.Core.Services
         [HttpGet]
         public async Task FillTempPDfAsync()
         {
-            var pdfContents = repo.AllReadOnly<TempHtml>()
+            var pdfList = repo.AllReadOnly<TempHtml>()
                 .Select(html => new PdfOrigNameAndHtmlId()
                 {
                     OriginalName = TakePdfName(html.Content),
@@ -144,8 +144,20 @@ namespace PublicSalesKChSI.Core.Services
                 .ToList();
 
 
+            var groupedByOriginalName = pdfList.GroupBy(x => x.OriginalName);
+            // Обхождане на групите и присвояване на уникални стойности на DublicatedFileNameNum
+            int counterDublName = 1;
+            foreach (var group in groupedByOriginalName)
+            {
+                foreach (var item in group)
+                {
+                    item.DublicatedFileNameNum = counterDublName;
+                }
+                counterDublName++;
+            }
+
             int count = 1;
-            foreach (var item in pdfContents)
+            foreach (var item in pdfList)
             {
                 TempPdf tempPdf = new TempPdf();
                 string numbString = count.ToString("D4");
@@ -154,6 +166,7 @@ namespace PublicSalesKChSI.Core.Services
                 tempPdf.Url = item.UrlPdf;
                 tempPdf.OriginalName = item.OriginalName;
                 tempPdf.Name = numbString + "_" + item.OriginalName;
+                tempPdf.DublicatedFileNameNum = item.DublicatedFileNameNum;
 
                 await repo.AddAsync(tempPdf);
                 await repo.SaveChangesAsync();
