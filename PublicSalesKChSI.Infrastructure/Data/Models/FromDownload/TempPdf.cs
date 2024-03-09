@@ -25,6 +25,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
         [Range(PdfTempSizeOfFileMin, PdfTempSizeOfFileMax)]
         public int SizeOfFile { get; set; }
 
+        [Range(PdfTempDublicatedFileNameNumMin, PdfTempDublicatedFileNameNumMax)]
+        public int DublicatedFileNameNum { get; set; }
+
         [Required]
         public int TempHtmlId { get; set; }
         [ForeignKey(nameof(TempHtmlId))]

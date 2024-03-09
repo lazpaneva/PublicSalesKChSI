@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PublicSalesKChSI.Core.Contracts;
+using static PublicSalesKChSI.Core.DataConstantsCore;
 
 namespace PublicSalesKChSI.Controllers
 {
@@ -13,7 +14,8 @@ namespace PublicSalesKChSI.Controllers
 
         public async Task<IActionResult> Index()
         {
-           await htmlPdfServices.FillTempPDf();
+           await htmlPdfServices.FillTempPDfAsync();
+           // await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
            return View();
         }
     }

@@ -16,6 +16,8 @@ namespace PublicSalesKChSI.Core.Models.HtmlPdf
 
         public string UrlPdf { get; set; } = null!;
 
+        public int DublicatedFileNameNum { get; set; }
+
         public int TempHtmlId { get; set; }
         [ForeignKey(nameof(TempHtmlId))]
         public TempHtml TempHtml { get; set; } = null!;

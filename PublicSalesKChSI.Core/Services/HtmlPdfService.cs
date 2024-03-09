@@ -33,7 +33,7 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         [HttpGet]
-        public async Task<int[]> GetLastNumbers()
+        public async Task<int[]> GetLastNumbersAsync()
         {
             int[] lastNumsForThreeDifferentTypes = new int[3];
 
@@ -62,7 +62,7 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         [HttpPost]
-        public async Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, string type)
+        public async Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type)
         {
             bool result = false;
             int sizeUrls = numberEnd - numberBegin + 1;
@@ -131,16 +131,18 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         [HttpGet]
-        public async Task FillTempPDf()
+        public async Task FillTempPDfAsync()
         {
             var pdfContents = repo.AllReadOnly<TempHtml>()
                 .Select(html => new PdfOrigNameAndHtmlId()
                 {
                     OriginalName = TakePdfName(html.Content),
                     UrlPdf = TakePdfUrl(html.Content),
-                    TempHtmlId = html.Id
+                    TempHtmlId = html.Id,
+                    DublicatedFileNameNum = 0
                 })
                 .ToList();
+
 
             int count = 1;
             foreach (var item in pdfContents)
@@ -169,19 +171,17 @@ namespace PublicSalesKChSI.Core.Services
             {
                 case "Asset":
                     firstRowAsset.LastNumber = lastNumberForType;
-                    await repo.SaveChangesAsync();
                     break;
                 case "Vechicle":
                     secondRowVechicle.LastNumber = lastNumberForType;
-                    await repo.SaveChangesAsync();
                     break;
                 case "Property":
                     thirdRowProperty.LastNumber = lastNumberForType;
-                    await repo.SaveChangesAsync();
                     break;
                 default:
                     break;
             }
+            await repo.SaveChangesAsync();
         }
 
         private static string TakePdfUrl(string content)
@@ -238,6 +238,17 @@ namespace PublicSalesKChSI.Core.Services
 
             return urlsArr;
         }
-       
+
+        //public async Task DownloadPdfFilesAsync(string folderPath) !!! да го мисля
+        //{
+        //    DeleteAndCreateDirectory(folderPath);
+
+        //    List<string> dublicatedPdfName = new List<string>();
+        //    await repo.AllReadOnly()
+        //        .Select(new dublicatedPdfNameAndSize()
+        //        {
+
+        //        })
+        //}
     }
 }

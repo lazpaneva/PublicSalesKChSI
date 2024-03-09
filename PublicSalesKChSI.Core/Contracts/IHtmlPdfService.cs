@@ -9,9 +9,10 @@ namespace PublicSalesKChSI.Core.Contracts
 {
     public interface IHtmlPdfService
     {
-        Task<int[]> GetLastNumbers();
-        Task<bool> DownloadHtmlFiles(int numberBegin, int numberEnd, string type);
-        Task FillTempPDf();
+        Task<int[]> GetLastNumbersAsync();
+        Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type);
+        //Task DownloadPdfFilesAsync(string folderPath);
+        Task FillTempPDfAsync();
 
         //Task updateLastDownNumbers(int lastNumberAsset, int lastNumberVechicle, int lastNumberProperty);
         //public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();

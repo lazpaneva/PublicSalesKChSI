@@ -18,7 +18,7 @@ namespace PublicSalesKChSI.Controllers
         public async Task <IActionResult> DownHtml()
         {
             LastNumbersHtmlFormModel model = new LastNumbersHtmlFormModel();
-            var LastNumbers = await htmlPdfService.GetLastNumbers();
+            var LastNumbers = await htmlPdfService.GetLastNumbersAsync();
 
             model.BeforeLastNumberAsset = LastNumbers[0];
             model.BeforeLastNumberVechicle = LastNumbers[1];
@@ -30,7 +30,7 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public async Task<IActionResult> DownHtml(LastNumbersHtmlFormModel model)
         {
-            var LastNumbers = await htmlPdfService.GetLastNumbers();
+            var LastNumbers = await htmlPdfService.GetLastNumbersAsync();
             bool assetDownloading = false;
             bool vechicleDownloading = false;
             bool propertyDownloading = false;
@@ -57,9 +57,9 @@ namespace PublicSalesKChSI.Controllers
                 return View(model);
             }
 
-            assetDownloading = await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
-            vechicleDownloading = await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
-            propertyDownloading = await htmlPdfService.DownloadHtmlFiles(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
+            assetDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
+            vechicleDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
+            propertyDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
 
             if (assetDownloading && vechicleDownloading && propertyDownloading)
             {
