@@ -11,7 +11,8 @@ namespace PublicSalesKChSI.Core.Contracts
     {
         Task<int[]> GetLastNumbersAsync();
         Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type);
-        //Task DownloadPdfFilesAsync(string folderPath);
+
+        Task DownloadPdfFilesAsync(string folderPath);
         Task FillTempPDfAsync();
 
         //Task updateLastDownNumbers(int lastNumberAsset, int lastNumberVechicle, int lastNumberProperty);

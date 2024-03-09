@@ -14,8 +14,8 @@ namespace PublicSalesKChSI.Controllers
 
         public async Task<IActionResult> Index()
         {
-           await htmlPdfServices.FillTempPDfAsync();
-           // await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
+            //await htmlPdfServices.FillTempPDfAsync();
+            await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
            return View();
         }
     }

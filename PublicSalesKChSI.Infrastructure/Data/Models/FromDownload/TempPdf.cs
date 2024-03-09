@@ -23,7 +23,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models.FromDownload
 
         [Required]
         [Range(PdfTempSizeOfFileMin, PdfTempSizeOfFileMax)]
-        public int SizeOfFile { get; set; }
+        public long SizeOfFile { get; set; }
 
         [Range(PdfTempDublicatedFileNameNumMin, PdfTempDublicatedFileNameNumMax)]
         public int DublicatedFileNameNum { get; set; }

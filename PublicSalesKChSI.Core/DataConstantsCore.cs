@@ -10,7 +10,7 @@ namespace PublicSalesKChSI.Core
     {
         //for HtmlPdfService
         public const string PathDownloadHtm = "c:/ksi_html";
-        public const string PathDownloadPdf = "c:/ksi_Pdf";
+        public const string PathDownloadPdf = "c:/ksi_Pdf/";
 
         public const string BcpeaPathAsset = "https://sales.bcpea.org/asset/";
         public const string BcpeaPathVechicle = "https://sales.bcpea.org/vehicles/";

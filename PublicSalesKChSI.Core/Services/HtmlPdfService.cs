@@ -145,7 +145,7 @@ namespace PublicSalesKChSI.Core.Services
 
 
             var groupedByOriginalName = pdfList.GroupBy(x => x.OriginalName);
-            // Обхождане на групите и присвояване на уникални стойности на DublicatedFileNameNum
+            // Обхождане на групите и присвояване на уникални стойности /№ на BRS-файл/ в DublicatedFileNameNum
             int counterDublName = 1;
             foreach (var group in groupedByOriginalName)
             {
@@ -175,6 +175,34 @@ namespace PublicSalesKChSI.Core.Services
             }
         }
 
+        [HttpGet]
+        public async Task DownloadPdfFilesAsync(string folderPath)
+        {
+            DeleteAndCreateDirectory(folderPath);
+
+            var pdfList = await repo.All<TempPdf>().ToListAsync();
+            var groupedByDublicatedFileNameNum = pdfList.GroupBy(x => x.DublicatedFileNameNum);
+
+            foreach (var group in groupedByDublicatedFileNameNum)
+            {
+                if (group.Count() > 0)
+                {
+                    int count = 1;
+                    foreach (var item in group)
+                    {
+                        string numbString = count.ToString("D4");
+                        string fileName = folderPath + numbString + "_" + item.OriginalName;
+                        await DownloadFileAsync("https://sales.bcpea.org/" + item.Url,
+                            fileName);
+                        item.SizeOfFile = GetFileSize(fileName);
+                        count++;
+                    }
+                    await repo.SaveChangesAsync();
+                }
+            }
+        }
+
+        //functions
         private async Task updateLastDownNumbers(string type, int lastNumberForType)
         {
             var firstRowAsset = await repo.GetByIdAsync<LastDownNumber>(1);
@@ -251,17 +279,18 @@ namespace PublicSalesKChSI.Core.Services
 
             return urlsArr;
         }
-
-        //public async Task DownloadPdfFilesAsync(string folderPath) !!! да го мисля
-        //{
-        //    DeleteAndCreateDirectory(folderPath);
-
-        //    List<string> dublicatedPdfName = new List<string>();
-        //    await repo.AllReadOnly()
-        //        .Select(new dublicatedPdfNameAndSize()
-        //        {
-
-        //        })
-        //}
+        private async Task DownloadFileAsync(string url, string filePath)
+        {
+            using (WebClient client = new WebClient())
+            {
+                string fileName = Path.GetFileName(url);
+                await client.DownloadFileTaskAsync(url, filePath);
+            }
+        }
+        private long GetFileSize(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            return fileInfo.Length;
+        }
     }
 }
