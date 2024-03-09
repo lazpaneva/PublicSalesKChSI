@@ -176,8 +176,9 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         [HttpGet]
-        public async Task DownloadPdfFilesAsync(string folderPath)
+        public async Task<bool> DownloadPdfFilesAsync(string folderPath)
         {
+            bool result = false;
             DeleteAndCreateDirectory(folderPath);
 
             var pdfList = await repo.All<TempPdf>().ToListAsync();
@@ -200,6 +201,8 @@ namespace PublicSalesKChSI.Core.Services
                     await repo.SaveChangesAsync();
                 }
             }
+            result = true;
+            return result;
         }
 
         //functions

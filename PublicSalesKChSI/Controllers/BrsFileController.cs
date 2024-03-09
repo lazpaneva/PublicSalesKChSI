@@ -6,7 +6,7 @@ namespace PublicSalesKChSI.Controllers
     [Authorize]
     public class BrsFileController : Controller
     {
-        public IActionResult NewBrsFiles()
+        public IActionResult CreateBrsFile()
         {
             return View();
         }

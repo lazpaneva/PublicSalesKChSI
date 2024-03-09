@@ -9,14 +9,21 @@ namespace PublicSalesKChSI.Controllers
         private readonly IHtmlPdfService htmlPdfServices;
         public PdfController(IHtmlPdfService _htmlPdfServices)
         {
-                htmlPdfServices = _htmlPdfServices;
+            htmlPdfServices = _htmlPdfServices;
         }
 
         public async Task<IActionResult> Index()
         {
-            //await htmlPdfServices.FillTempPDfAsync();
-            await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
-           return View();
+            bool download = false;
+            await htmlPdfServices.FillTempPDfAsync();
+
+            download = await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
+          
+            if (!download)
+            {
+                return View();
+            }
+            else { return RedirectToAction("CreateBrsFile", "BrsFile"); }
         }
     }
 }
