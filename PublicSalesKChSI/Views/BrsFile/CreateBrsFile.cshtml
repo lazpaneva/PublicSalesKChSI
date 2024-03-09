@@ -10,9 +10,18 @@
 <div class="text-center row">
     @foreach (var message in Model)
     {
-        <div class="card col-4" style="width: 20rem; ">
+        <div class="card col-2" style="width: 20rem; ">
             <div class="card-body">
-                <p class="card-title mt-1">@message.Text</p>
+                <p class="card-title mt-1">@message.Title</p>
+                <p class="card-title mt-1">@message.Date</p>
+                <p class="card-title mt-1">@message.Price</p>
+                <p class="card-title mt-1">@message.NameSI</p>
+                <p class="card-title mt-1">@message.NumberSI</p>
+                @foreach(string item in message.Other)
+                {
+                    <p class="card-title mt-1">@item</p>
+                }
+
             </div>
         </div>
     }

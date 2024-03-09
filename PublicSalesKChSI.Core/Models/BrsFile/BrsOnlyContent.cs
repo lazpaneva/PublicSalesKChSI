@@ -9,7 +9,15 @@ namespace PublicSalesKChSI.Core.Models.BrsFile
 {
     public class BrsOnlyContent
     {
-        [Column(TypeName = "ntext")]
-        public string? Text { get; set; }
+        public string Title { get; set; } = null!;
+        public string Date { get; set; } = null!; 
+        public string Price { get; set; } = null!;
+        public List<string> Other { get; set; } = null!;
+        public string NameSI { get; set; } = null!; //name на съдебен изпълнител
+        public string NumberSI { get; set; } = null!; //рег. № на съдебен изпълнител
+
+
+
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PublicSalesKChSI.Core.Contracts;
+using PublicSalesKChSI.Core.Models.BrsFile;
 
 namespace PublicSalesKChSI.Controllers
 {
@@ -15,7 +16,7 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public IActionResult CreateBrsFile()
         {
-            var model = brsFileService.FillBrsFile();
+            List<BrsOnlyContent> model = brsFileService.FillBrsFile();
             return View(model);
         }
     }
