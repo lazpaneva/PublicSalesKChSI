@@ -40,6 +40,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public string Name { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "ntext")] //променено за да може да събере текста от няколко html-a
         public string Text { get; set; } = null!;
 
         [Required]

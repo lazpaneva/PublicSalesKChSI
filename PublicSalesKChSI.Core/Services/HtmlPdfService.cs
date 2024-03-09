@@ -232,7 +232,6 @@ namespace PublicSalesKChSI.Core.Services
         {
             string result = string.Empty;
             int beginPos = content.IndexOf(BeginPosScanedFile);
-            //content = content.Substring(beginPos);
             int endPos = content.IndexOf(EndPosScanedFile, beginPos);
             
             if (beginPos != -1)

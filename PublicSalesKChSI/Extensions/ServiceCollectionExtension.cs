@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IHtmlPdfService, HtmlPdfService>();
+            services.AddScoped<IBrsFileService, BrsFileService>();
 
             return services;
         }

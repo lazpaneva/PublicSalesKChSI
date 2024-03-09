@@ -1,4 +1,31 @@
-﻿@{
+﻿@model List<BrsOnlyContent>
+    
+@{
+    ViewBag.Title = "Всички нови съобщения от BCPEA";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var message in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <p class="card-title mt-1">@message.Text</p>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
+@*@{
     ViewBag.Please = "МОЛЯ, ИЗЧАКАЙТЕ!";
     ViewBag.Downloading = "ГЕНЕРИРАТ СЕ BRS-файловете";
 }
@@ -10,3 +37,4 @@
         <h3 class="mt-5 text-center"><em>@ViewBag.Downloading</em></h3>
     </div>
 </div>
+*@
