@@ -10,6 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -65,12 +69,15 @@ namespace PublicSalesKChSI.Core.Services
                         }
                     }
                 }
+                string publDate = GetPublishedDate(txtItem.Date);
             }
+
+            
 
             return txtList;
         }
 
-       //functions
+        //functions
         private static string? ExtractTextFromHtml(string htmlContent, string htmlElement)
         {
             // Използване на HtmlAgilityPack за парсване на HTML
@@ -108,11 +115,13 @@ namespace PublicSalesKChSI.Core.Services
                     //var label = labelGroup.SelectSingleNode("//div[@class='label']").InnerText.Trim();
                     //var info = labelGroup.SelectSingleNode("//div[@class='info']").InnerText.Trim();
                     //labelGroupInfoList.Add($"{label}: {info}");
-                    labelGroupInfoList.Add($"{labelGroup.InnerText}");
+                    string labelText = labelGroup.InnerText;
+                    labelText = labelText.Replace("&quot;", "\"");
+                    labelGroupInfoList.Add(labelText);
                 }
             }
 
-            //изчистване на излишните населени места от ПОДОБНИ ОБЯВИ, които също са с клас=label__group
+            //изчистване на излишните "населени места" от ПОДОБНИ ОБЯВИ, които също са с клас=label__group
             int count = 0;
             int listLength = 1;
             foreach (var label in labelGroupInfoList)
@@ -129,49 +138,78 @@ namespace PublicSalesKChSI.Core.Services
             }
             return labelGroupInfoList.Take(listLength-1).ToArray();
         }
-        private static string ReplaceMultipleSpacesWithNewLine(string input, int threshold)
+        private static string ReplaceMultipleSpacesWithNewLine(string input)
         {
-            string replacement = Environment.NewLine;
-
-            // Генериране на низ с три &nbsp;
-            string multipleSpaces = string.Concat(Enumerable.Repeat("&nbsp; ", threshold));
-
-            // Заместване на повече от три &nbsp; с нов ред
-            string result = input.Replace(multipleSpaces, replacement);
-
-            return result;
+            string pattern = @"^(\&nbsp;){3,}";
+            Regex regex = new Regex(pattern);
+            input = regex.Replace(input, "\n");
+            return input;
         }
         private static string ReplaceSimbolsFromText(string str)
         {
-            string result = string.Empty;
+            string result = str;
             if (str!= null)
             {
                 for (int i = 0; i < ArrayForHtmlSimbols.Length; i++)
                 {
-                    if (str.Contains(ArrayForHtmlSimbols[i]))
+                    if (result.Contains(ArrayForHtmlSimbols[i]))
                     {
-                        str = str.Replace("&quot;", "\"");
-                        str = str.Replace("&rdquo;", "\"");
-                        str = str.Replace("&ldquo;", "\"");
-                        str = str.Replace("&bdquo;", "\"");
-                        str = str.Replace("&ndash;", "-");
-                        str = str.Replace("&frac12;", "1/2");
-                        str = str.Replace("&frac13;", "1/3");
-                        str = str.Replace("&frac14;", "1/4");
-                        str = str.Replace("&frac15;", "1/5");
-                        str = str.Replace("&frac16;", "1/6");
-                        str = str.Replace("&frac17;", "1/7");
-                        str = str.Replace("&frac18;", "1/8");
-                        str = str.Replace("&frac19;", "1/9");
-                        str = str.Replace("&frac10;", "1/10");
-                        str = str.Replace("&frac111;", "1/11");
-                        str = str.Replace("&frac112;", "1/12");
-                        str = ReplaceMultipleSpacesWithNewLine(str, 3);
-                        str = str.Replace("&nbsp;", " ");
+                        result = result.Replace("&quot;", "\"");
+                        result = result.Replace("&rdquo;", "\"");
+                        result = result.Replace("&ldquo;", "\"");
+                        result = result.Replace("&bdquo;", "\"");
+                        result = result.Replace("&ndash;&nbsp;", "- ");
+                        result = result.Replace("&nbsp;&ndash;", " -");
+                        result = result.Replace("&ndash;", "-");
+                        result = result.Replace("&frac12;", "1/2");
+                        result = result.Replace("&frac13;", "1/3");
+                        result = result.Replace("&frac14;", "1/4");
+                        result = result.Replace("&frac15;", "1/5");
+                        result = result.Replace("&frac16;", "1/6");
+                        result = result.Replace("&frac17;", "1/7");
+                        result = result.Replace("&frac18;", "1/8");
+                        result = result.Replace("&frac19;", "1/9");
+                        result = result.Replace("&frac10;", "1/10");
+                        result = result.Replace("&frac111;", "1/11");
+                        result = result.Replace("&frac112;", "1/12");
+                        result = ReplaceMultipleSpacesWithNewLine(str);
+                        result = result.Replace("&nbsp;", " ");
                     }
                 }
             }
             return result;
+        }
+
+        private string GetPublishedDate(string dateFromBrsOnlyContent)
+        {
+            string result = string.Empty;
+            int begPos = dateFromBrsOnlyContent.IndexOf("Публикувано на ");
+            if (begPos != -1)
+            {
+                result = dateFromBrsOnlyContent.Substring(begPos+15);
+                result = result.Substring(0, result.IndexOf(" г."));
+                DateTime dt = new DateTime();
+                bool IsDateOk = DateTime.TryParse(result, out dt);
+                if (IsDateOk)
+                {
+                    result = dt.ToString("yyyyMMdd");
+                }
+                else
+                {
+                    result = DateTime.Now.ToString("yyyyMMdd");
+                }
+
+            }
+            return result;
+        }
+        private string GetKlas(string[] other)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetName(string[] other)
+        {
+            throw new NotImplementedException();
         }
 
     }

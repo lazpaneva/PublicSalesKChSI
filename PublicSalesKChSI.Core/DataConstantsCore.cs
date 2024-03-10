@@ -63,11 +63,11 @@ namespace PublicSalesKChSI.Core
 
         public static String[] ArrayForHtmlSimbols = new string[]
         {
+            "&ndash;",
             "&quot;",
             "&rdquo;",
             "&bdquo;",
             "&ldquo;",
-            "&ndash;",
             "&frac12;",
             "&frac14;",
             "&frac16;",
