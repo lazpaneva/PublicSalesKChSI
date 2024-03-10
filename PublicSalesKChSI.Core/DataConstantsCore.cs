@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PublicSalesKChSI.Core
 {
-    public class DataConstantsCore
+    public static class DataConstantsCore
     {
         //for HtmlPdfService
         public const string PathDownloadHtm = "c:/ksi_html";
@@ -22,7 +22,59 @@ namespace PublicSalesKChSI.Core
         public const string BeginPosScanedFile = "<div class=\"label\">Сканирани обявления</div>";
         public const string EndPosScanedFile = "</a></li>";
         public const string PosHref = "href=\"";
-        
+
+        //for BrsFileService
+        public static String[] ArrayForReplacementWithPoints = new string[]
+        {
+            "Тип Имущество\n",
+            "ОКРЪЖЕН СЪД\n",
+            "НАСЕЛЕНО МЯСТО\n",
+            "СРОК\n",
+            "ОБЯВЯВАНЕ НА\n",
+            "ЧАСТЕН СЪДЕБЕН ИЗПЪЛНИТЕЛ\n",
+            "РЕГ. № ЧСИ\n",
+            "Адрес\n",
+            "Окръжен съд\n",
+            "Телефон\n",
+            "Мобилен телефон\n",
+            "ТИП МПС\n",
+            "Други\n",
+            "ДВИГАТЕЛ\n",
+            "Дата на регистрация\n",
+            "уебсайт\n",
+            "ТИП СТРОИТЕЛСТВО\n",
+            "Етаж\n",
+            "ПЛОЩ\n",
+            "Квартал\n",
+        };
+
+        public static String[] ArrayForRemovment = new string[]
+        {
+            "Сканирани обявления\n",
+            "email\n",
+        };
+
+        //for BrsFileService - text property
+        public static String[] ArrayRemovmentFromText = new string[]
+        {
+            "-ВИЖ СКАНИРАНОТО ОБЯВЛЕНИЕ",
+            "ПОДРОБНОСТИ В ПРИКАЧЕНОТО СКАНИРАНО ОБЯВЛЕНИЕ",
+        };
+
+        public static String[] ArrayForHtmlSimbols = new string[]
+        {
+            "&quot;",
+            "&rdquo;",
+            "&bdquo;",
+            "&ldquo;",
+            "&ndash;",
+            "&frac12;",
+            "&frac14;",
+            "&frac16;",
+            "&frac18;",
+            "&nbsp;&nbsp;&nbsp;",
+            "&nbsp;"
+    };
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model List<BrsOnlyContent>
     
 @{
-    ViewBag.Title = "Всички нови съобщения от BCPEA";
+    ViewBag.Title = "Съобщения от BCPEA с неупешна валидация/верификация";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
@@ -21,6 +21,7 @@
                 {
                     <p class="card-title mt-1">@item</p>
                 }
+                <p class="card-title mt-1">@message.Text</p>
 
             </div>
         </div>
