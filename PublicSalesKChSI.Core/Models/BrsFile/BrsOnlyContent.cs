@@ -13,7 +13,8 @@ namespace PublicSalesKChSI.Core.Models.BrsFile
         public string Title { get; set; } = null!;
         public string Date { get; set; } = null!; 
         public string Price { get; set; } = null!;
-        public string[] Other { get; set; } = null!;
+        public string? Address { get; set; } = null!;
+        public string[] LabelGroups { get; set; } = null!;
 
         [Column(TypeName = "ntext")] //променено за да може да събере текста от няколко html-a
         public string Text { get; set; } = null!;

@@ -14,6 +14,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using PublicSalesKChSI.Infrastructure.Data.Models;
+using System.Net;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -34,12 +36,13 @@ namespace PublicSalesKChSI.Core.Services
                     Date = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='date']"),
                     Price = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='col col--right']")
                     .Replace("Начална цена\n", "Начална цена: "),
+                    Address = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='label__group label__group--double']"),
                     Text = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='label__group label__group-description']//div[@class='info']")),
                     NameSI = ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='title']"),
                     NumberSI = "Рег. № ЧСИ - " +
                              ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='label__group']//div[@class='info']"),
 
-                    Other = ExtractFromLabelGroupDelimitedWithColon(t.Content)
+                    LabelGroups = ExtractFromLabelGroup(t.Content)
 
                 })
                 .ToList();
@@ -49,27 +52,36 @@ namespace PublicSalesKChSI.Core.Services
             {
                 for (int i = 0; i < ArrayForReplacementWithPoints.Length; i++)
                 {
-                    for (int j = 0; j < txtItem.Other.Length; j++)
+                    for (int j = 0; j < txtItem.LabelGroups.Length; j++)
                     {
-                        if (txtItem.Other[j].Contains(ArrayForReplacementWithPoints[i]))
+                        if (txtItem.LabelGroups[j].Contains(ArrayForReplacementWithPoints[i]))
                         {
-                            txtItem.Other[j] = txtItem.Other[j]
+                            txtItem.LabelGroups[j] = txtItem.LabelGroups[j]
                                 .Replace(ArrayForReplacementWithPoints[i], ArrayForReplacementWithPoints[i].Trim()+": ");
                         }
                     }
                 }
 
+                if (txtItem.Address != null) 
+                {
+                    txtItem.Address = txtItem.Address.Replace("Адрес", "Адрес:");
+                    txtItem.Address = txtItem.Address.Replace("&quot;", "\""); 
+                }
+
                 for (int i = 0; i < ArrayForRemovment.Length; i++)
                 {
-                    for (int j = 0; j < txtItem.Other.Length; j++)
+                    for (int j = 0; j < txtItem.LabelGroups.Length; j++)
                     {
-                        if (txtItem.Other[j].Contains(ArrayForRemovment[i]))
+                        if (txtItem.LabelGroups[j].Contains(ArrayForRemovment[i]))
                         {
-                            txtItem.Other[j] = String.Empty;
+                            txtItem.LabelGroups[j] = String.Empty;
                         }
                     }
                 }
+                
                 string publDate = GetPublishedDate(txtItem.Date);
+                GetKlas(txtItem.LabelGroups);
+                GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
             }
 
             
@@ -97,7 +109,7 @@ namespace PublicSalesKChSI.Core.Services
                 return null;
             }
         }
-        private static String[] ExtractFromLabelGroupDelimitedWithColon(string htmlContent)
+        private static String[] ExtractFromLabelGroup(string htmlContent)
         {
             List<string> labelGroupInfoList = new List<string>();
 
@@ -198,18 +210,46 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     result = DateTime.Now.ToString("yyyyMMdd");
                 }
-
             }
             return result;
         }
-        private string GetKlas(string[] other)
+        private string GetKlas(string[] labelGroups)
         {
-            throw new NotImplementedException();
+            string result = string.Empty;
+            string year = DateTime.Now.Year.ToString();
+            result = "KSI" + year.Substring(2) + "_";
+            string? town = Array.Find(labelGroups, element => element.Contains("ОКРЪЖЕН СЪД: "));
+            town = town?.Substring(town.IndexOf("ОКРЪЖЕН СЪД: ") + 13).Trim().ToUpper();
+            string numberTown = string.Empty;
+
+            if (town != null) {
+                numberTown = repo.AllReadOnly<Court>()
+                    .Where(t => t.Town == town)
+                    .FirstOrDefault().Number;
+            }
+            result += numberTown;
+
+            return result;
         }
 
-        private string GetName(string[] other)
+        //ЛИПСВА НАСЕЛЕНО МЯСТО В АДРЕСА, освен това дали да го обвързвам с типа на обявата ??? И в tempHtml не се попълва, може би няма да е зле да го мисля???
+        private string GetName(string title, string price, string address, string[] other)
         {
-            throw new NotImplementedException();
+            string result = string.Empty;
+            string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
+            replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
+            if (address != null && !address.Contains("ВИД НА ТЪРГА"))
+            {
+                address = address.Substring(address.IndexOf("Адрес:") + 7).Trim();
+            }
+            string? area = Array.Find(other, element => element.Contains("ПЛОЩ: "));
+            area = area?.Substring(area.IndexOf("ПЛОЩ: ") + 6).Trim();
+            area = area?.Replace("кв.м", "кв. м");
+
+
+            result = title + ", " + replacedPrice + ", " + area + ", " + address;
+
+            return result;
         }
 
     }

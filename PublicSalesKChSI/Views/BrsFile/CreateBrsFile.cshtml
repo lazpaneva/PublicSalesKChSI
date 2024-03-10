@@ -15,9 +15,10 @@
                 <p class="card-title mt-1">@message.Title</p>
                 <p class="card-title mt-1">@message.Date</p>
                 <p class="card-title mt-1">@message.Price</p>
+                <p class="card-title mt-1">@message.Address</p>
                 <p class="card-title mt-1">@message.NameSI</p>
                 <p class="card-title mt-1">@message.NumberSI</p>
-                @foreach(string item in message.Other)
+                @foreach(string item in message.LabelGroups)
                 {
                     <p class="card-title mt-1">@item</p>
                 }
