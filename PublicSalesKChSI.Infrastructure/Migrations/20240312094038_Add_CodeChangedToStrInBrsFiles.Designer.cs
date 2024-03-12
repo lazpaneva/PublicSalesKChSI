@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublicSalesKChSI.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312094038_Add_CodeChangedToStrInBrsFiles")]
+    partial class Add_CodeChangedToStrInBrsFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

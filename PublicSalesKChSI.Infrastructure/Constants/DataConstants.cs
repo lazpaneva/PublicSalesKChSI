@@ -17,8 +17,8 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int BrsFileKlasMin = 8;
         public const int BrsFileKlasMax = 8;
 
-        public const int BrsFileCodeMin = 10000000; //8 digits min
-        public const int BrsFileCodeMax = 1000000000; //10 digits max
+        public const int BrsFileCodeMin = 12; 
+        public const int BrsFileCodeMax = 12; 
 
         public const int BrsFileNameMax = 250;
 

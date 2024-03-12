@@ -14,8 +14,8 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(BrsFileCodeMin, BrsFileCodeMax)]
-        public int Code { get; set; }
+        [StringLength(BrsFileCodeMax)]
+        public string Code { get; set; } = null!;
 
         [Required]
         [StringLength(BrsFileKlasMax)]
@@ -42,6 +42,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Required]
         [Column(TypeName = "ntext")] //променено за да може да събере текста от няколко html-a
         public string Text { get; set; } = null!;
+
+        [Required]
+        public bool IsFileReady { get; set; }
 
         [Required]
         public bool IsFindDeptor { get; set; }

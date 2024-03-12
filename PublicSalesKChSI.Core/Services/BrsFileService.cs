@@ -41,6 +41,7 @@ namespace PublicSalesKChSI.Core.Services
                     NameSI = ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='title']"),
                     NumberSI = "Рег. № ЧСИ - " +
                              ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='label__group']//div[@class='info']"),
+                    NumberInSite = t.NumberInSite,
 
                     LabelGroups = ExtractFromLabelGroup(t.Content)
 
@@ -213,6 +214,14 @@ namespace PublicSalesKChSI.Core.Services
             }
             return result;
         }
+
+        private string GetCode(int NumberInSite)
+        {
+            string result = string.Empty;
+            result = "3002" + "09" + NumberInSite.ToString("D6");
+
+            return result;
+        }
         private string GetKlas(string[] labelGroups)
         {
             string result = string.Empty;
@@ -238,6 +247,8 @@ namespace PublicSalesKChSI.Core.Services
             string result = string.Empty;
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
+            string? town = Array.Find(other, element => element.Contains("НАСЕЛЕНО МЯСТО: ")).Trim();
+            town = town.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: "));
             if (address != null && !address.Contains("ВИД НА ТЪРГА"))
             {
                 address = address.Substring(address.IndexOf("Адрес:") + 7).Trim();
@@ -247,7 +258,7 @@ namespace PublicSalesKChSI.Core.Services
             area = area?.Replace("кв.м", "кв. м");
 
 
-            result = title + ", " + replacedPrice + ", " + area + ", " + address;
+            result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
 
             return result;
         }

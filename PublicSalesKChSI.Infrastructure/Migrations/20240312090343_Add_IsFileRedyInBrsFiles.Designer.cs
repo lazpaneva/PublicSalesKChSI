@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublicSalesKChSI.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312090343_Add_IsFileRedyInBrsFiles")]
+    partial class Add_IsFileRedyInBrsFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,15 +145,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "42a1fce5-faa6-44b6-b0b6-317bd010b81d",
+                            ConcurrencyStamp = "9b79f362-89e1-433b-b055-f72b91730db7",
                             Email = "ja.iv@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JA.IV@ABV.BG",
                             NormalizedUserName = "JA.IV@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ6w9Bwf8IO60UOX2QWS3Gad5q6eyDrCTxky/nTtr5msyj1+3X+K1ZrRhP4icHJ7jQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJEpcx3YCOUEV0LE7R8HNmToWqMBsd8isGi4ISVxOQN9q5q9nXQZhezroseoIAIU6A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "092202c1-4f29-4233-8cf6-f249f951c17a",
+                            SecurityStamp = "fc01a44f-7e38-4637-a95a-67f6ff41cdc5",
                             TwoFactorEnabled = false,
                             UserName = "ja.iv@abv.bg"
                         },
@@ -159,15 +161,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "61cc5dca-6ffb-496f-89a4-3d54a9586690",
+                            ConcurrencyStamp = "58d4126e-72c2-418c-a057-a892328982c2",
                             Email = "ira1970@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "IRA1970@ABV.BG",
                             NormalizedUserName = "IRA1970@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMhjZTopI5Gs/5qDKJpOv4a3DDWRmOC3aH4YM3Nvo5Ozqus/urZPKnm8dx5gPV1l8Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEMEHkJvQ3Pdg793IcFxdfQQawGAghpgo+CDHObjhVTEzkVGvVsgtqjLvfjVN7PzCg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "504b9935-9c1a-4afc-aa19-3f848080090e",
+                            SecurityStamp = "bc0d23e2-b5a8-4c6b-9d9e-6ccf933b926c",
                             TwoFactorEnabled = false,
                             UserName = "ira1970@abv.bg"
                         });
@@ -266,10 +268,8 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<string>("Date")
                         .IsRequired()
