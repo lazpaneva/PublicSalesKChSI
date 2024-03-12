@@ -1,4 +1,37 @@
-﻿@model List<BrsOnlyContent>
+﻿@model BrsFile
+
+@{
+    ViewBag.Title = "Съобщения от BCPEA с неупешна валидация/верификация";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-left row">
+
+            <div class="card col-2" style="width: 20rem; ">
+            <div class="card-body">
+                <p class="card-title mt-1">@Model.Id</p>
+                <p class="card-title mt-1">@Model.Klas</p>
+                <p class="card-title mt-1">@Model.Date</p>
+                <p class="card-title mt-1">@Model.Dcng</p>
+                <p class="card-title mt-1">@Model.Name</p>
+                <p class="card-title mt-1">@Model.Text</p>
+            <p class="card-title mt-1">@Model.IsFileReady</p>
+            <p class="card-title mt-1">@Model.IsFindDeptor</p>
+            <p class="card-title mt-1">@Model.EmployeeId</p>
+
+
+            </div>
+        </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@*@model List<BrsOnlyContent>
     
 @{
     ViewBag.Title = "Съобщения от BCPEA с неупешна валидация/верификация";
@@ -12,6 +45,8 @@
     {
         <div class="card col-2" style="width: 20rem; ">
             <div class="card-body">
+                <p class="card-title mt-1">@message.Id</p>
+                <p class="card-title mt-1">@message.BrsFileNumber</p>
                 <p class="card-title mt-1">@message.Title</p>
                 <p class="card-title mt-1">@message.Date</p>
                 <p class="card-title mt-1">@message.Price</p>
@@ -32,7 +67,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
+*@
 
 
 

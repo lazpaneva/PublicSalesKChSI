@@ -1,4 +1,5 @@
 ﻿using PublicSalesKChSI.Core.Models.BrsFile;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace PublicSalesKChSI.Core.Contracts
 {
     public interface IBrsFileService
     {
-        public List<BrsOnlyContent> FillBrsFile();
+        //public Task<List<BrsOnlyContent>> FillBrsFile(string userId);
+        public Task<BrsFile> FillBrsFile(string userId);
     }
 }

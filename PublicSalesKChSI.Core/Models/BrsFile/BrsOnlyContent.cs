@@ -10,6 +10,8 @@ namespace PublicSalesKChSI.Core.Models.BrsFile
 {
     public class BrsOnlyContent
     {
+        public int Id { get; set; }
+        public int BrsFileNumber { get; set; }
         public string Title { get; set; } = null!;
         public string Date { get; set; } = null!; 
         public string Price { get; set; } = null!;

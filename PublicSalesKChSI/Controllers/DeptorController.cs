@@ -2,7 +2,7 @@
 
 namespace PublicSalesKChSI.Controllers
 {
-    public class DeptorController : Controller
+    public class DeptorController : BaseController
     {
         public IActionResult Index()
         {

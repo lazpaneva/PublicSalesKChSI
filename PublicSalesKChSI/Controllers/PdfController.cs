@@ -4,7 +4,7 @@ using static PublicSalesKChSI.Core.DataConstantsCore;
 
 namespace PublicSalesKChSI.Controllers
 {
-    public class PdfController : Controller
+    public class PdfController : BaseController
     {
         private readonly IHtmlPdfService htmlPdfServices;
         public PdfController(IHtmlPdfService _htmlPdfServices)

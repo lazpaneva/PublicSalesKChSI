@@ -11,7 +11,6 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IRepository, Repository>();
             services.AddScoped<IHtmlPdfService, HtmlPdfService>();
             services.AddScoped<IBrsFileService, BrsFileService>();
 
@@ -23,6 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
             services.AddDbContext<PublicSalesDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddScoped<IRepository, Repository>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -40,6 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireUppercase = false;
                 })
     .AddEntityFrameworkStores<PublicSalesDbContext>();
+
             return services;
         }
 

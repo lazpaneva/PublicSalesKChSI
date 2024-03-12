@@ -2,20 +2,13 @@
 using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Models.BrsFile;
 using PublicSalesKChSI.Infrastructure.Data.Common;
-using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
-using static PublicSalesKChSI.Core.DataConstantsCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
-using System.Globalization;
 using PublicSalesKChSI.Infrastructure.Data.Models;
-using System.Net;
+using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
+using System.Text.RegularExpressions;
+using System.Security.Claims;
+using static PublicSalesKChSI.Core.DataConstantsCore;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -27,11 +20,17 @@ namespace PublicSalesKChSI.Core.Services
             repo = _repo;
         }
 
-        public List<BrsOnlyContent> FillBrsFile()
+        //public async Task<List<BrsOnlyContent>> FillBrsFile(string userId)
+        public async Task<BrsFile> FillBrsFile(string userId)
         {
+            //транзитен модел, пъхам в LabelGroups всички от //div[@class='label__group'],
+            //нямам критерии да ги разделя, после взимам поотделно дата на публикуване, правя name и т.н.
             var txtList = repo.AllReadOnly<TempHtml>()
                 .Select(t => new BrsOnlyContent()
                 {
+                    Id = t.Id,
+                    BrsFileNumber = repo.AllReadOnly<TempPdf>()
+                        .Where(i => i.TempHtmlId == t.Id).First().DublicatedFileNameNum,
                     Title = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='title']"),
                     Date = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='date']"),
                     Price = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='col col--right']")
@@ -79,15 +78,41 @@ namespace PublicSalesKChSI.Core.Services
                         }
                     }
                 }
-                
-                string publDate = GetPublishedDate(txtItem.Date);
-                GetKlas(txtItem.LabelGroups);
-                GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
+                //string publDate = GetPublishedDate(txtItem.Date);
+                //GetKlas(txtItem.LabelGroups);
+                //GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
             }
 
-            
+            var txtListGroupedByBrsFileNumber = txtList.GroupBy(x => x.BrsFileNumber);
+            foreach (var group in txtListGroupedByBrsFileNumber)
+            {
 
-            return txtList;
+                var brsFile = new BrsFile();
+                brsFile.Code = GetCode(group.First().NumberInSite);
+                brsFile.Date = GetPublishedDate(group.First().Date);
+                brsFile.Dcng = GetPublishedDate(group.First().Date);
+                brsFile.Klas = GetKlas(group.First().LabelGroups);
+                brsFile.Name = GetName(group.First().Title, group.First().Price,
+                    group.First().Address, group.First().LabelGroups);
+                brsFile.IsFindDeptor = false;
+                brsFile.IsFileReady = false;
+                brsFile.EmployeeId = userId;
+
+                string brsText = string.Empty;
+                foreach (var item in group)
+                {
+                    brsText += item.Text;
+                }
+                brsFile.Text = brsText;
+                if (!IsValid(brsFile))
+                {
+                    return brsFile;
+                }
+                await repo.AddAsync(brsFile);
+                await repo.SaveChangesAsync();
+            }
+
+            return null;
         }
 
         //functions
@@ -158,39 +183,38 @@ namespace PublicSalesKChSI.Core.Services
             input = regex.Replace(input, "\n");
             return input;
         }
-        private static string ReplaceSimbolsFromText(string str)
+        private static string ReplaceSimbolsFromText(string? str)
         {
-            string result = str;
             if (str!= null)
             {
                 for (int i = 0; i < ArrayForHtmlSimbols.Length; i++)
                 {
-                    if (result.Contains(ArrayForHtmlSimbols[i]))
+                    if (str.Contains(ArrayForHtmlSimbols[i]))
                     {
-                        result = result.Replace("&quot;", "\"");
-                        result = result.Replace("&rdquo;", "\"");
-                        result = result.Replace("&ldquo;", "\"");
-                        result = result.Replace("&bdquo;", "\"");
-                        result = result.Replace("&ndash;&nbsp;", "- ");
-                        result = result.Replace("&nbsp;&ndash;", " -");
-                        result = result.Replace("&ndash;", "-");
-                        result = result.Replace("&frac12;", "1/2");
-                        result = result.Replace("&frac13;", "1/3");
-                        result = result.Replace("&frac14;", "1/4");
-                        result = result.Replace("&frac15;", "1/5");
-                        result = result.Replace("&frac16;", "1/6");
-                        result = result.Replace("&frac17;", "1/7");
-                        result = result.Replace("&frac18;", "1/8");
-                        result = result.Replace("&frac19;", "1/9");
-                        result = result.Replace("&frac10;", "1/10");
-                        result = result.Replace("&frac111;", "1/11");
-                        result = result.Replace("&frac112;", "1/12");
-                        result = ReplaceMultipleSpacesWithNewLine(str);
-                        result = result.Replace("&nbsp;", " ");
+                        str = str.Replace("&quot;", "\"");
+                        str = str.Replace("&rdquo;", "\"");
+                        str = str.Replace("&ldquo;", "\"");
+                        str = str.Replace("&bdquo;", "\"");
+                        str = str.Replace("&ndash;&nbsp;", "- ");
+                        str = str.Replace("&nbsp;&ndash;", " -");
+                        str = str.Replace("&ndash;", "-");
+                        str = str.Replace("&frac12;", "1/2");
+                        str = str.Replace("&frac13;", "1/3");
+                        str = str.Replace("&frac14;", "1/4");
+                        str = str.Replace("&frac15;", "1/5");
+                        str = str.Replace("&frac16;", "1/6");
+                        str = str.Replace("&frac17;", "1/7");
+                        str = str.Replace("&frac18;", "1/8");
+                        str = str.Replace("&frac19;", "1/9");
+                        str = str.Replace("&frac10;", "1/10");
+                        str = str.Replace("&frac111;", "1/11");
+                        str = str.Replace("&frac112;", "1/12");
+                        str = ReplaceMultipleSpacesWithNewLine(str);
+                        str = str.Replace("&nbsp;", " ");
                     }
                 }
             }
-            return result;
+            return str;
         }
 
         private string GetPublishedDate(string dateFromBrsOnlyContent)
@@ -217,8 +241,7 @@ namespace PublicSalesKChSI.Core.Services
 
         private string GetCode(int NumberInSite)
         {
-            string result = string.Empty;
-            result = "3002" + "09" + NumberInSite.ToString("D6");
+            string result = "3002" + "09" + NumberInSite.ToString("D6");
 
             return result;
         }
@@ -226,7 +249,7 @@ namespace PublicSalesKChSI.Core.Services
         {
             string result = string.Empty;
             string year = DateTime.Now.Year.ToString();
-            result = "KSI" + year.Substring(2) + "_";
+            result = string.Concat("KSI", year.Substring(2), "_");
             string? town = Array.Find(labelGroups, element => element.Contains("ОКРЪЖЕН СЪД: "));
             town = town?.Substring(town.IndexOf("ОКРЪЖЕН СЪД: ") + 13).Trim().ToUpper();
             string numberTown = string.Empty;
@@ -247,8 +270,7 @@ namespace PublicSalesKChSI.Core.Services
             string result = string.Empty;
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
-            string? town = Array.Find(other, element => element.Contains("НАСЕЛЕНО МЯСТО: ")).Trim();
-            town = town.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: "));
+                        
             if (address != null && !address.Contains("ВИД НА ТЪРГА"))
             {
                 address = address.Substring(address.IndexOf("Адрес:") + 7).Trim();
@@ -257,11 +279,22 @@ namespace PublicSalesKChSI.Core.Services
             area = area?.Substring(area.IndexOf("ПЛОЩ: ") + 6).Trim();
             area = area?.Replace("кв.м", "кв. м");
 
+            string? town = Array.Find(other, element => element.Contains("НАСЕЛЕНО МЯСТО: "));
+            town = town?.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: ") + 16).Trim();
+            
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
 
             return result;
         }
+        private static bool IsValid(object dto)
+        {
+            var validationContext = new ValidationContext(dto);
+            var validationResult = new List<ValidationResult>();
+
+            return Validator.TryValidateObject(dto, validationContext, validationResult, true);
+        }
+
 
     }
 

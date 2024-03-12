@@ -5,8 +5,7 @@ using PublicSalesKChSI.Core.Models.HtmlPdf;
 
 namespace PublicSalesKChSI.Controllers
 {
-    [Authorize]
-    public class HtmlController : Controller
+    public class HtmlController : BaseController
     {
         private readonly IHtmlPdfService htmlPdfService;
         public HtmlController(IHtmlPdfService _htmlPdfService)
