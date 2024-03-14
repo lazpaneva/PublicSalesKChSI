@@ -178,7 +178,6 @@ namespace PublicSalesKChSI.Core.Services
         [HttpGet]
         public async Task<bool> DownloadPdfFilesAsync(string folderPath)
         {
-            bool result = false;
             DeleteAndCreateDirectory(folderPath);
 
             var pdfList = await repo.All<TempPdf>().ToListAsync();
@@ -201,10 +200,25 @@ namespace PublicSalesKChSI.Core.Services
                     await repo.SaveChangesAsync();
                 }
             }
-            result = true;
-            return result;
+            return true;
         }
 
+        public TempPdfViewModel ViewingPdfFilesIsDownloadingAsync()
+        {
+            var pdfList = repo.AllReadOnly<TempPdf>().ToList();
+            TempPdfViewModel model = new TempPdfViewModel();
+            model.PdfFileCount = pdfList.Count;
+            model.TempPdfModels = pdfList
+                .OrderBy(on => on.OriginalName)
+                .Select(pdf => new TempPdfModel()
+                {
+                    OriginalName = pdf.OriginalName,
+                    Url = pdf.Url,
+                    SizeOfFile = pdf.SizeOfFile,
+                });
+
+            return model;
+        }
         //functions
         private async Task updateLastDownNumbers(string type, int lastNumberForType)
         {
@@ -266,9 +280,13 @@ namespace PublicSalesKChSI.Core.Services
         {
             if (Directory.Exists(filePathDirectory))
             {
-                Directory.Delete(filePathDirectory, true);
+                Array.ForEach(Directory.GetFiles(filePathDirectory), File.Delete);
+                //Directory.Delete(filePathDirectory, true);
             }
-            Directory.CreateDirectory(filePathDirectory);
+            else
+            {
+                Directory.CreateDirectory(filePathDirectory);
+            }
         }
 
         private string[] fillUrlsArray(int numberBegin, int numberEnd, string[] urlsArr,
@@ -294,5 +312,7 @@ namespace PublicSalesKChSI.Core.Services
             FileInfo fileInfo = new FileInfo(filePath);
             return fileInfo.Length;
         }
+
+        
     }
 }

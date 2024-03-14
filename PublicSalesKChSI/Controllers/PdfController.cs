@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PublicSalesKChSI.Core.Contracts;
+using PublicSalesKChSI.Core.Models.HtmlPdf;
 using static PublicSalesKChSI.Core.DataConstantsCore;
 
 namespace PublicSalesKChSI.Controllers
@@ -11,19 +12,31 @@ namespace PublicSalesKChSI.Controllers
         {
             htmlPdfServices = _htmlPdfServices;
         }
-
+        
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             bool download = false;
             await htmlPdfServices.FillTempPDfAsync();
 
-            download = await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf);
-          
-            if (!download)
+            
+            if (!await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf))
             {
                 return View();
             }
-            else { return RedirectToAction("CreateBrsFile", "BrsFile"); }
+            else
+            {
+                return RedirectToAction("AllTempPdfsDownloaded");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult AllTempPdfsDownloaded()
+        {
+            var model = htmlPdfServices.ViewingPdfFilesIsDownloadingAsync();
+
+            return View(model);
+            //else { return RedirectToAction("CreateBrsFile", "BrsFile"); }
         }
     }
 }

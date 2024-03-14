@@ -21,6 +21,7 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int BrsFileCodeMax = 12; 
 
         public const int BrsFileNameMax = 250;
+        public const int BrsFileNameMin = 4;
 
         public const int BrsFileScreMax = 50;
         public const int BrsFileLicaMax = 200;

@@ -9,6 +9,7 @@ using System.Security.Claims;
 using static PublicSalesKChSI.Core.DataConstantsCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -26,7 +27,7 @@ namespace PublicSalesKChSI.Core.Services
             //транзитен модел, пъхам в LabelGroups всички от //div[@class='label__group'],
             //нямам критерии да ги разделя, после взимам поотделно дата на публикуване, правя name и т.н.
             var txtList = repo.AllReadOnly<TempHtml>()
-                .Select(t => new BrsOnlyContent()
+                .Select(t => new BrsFileTransitModel()
                 {
                     Id = t.Id,
                     BrsFileNumber = repo.AllReadOnly<TempPdf>()
@@ -88,17 +89,18 @@ namespace PublicSalesKChSI.Core.Services
             {
 
                 var brsFile = new BrsFile();
-                brsFile.Code = GetCode(group.First().NumberInSite);
-                brsFile.Date = GetPublishedDate(group.First().Date);
-                brsFile.Dcng = GetPublishedDate(group.First().Date);
-                brsFile.Klas = GetKlas(group.First().LabelGroups);
-                brsFile.Name = GetName(group.First().Title, group.First().Price,
-                    group.First().Address, group.First().LabelGroups);
+                var firstElement = group.First();
+                brsFile.Code = GetCode(firstElement.NumberInSite);
+                brsFile.Date = GetPublishedDate(firstElement.Date);
+                brsFile.Dcng = GetPublishedDate(firstElement.Date);
+                brsFile.Klas = GetKlas(firstElement.LabelGroups);
+                brsFile.Name = GetName(firstElement.Title, firstElement.Price,
+                    firstElement.Address, firstElement.LabelGroups);
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.EmployeeId = userId;
 
-                string brsText = string.Empty;
+                string brsText = String.Join("\n", firstElement.LabelGroups);
                 foreach (var item in group)
                 {
                     brsText += item.Text;
@@ -268,6 +270,7 @@ namespace PublicSalesKChSI.Core.Services
         private string GetName(string title, string price, string address, string[] other)
         {
             string result = string.Empty;
+           
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
                         
@@ -281,9 +284,12 @@ namespace PublicSalesKChSI.Core.Services
 
             string? town = Array.Find(other, element => element.Contains("НАСЕЛЕНО МЯСТО: "));
             town = town?.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: ") + 16).Trim();
-            
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
+            result = result.Replace("\t", " ");
+            result = result.Replace(", , , , ", ", ");
+            result = result.Replace(", , , ", ", ");
+            result = result.Replace(", , ", ", ");
 
             return result;
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PublicSalesKChSI.Core.Models.BrsFile
 {
-    public class BrsOnlyContent
+    public class BrsFileTransitModel
     {
         public int Id { get; set; }
         public int BrsFileNumber { get; set; }

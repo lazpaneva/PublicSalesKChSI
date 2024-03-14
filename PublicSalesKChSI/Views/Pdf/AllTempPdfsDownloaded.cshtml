@@ -1,0 +1,22 @@
+﻿@model TempPdfViewModel
+
+<div class="container">
+        <h2>ОБЩ БРОЙ СВАЛЕНИ PDF ФАЙЛОВЕ: @Model.PdfFileCount</h2>
+        <h5>Може да се премине към следващата стъпка - Generate new BRS-files.</h5>
+    
+    <div class="row">
+    @foreach (var pdf in Model.TempPdfModels)
+    {
+    
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@pdf.OriginalName</h5>
+                            <p class="card-text">Size: @pdf.SizeOfFile</p>
+                        </div>
+                    </div>
+                </div>
+    }
+    </div>
+</div>
+
