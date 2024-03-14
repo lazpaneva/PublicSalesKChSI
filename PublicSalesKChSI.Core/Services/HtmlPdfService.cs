@@ -25,11 +25,9 @@ namespace PublicSalesKChSI.Core.Services
     public class HtmlPdfService : IHtmlPdfService
     {
         private readonly IRepository repo;
-        //private readonly PublicSalesDbContext dbContext;
         public HtmlPdfService(IRepository _repository)
         {
             repo = _repository;
-            //dbContext = _dbContext;
         }
 
         [HttpGet]
@@ -48,7 +46,7 @@ namespace PublicSalesKChSI.Core.Services
             lastNumsForThreeDifferentTypes[1] = lastDownNumberVevhicle.LastNumber;
             lastNumsForThreeDifferentTypes[2] = lastDownNumberProperties.LastNumber;
 
-            //delete table TempHtmls, use like transint table. old not necessary
+            //delete table TempHtmls, use like transint table. Old not necessary
             var htmls = repo.All<TempHtml>();
             foreach (var html in htmls)
             {
@@ -64,7 +62,7 @@ namespace PublicSalesKChSI.Core.Services
         [HttpPost]
         public async Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type)
         {
-            bool result = false;
+            //bool result = false;
             int sizeUrls = numberEnd - numberBegin + 1;
             string[] urls = new string[sizeUrls];
             string typeBcpeaPath = string.Empty;
@@ -86,8 +84,7 @@ namespace PublicSalesKChSI.Core.Services
 
             urls = fillUrlsArray(numberBegin, numberEnd, urls, typeBcpeaPath);
             int lastNumberInSiteForType = numberBegin;
-            //List<TempHtml> htmlList = new List<TempHtml>();
-
+          
             foreach (string urlAddress in urls)
             {
                 string fileName = "html_"+ urlAddress.Substring(urlAddress.LastIndexOf('/')+1).Trim()
@@ -111,8 +108,7 @@ namespace PublicSalesKChSI.Core.Services
                             CreatedOn = DateTime.Now,
                             NumberInSite = numberInSite,
                         };
-                        //htmlList.Add(htmlAdd);
-
+                        
                         await repo.AddAsync(htmlAdd);
                         await repo.SaveChangesAsync();
                         File.WriteAllText(filePath, htmlContent);
@@ -126,8 +122,9 @@ namespace PublicSalesKChSI.Core.Services
             }
             await updateLastDownNumbers(type, lastNumberInSiteForType);
 
-            result = true;
-            return result;
+            return true;
+            //result = true;
+            //return result;
         }
 
         [HttpGet]
@@ -187,7 +184,8 @@ namespace PublicSalesKChSI.Core.Services
                 if (group.Count() > 0)
                 {
                     int count = 1;
-                    TempPdf previouseItem = group.First();
+                    TempPdf previouseItem = group.First();  //необходим, ако имената на файловете са еднакви, но размерът им е различен, и трябва да се направи различен brs-file
+                    int countOverTenThousand = 1;
                     foreach (var item in group)
                     {
                         string numbString = count.ToString("D4");
@@ -197,7 +195,8 @@ namespace PublicSalesKChSI.Core.Services
                         item.SizeOfFile = GetFileSize(fileName);
                         if (item.SizeOfFile != previouseItem.SizeOfFile) 
                         {
-                            item.DublicatedFileNameNum += 9999; //по този начин слагам в друг BRS-file ако имената на файловете са еднакви, но размерът им е различен
+                            item.DublicatedFileNameNum += 9999+countOverTenThousand; //по този начин слагам в друг BRS-file ако имената на файловете са еднакви, но размерът им е различен
+                            countOverTenThousand++;
                         }
                         previouseItem = item;
                         count++;
