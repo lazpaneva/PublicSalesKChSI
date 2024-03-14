@@ -16,10 +16,8 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            bool download = false;
             await htmlPdfServices.FillTempPDfAsync();
-
-            
+                        
             if (!await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf))
             {
                 return View();
@@ -36,7 +34,6 @@ namespace PublicSalesKChSI.Controllers
             var model = htmlPdfServices.ViewingPdfFilesIsDownloadingAsync();
 
             return View(model);
-            //else { return RedirectToAction("CreateBrsFile", "BrsFile"); }
         }
     }
 }

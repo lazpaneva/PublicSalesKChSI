@@ -85,7 +85,7 @@ namespace PublicSalesKChSI.Core.Services
             }
 
             urls = fillUrlsArray(numberBegin, numberEnd, urls, typeBcpeaPath);
-            int lastNumberInSiteForType = 0;
+            int lastNumberInSiteForType = numberBegin;
             //List<TempHtml> htmlList = new List<TempHtml>();
 
             foreach (string urlAddress in urls)
@@ -143,7 +143,6 @@ namespace PublicSalesKChSI.Core.Services
                 })
                 .ToList();
 
-
             var groupedByOriginalName = pdfList.GroupBy(x => x.OriginalName);
             // Обхождане на групите и присвояване на уникални стойности /№ на BRS-файл/ в DublicatedFileNameNum
             int counterDublName = 1;
@@ -188,6 +187,7 @@ namespace PublicSalesKChSI.Core.Services
                 if (group.Count() > 0)
                 {
                     int count = 1;
+                    TempPdf previouseItem = group.First();
                     foreach (var item in group)
                     {
                         string numbString = count.ToString("D4");
@@ -195,6 +195,11 @@ namespace PublicSalesKChSI.Core.Services
                         await DownloadFileAsync( item.Url,
                             fileName);
                         item.SizeOfFile = GetFileSize(fileName);
+                        if (item.SizeOfFile != previouseItem.SizeOfFile) 
+                        {
+                            item.DublicatedFileNameNum += 9999; //по този начин слагам в друг BRS-file ако имената на файловете са еднакви, но размерът им е различен
+                        }
+                        previouseItem = item;
                         count++;
                     }
                     await repo.SaveChangesAsync();
@@ -312,7 +317,6 @@ namespace PublicSalesKChSI.Core.Services
             FileInfo fileInfo = new FileInfo(filePath);
             return fileInfo.Length;
         }
-
         
     }
 }

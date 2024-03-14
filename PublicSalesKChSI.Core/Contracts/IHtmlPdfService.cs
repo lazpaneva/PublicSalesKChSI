@@ -16,7 +16,7 @@ namespace PublicSalesKChSI.Core.Contracts
         public TempPdfViewModel ViewingPdfFilesIsDownloadingAsync();
         Task FillTempPDfAsync();
 
-        //Task updateLastDownNumbers(int lastNumberAsset, int lastNumberVechicle, int lastNumberProperty);
+        //Task updateLastDownNumbers(string type, int lastNumberInType);
         //public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();
     }
 }

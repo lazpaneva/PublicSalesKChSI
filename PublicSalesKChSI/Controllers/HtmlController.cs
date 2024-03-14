@@ -16,9 +16,9 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task <IActionResult> DownHtml()
         {
-            LastNumbersHtmlFormModel model = new LastNumbersHtmlFormModel();
             var LastNumbers = await htmlPdfService.GetLastNumbersAsync();
 
+            LastNumbersHtmlFormModel model = new LastNumbersHtmlFormModel();
             model.BeforeLastNumberAsset = LastNumbers[0];
             model.BeforeLastNumberVechicle = LastNumbers[1];
             model.BeforeLastNumberProperties = LastNumbers[2];
@@ -30,9 +30,6 @@ namespace PublicSalesKChSI.Controllers
         public async Task<IActionResult> DownHtml(LastNumbersHtmlFormModel model)
         {
             var LastNumbers = await htmlPdfService.GetLastNumbersAsync();
-            bool assetDownloading = false;
-            bool vechicleDownloading = false;
-            bool propertyDownloading = false;
                                                 
             model.BeforeLastNumberAsset = LastNumbers[0];
             model.BeforeLastNumberVechicle = LastNumbers[1];
@@ -56,9 +53,9 @@ namespace PublicSalesKChSI.Controllers
                 return View(model);
             }
 
-            assetDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
-            vechicleDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
-            propertyDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
+            bool assetDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberAsset + 1, model.LastNumberAsset, "Asset");
+            bool vechicleDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberVechicle + 1, model.LastNumberVechicle, "Vechicle");
+            bool propertyDownloading = await htmlPdfService.DownloadHtmlFilesAsync(model.BeforeLastNumberProperties + 1, model.LastNumberProperties, "Property");
 
             if (assetDownloading && vechicleDownloading && propertyDownloading)
             {
