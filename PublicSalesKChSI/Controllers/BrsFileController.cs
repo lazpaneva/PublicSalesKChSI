@@ -18,11 +18,16 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateBrsFile()
         {
-            //List<BrsOnlyContent> model = await brsFileService.FillBrsFile(User.Id());
-            BrsFile model = await brsFileService.FillBrsFile(User.Id());
+            IEnumerable<BrsFileValidationModel> model = await brsFileService.FillBrsFile(User.Id());
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateBrsFile(IEnumerable<BrsFileValidationModel> model)
+        {
+            
+            return View(model);
+        }
         //[HttpPost]
         //public async Task<IActionResult> Add(BrsFile model)
         //{
@@ -49,5 +54,5 @@ namespace PublicSalesKChSI.Controllers
 
         //    return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
         //}
-        }
+    }
 }

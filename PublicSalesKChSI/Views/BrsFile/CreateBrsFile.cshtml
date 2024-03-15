@@ -1,31 +1,57 @@
-﻿@model BrsFile
+﻿@model IEnumerable<BrsFileValidationModel>
 
 @{
-    ViewBag.Title = "Съобщения от BCPEA с неупешна валидация/верификация";
+    ViewBag.Title = "Съобщения от BCPEA с неупешна валидация/верификация. Моля, да се коригират!";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="text-left row">
+@foreach(var file in Model)
+{
 
-            <div class="card col-2" style="width: 20rem; ">
-            <div class="card-body">
-                <p class="card-title mt-1">@Model.Id</p>
-                <p class="card-title mt-1">Klas: @Model.Klas</p>
-                <p class="card-title mt-1">Date: @Model.Date</p>
-                <p class="card-title mt-1">Dcng: @Model.Dcng</p>
-                <p class="card-title mt-1">Name: @Model.Name</p>
-                <p class="card-title mt-1">Text: @Model.Text</p>
-            <p class="card-title mt-1">IsFileReady: @Model.IsFileReady</p>
-            <p class="card-title mt-1">@Model.IsFindDeptor</p>
-            <p class="card-title mt-1">@Model.EmployeeId</p>
-
-
-            </div>
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <form asp-action="CreateBrsFile" method="post">
+                <div class="mb-3">
+                    <label asp-for="@file.Code" class="form-label-add-edit">Edit Code</label>
+                    <input asp-for="@file.Code" class="form-control" value="@file.Code" aria-required="true" />
+                    <span asp-validation-for="@file.Code" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@file.Klas" class="form-label-add-edit">Edit Klas</label>
+                    <input asp-for="@file.Klas" class="form-control" value="@file.Klas" aria-required="true" />
+                    <span asp-validation-for="@file.Klas" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@file.Date" class="form-label-add-edit">Edit Date</label>
+                    <input asp-for="@file.Date" class="form-control" aria-required="true" value="@file.Date" />
+                    <span asp-validation-for="@file.Date" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@file.Dcng" class="form-label-add-edit">Edit Dcng</label>
+                    <input asp-for="@file.Dcng" class="form-control" aria-required="true" value="@file.Dcng" />
+                    <span asp-validation-for="@file.Dcng" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@file.Name" class="form-label-add-edit">Edit Name</label>
+                    <input asp-for="@file.Name" class="form-control" value="@file.Name" />
+                    <span asp-validation-for="@file.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="@file.Text" class="form-label-add-edit">Edit Text</label>
+                    <textarea asp-for="@file.Text" class="form-control" aria-required="true" value="@file.Text" rows="5"></textarea>
+                    <span asp-validation-for="@file.Text" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Add" />
+                </div>
+            </form>
         </div>
+    </div>
+}
 
-</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

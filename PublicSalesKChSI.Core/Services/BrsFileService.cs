@@ -22,7 +22,7 @@ namespace PublicSalesKChSI.Core.Services
         }
 
         //public async Task<List<BrsOnlyContent>> FillBrsFile(string userId)
-        public async Task<BrsFile> FillBrsFile(string userId)
+        public async Task<IEnumerable<BrsFileValidationModel>> FillBrsFile(string userId)
         {
             //транзитен модел, пъхам в LabelGroups всички от //div[@class='label__group'],
             //нямам критерии да ги разделя, после взимам поотделно дата на публикуване, правя name и т.н.
@@ -84,10 +84,11 @@ namespace PublicSalesKChSI.Core.Services
                 //GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
             }
 
+            IEnumerable<BrsFile> brsFilesWithValidationError = 
+                new List<BrsFile>();
             var txtListGroupedByBrsFileNumber = txtList.GroupBy(x => x.BrsFileNumber);
             foreach (var group in txtListGroupedByBrsFileNumber)
             {
-
                 var brsFile = new BrsFile();
                 var firstElement = group.First();
                 brsFile.Code = GetCode(firstElement.NumberInSite);
@@ -105,16 +106,33 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     brsText += item.Text;
                 }
-                brsFile.Text = brsText;
+                brsFile.Text = ReplaceSimbolsInNameAndText(brsText);
+
                 if (!IsValid(brsFile))
                 {
-                    return brsFile;
+                    brsFilesWithValidationError.Append(brsFile);
                 }
-                await repo.AddAsync(brsFile);
-                await repo.SaveChangesAsync();
+                else
+                {
+                    await repo.AddAsync(brsFile);
+                    await repo.SaveChangesAsync();
+                }
             }
 
-            return null;
+            IEnumerable<BrsFileValidationModel> brsFilesForValidation = brsFilesWithValidationError
+                .Select(f => new BrsFileValidationModel()
+                {
+                    Code = f.Code,
+                    Klas = f.Klas,
+                    Date = f.Date,
+                    Dcng = f.Dcng,
+                    Name = f.Name,
+                    Text = f.Text,
+                    //IsFileReady = f.IsFileReady,
+                })
+                .ToList();
+            
+            return brsFilesForValidation;
         }
 
         //functions
@@ -219,6 +237,26 @@ namespace PublicSalesKChSI.Core.Services
             return str;
         }
 
+        private static string ReplaceSimbolsInNameAndText(string input)
+        {
+            input = input.Replace("\t", " ").Trim();
+            input = input.Replace(", , , , ", ", ").Trim();
+            input = input.Replace(", , , ", ", ").Trim();
+            input = input.Replace(", , ", ", ").Trim();
+            input = input.Replace(", , ", ", ").Trim();
+            string substr = input.Substring(input.Length - 1);
+            if (substr==",")
+            {
+                input = input.Substring(0, input.Length - 2);
+            }
+
+            while (input.Contains("  "))
+            {
+                input = input.Replace("  ", " ");
+            }
+            
+            return input;
+        }
         private string GetPublishedDate(string dateFromBrsOnlyContent)
         {
             string result = string.Empty;
@@ -273,7 +311,7 @@ namespace PublicSalesKChSI.Core.Services
            
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
-                        
+            
             if (address != null && !address.Contains("ВИД НА ТЪРГА"))
             {
                 address = address.Substring(address.IndexOf("Адрес:") + 7).Trim();
@@ -286,10 +324,7 @@ namespace PublicSalesKChSI.Core.Services
             town = town?.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: ") + 16).Trim();
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
-            result = result.Replace("\t", " ");
-            result = result.Replace(", , , , ", ", ");
-            result = result.Replace(", , , ", ", ");
-            result = result.Replace(", , ", ", ");
+            result = ReplaceSimbolsInNameAndText(result);
 
             return result;
         }
