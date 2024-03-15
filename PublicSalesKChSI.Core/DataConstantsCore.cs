@@ -47,6 +47,7 @@ namespace PublicSalesKChSI.Core
             "Етаж\n",
             "ПЛОЩ\n",
             "Квартал\n",
+            "Район\n",
         };
 
         public static String[] ArrayForRemovment = new string[]

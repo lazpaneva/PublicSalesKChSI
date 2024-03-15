@@ -36,11 +36,11 @@ namespace PublicSalesKChSI.Core.Services
                     Date = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='date']"),
                     Price = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='col col--right']")
                     .Replace("Начална цена\n", "Начална цена: "),
-                    Address = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='label__group label__group--double']"),
+                    Address = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='label__group label__group--double']")),
                     Text = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='label__group label__group-description']//div[@class='info']")),
                     NameSI = ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='title']"),
-                    NumberSI = "Рег. № ЧСИ - " +
-                             ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='label__group']//div[@class='info']"),
+                    //NumberSI = "Рег. № ЧСИ - " +
+                    //         ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='label__group']//div[@class='info']"),
                     NumberInSite = t.NumberInSite,
 
                     LabelGroups = ExtractFromLabelGroup(t.Content)
@@ -102,11 +102,23 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.EmployeeId = userId;
 
                 string brsText = String.Join("\n", firstElement.LabelGroups);
+                int countElemGroup = 1;
+                string infoSI= string.Empty;
                 foreach (var item in group)
                 {
-                    brsText += item.Text;
+                    if (countElemGroup >= 1 && countElemGroup<=8) 
+                    {
+                        brsText += item.Text;
+                    }
+                    else if (countElemGroup >= 9 && countElemGroup < 16)
+                    {
+                        infoSI += item.Text;
+                    }
+                    countElemGroup++;
                 }
-                brsFile.Text = ReplaceSimbolsInNameAndText(brsText);
+                brsFile.Text += firstElement.NameSI;
+                brsFile.Text += infoSI;
+                brsFile.Text = ReplaceSimbolsInName(brsText);
 
                 if (!IsValid(brsFile))
                 {
@@ -211,6 +223,9 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     if (str.Contains(ArrayForHtmlSimbols[i]))
                     {
+                        str = str.Replace("\t", " ").Trim();
+                        str = str.Replace("«", "\"").Trim();
+                        str = str.Replace("»", "\"").Trim();
                         str = str.Replace("&quot;", "\"");
                         str = str.Replace("&rdquo;", "\"");
                         str = str.Replace("&ldquo;", "\"");
@@ -233,26 +248,35 @@ namespace PublicSalesKChSI.Core.Services
                         str = str.Replace("&nbsp;", " ");
                     }
                 }
+                for (int i = 0; i <= 9; i++)
+                {
+                    string incorrectSubstr = String.Concat("№", i.ToString());
+                    string correctSubstr = String.Concat("№ ", i.ToString());
+                    str = str.Replace(incorrectSubstr, correctSubstr);
+                }
+                while (str.Contains("  "))
+                {
+                    str = str.Replace("  ", " ");
+                }
             }
+            
             return str;
         }
 
-        private static string ReplaceSimbolsInNameAndText(string input)
+        private static string ReplaceSimbolsInName(string input)
         {
-            input = input.Replace("\t", " ").Trim();
             input = input.Replace(", , , , ", ", ").Trim();
             input = input.Replace(", , , ", ", ").Trim();
             input = input.Replace(", , ", ", ").Trim();
             input = input.Replace(", , ", ", ").Trim();
-            string substr = input.Substring(input.Length - 1);
-            if (substr==",")
+          
+            if (input.Length >= 1)
             {
-                input = input.Substring(0, input.Length - 2);
-            }
-
-            while (input.Contains("  "))
-            {
-                input = input.Replace("  ", " ");
+                string substr = input.Substring(input.Length - 1, 1);
+                if (substr == ",")
+                {
+                    input = input.Substring(0, input.Length - 1);
+                }
             }
             
             return input;
@@ -311,10 +335,12 @@ namespace PublicSalesKChSI.Core.Services
            
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
-            
-            if (address != null && !address.Contains("ВИД НА ТЪРГА"))
+
+            if (address != null)
             {
-                address = address.Substring(address.IndexOf("Адрес:") + 7).Trim();
+                address = address.Replace("ВИД НА ТЪРГА\n Публична продан", "");
+                int posAddress = address.IndexOf("Адрес:");
+                if (posAddress != -1) { address = address.Substring(posAddress + 7).Trim(); }
             }
             string? area = Array.Find(other, element => element.Contains("ПЛОЩ: "));
             area = area?.Substring(area.IndexOf("ПЛОЩ: ") + 6).Trim();
@@ -324,7 +350,7 @@ namespace PublicSalesKChSI.Core.Services
             town = town?.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: ") + 16).Trim();
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
-            result = ReplaceSimbolsInNameAndText(result);
+            result = ReplaceSimbolsInName(result);
 
             return result;
         }
