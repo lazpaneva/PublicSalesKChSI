@@ -5,15 +5,21 @@ using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Models.BrsFile;
 using PublicSalesKChSI.Extensions;
 using PublicSalesKChSI.Infrastructure.Data.Models;
+using PublicSalesKChSI.Core.Services;
+using Microsoft.EntityFrameworkCore;
+using PublicSalesKChSI.Infrastructure.Data;
 
 namespace PublicSalesKChSI.Controllers
 {
     public class BrsFileController : BaseController
     {
         private readonly IBrsFileService brsFileService;
-        public BrsFileController(IBrsFileService _brsFileService)
-        {
+        private readonly PublicSalesDbContext dbContext;
+        public BrsFileController(IBrsFileService _brsFileService,
+            PublicSalesDbContext _dbContext)   //в някои съобщения вериф. грешка, не мога да измисля как да ги върна отново в Services
+        {                   //ето защо тук направо си инжектирам  dbContext
             brsFileService = _brsFileService;
+            dbContext = _dbContext;
         }
         [HttpGet]
         public async Task<IActionResult> CreateBrsFile()
@@ -23,36 +29,27 @@ namespace PublicSalesKChSI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBrsFile(IEnumerable<BrsFileValidationModel> model)
+        public IActionResult CreateBrsFile(List<BrsFileValidationModel> files)
         {
-            
-            return View(model);
+            foreach (var file in files)
+            {
+                dbContext.BrsFiles.Add(new BrsFile
+                {
+                    Code = file.Code,
+                    Klas = file.Klas,
+                    Date = file.Date,
+                    Dcng = file.Dcng,
+                    Name = file.Name,
+                    Text = file.Text,
+                    IsFileReady = file.IsFileReady,
+                    IsFindDeptor = file.IsFindDeptor,
+                    EmployeeId = User.Id()
+                });
+            }
+
+            dbContext.SaveChanges();
+
+           return RedirectToAction("Index", "Home");
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Add(BrsFile model)
-        //{
-        //    if ((await agentService.ExistsById(User.Id())) == false)
-        //    {
-        //        return RedirectToAction(nameof(AgentController.Become), "Agent");
-        //    }
-
-        //    if ((await houseService.CategoryExists(model.CategoryId)) == false)
-        //    {
-        //        ModelState.AddModelError(nameof(model.CategoryId), "Category does not exists");
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        model.HouseCategories = await houseService.AllCategories();
-
-        //        return View(model);
-        //    }
-
-        //    int agentId = await agentService.GetAgentId(User.Id());
-
-        //    int id = await houseService.Create(model, agentId);
-
-        //    return RedirectToAction(nameof(Details), new { id = id, information = model.GetInformation() });
-        //}
     }
 }

@@ -13,10 +13,9 @@ namespace PublicSalesKChSI.Core.Contracts
         Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type);
 
         Task<bool> DownloadPdfFilesAsync(string folderPath);
-        public TempPdfViewModel ViewingPdfFilesIsDownloadingAsync();
+        //public TempPdfViewModel ViewingPdfFilesIsDownloadingAsync();
+        Task<TempPdfViewModel> ViewingPdfFilesIsDownloadingAsync();
         Task FillTempPDfAsync();
 
-        //Task updateLastDownNumbers(string type, int lastNumberInType);
-        //public List<PdfOrigNameAndHtmlId> DownLoadPdfFiles();
     }
 }

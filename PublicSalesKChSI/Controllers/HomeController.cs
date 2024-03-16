@@ -8,6 +8,7 @@ namespace PublicSalesKChSI.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        //евентуално да махна logger-a
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)

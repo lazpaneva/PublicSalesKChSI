@@ -21,7 +21,6 @@ namespace PublicSalesKChSI.Core.Services
             repo = _repo;
         }
 
-        //public async Task<List<BrsOnlyContent>> FillBrsFile(string userId)
         public async Task<IEnumerable<BrsFileValidationModel>> FillBrsFile(string userId)
         {
             //транзитен модел, пъхам в LabelGroups всички от //div[@class='label__group'],
@@ -34,17 +33,13 @@ namespace PublicSalesKChSI.Core.Services
                         .Where(i => i.TempHtmlId == t.Id).First().DublicatedFileNameNum,
                     Title = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='title']"),
                     Date = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='date']"),
-                    Price = ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='col col--right']")
-                    .Replace("Начална цена\n", "Начална цена: "),
+                    Price = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='item__wrapper']//div[@class='col col--right']")),
                     Address = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='content']//div[@class='label__group label__group--double']")),
                     Text = ReplaceSimbolsFromText(ExtractTextFromHtml(t.Content, "//div[@class='label__group label__group-description']//div[@class='info']")),
                     NameSI = ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='title']"),
-                    //NumberSI = "Рег. № ЧСИ - " +
-                    //         ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='label__group']//div[@class='info']"),
                     NumberInSite = t.NumberInSite,
 
                     LabelGroups = ExtractFromLabelGroup(t.Content)
-
                 })
                 .ToList();
             //добавяне на ':', където е необходимо, изтриване на ненужна информация
@@ -84,7 +79,7 @@ namespace PublicSalesKChSI.Core.Services
                 //GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
             }
 
-            IEnumerable<BrsFile> brsFilesWithValidationError = 
+            ICollection<BrsFile> brsFilesWithValidationError = 
                 new List<BrsFile>();
             var txtListGroupedByBrsFileNumber = txtList.GroupBy(x => x.BrsFileNumber);
             foreach (var group in txtListGroupedByBrsFileNumber)
@@ -108,9 +103,9 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     if (countElemGroup >= 1 && countElemGroup<=8) 
                     {
-                        brsText += item.Text;
+                            brsText += item.Text; 
                     }
-                    else if (countElemGroup >= 9 && countElemGroup < 16)
+                    else if (countElemGroup >= 9 && countElemGroup < 15)
                     {
                         infoSI += item.Text;
                     }
@@ -122,7 +117,7 @@ namespace PublicSalesKChSI.Core.Services
 
                 if (!IsValid(brsFile))
                 {
-                    brsFilesWithValidationError.Append(brsFile);
+                    brsFilesWithValidationError.Add(brsFile);
                 }
                 else
                 {
@@ -140,7 +135,8 @@ namespace PublicSalesKChSI.Core.Services
                     Dcng = f.Dcng,
                     Name = f.Name,
                     Text = f.Text,
-                    //IsFileReady = f.IsFileReady,
+                    IsFileReady = f.IsFileReady,
+                    IsFindDeptor = f.IsFindDeptor,
                 })
                 .ToList();
             
@@ -160,7 +156,7 @@ namespace PublicSalesKChSI.Core.Services
             if (contentDiv != null)
             {
                 string plainText = contentDiv.InnerText;
-                return plainText;
+                return plainText.Trim();
             }
             else
             {
@@ -246,9 +242,10 @@ namespace PublicSalesKChSI.Core.Services
                         str = str.Replace("&frac112;", "1/12");
                         str = ReplaceMultipleSpacesWithNewLine(str);
                         str = str.Replace("&nbsp;", " ");
+                        str = str.Replace("Начална цена\n", "Начална цена: ");
                     }
                 }
-                for (int i = 0; i <= 9; i++)
+                for (int i = 0; i <= 9; i++) 
                 {
                     string incorrectSubstr = String.Concat("№", i.ToString());
                     string correctSubstr = String.Concat("№ ", i.ToString());

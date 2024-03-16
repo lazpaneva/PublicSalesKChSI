@@ -207,9 +207,9 @@ namespace PublicSalesKChSI.Core.Services
             return true;
         }
 
-        public TempPdfViewModel ViewingPdfFilesIsDownloadingAsync()
+        public async Task<TempPdfViewModel> ViewingPdfFilesIsDownloadingAsync()
         {
-            var pdfList = repo.AllReadOnly<TempPdf>().ToList();
+            var pdfList = await repo.AllReadOnly<TempPdf>().ToListAsync();
             TempPdfViewModel model = new TempPdfViewModel();
             model.PdfFileCount = pdfList.Count;
             model.TempPdfModels = pdfList

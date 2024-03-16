@@ -44,11 +44,12 @@ namespace PublicSalesKChSI.Core.Models.BrsFile
         [Column(TypeName = "ntext")] //променено за да може да събере текста от няколко html-a
         public string Text { get; set; } = null!;
 
-        //[Required]
-        //public bool IsFileReady { get; set; }
+        [Required]
+        public bool IsFileReady { get; set; }
 
-        //[Required]
-        //public bool IsFindDeptor { get; set; }
+        [Required]
+        public bool IsFindDeptor { get; set; }
+
 
 
     }

@@ -4,7 +4,7 @@ namespace PublicSalesKChSI.Controllers
 {
     public class DeptorController : BaseController
     {
-        public IActionResult Index()
+        public IActionResult AddDeptor()
         {
             return View();
         }

@@ -75,7 +75,8 @@ namespace PublicSalesKChSI.Core
             "&frac16;",
             "&frac18;",
             "&nbsp;&nbsp;&nbsp;",
-            "&nbsp;"
+            "&nbsp;",
+            "Начална цена\n"
     };
 
     }
