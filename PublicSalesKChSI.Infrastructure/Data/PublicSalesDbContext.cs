@@ -34,6 +34,7 @@ namespace PublicSalesKChSI.Infrastructure.Data
             builder.Entity<TempHtml>()
                     .HasOne(f => f.BrsFile)
                     .WithMany(h => h.HtmlFiles)
+                    //.WithMany()
                     .HasForeignKey(f => f.BrsFileId)
                     .OnDelete(DeleteBehavior.Restrict);
 

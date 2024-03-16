@@ -64,8 +64,8 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         //foreign key - по конвенция https://learn.microsoft.com/en-us/ef/core/modeling/relationships/conventions
         public int? DeptorOldID { get; set; } 
         public DeptorOld? DeptorOld { get; set; }
-        public ICollection<TempHtml> HtmlFiles { get; set; } =
-            new List<TempHtml>();
+        
+        public ICollection<TempHtml> HtmlFiles { get; set; } =  new List<TempHtml>();
     }
 }
 

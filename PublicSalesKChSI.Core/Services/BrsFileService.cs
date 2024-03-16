@@ -10,6 +10,8 @@ using static PublicSalesKChSI.Core.DataConstantsCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -93,20 +95,29 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.IsFileReady = false;
                 brsFile.EmployeeId = userId;
 
-                string brsText = String.Join("\n", firstElement.LabelGroups);
-                int countElemGroup = 1;
+                string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
                 string infoSI= string.Empty;
                 foreach (var item in group)
                 {
-                    if (countElemGroup >= 1 && countElemGroup<=8) 
-                    {
-                            brsText += ReplaceSimbolsFromText(item.Text); 
-                    }
-                    else if (countElemGroup >= 9 && countElemGroup < 15)
-                    {
-                        infoSI += ReplaceSimbolsFromText(item.Text);
-                    }
-                    countElemGroup++;
+                    //if (countElemGroup >= 1 && countElemGroup<=8) 
+                    //{
+                    //        brsText += ReplaceSimbolsFromText(item.Text); 
+                    //}
+                    //else if (countElemGroup >= 9 && countElemGroup < 14)
+                    //{
+                    //    infoSI += ReplaceSimbolsFromText(item.Text);
+                    //}
+                    brsText += ReplaceSimbolsFromText(item.Text)+ "\n";
+                    brsText += "..TEXT:\n";
+                    
+                    int numSite = item.NumberInSite;
+                    TempHtml tempHtml = await repo.All<TempHtml>()
+                            .Where(h => h.NumberInSite == numSite)
+                            .FirstOrDefaultAsync();
+                    
+                    brsFile.HtmlFiles.Add(tempHtml);
+                    await repo.SaveChangesAsync();
+                    //countElemGroup++;
                 }
                 brsFile.Text += firstElement.NameSI;
                 brsFile.Text += infoSI;

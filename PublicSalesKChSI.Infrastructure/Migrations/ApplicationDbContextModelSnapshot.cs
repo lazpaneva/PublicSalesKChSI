@@ -334,7 +334,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("BrsFiles");
+                    b.ToTable("BrsFiles", (string)null);
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.Court", b =>
@@ -357,7 +357,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courts");
+                    b.ToTable("Courts", (string)null);
 
                     b.HasData(
                         new
@@ -606,7 +606,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeptorOlds");
+                    b.ToTable("DeptorOlds", (string)null);
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.HtmlSeekAttrib", b =>
@@ -675,7 +675,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("HtmlSeekAttribs");
+                    b.ToTable("HtmlSeekAttribs", (string)null);
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempHtml", b =>
@@ -708,7 +708,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("BrsFileId");
 
-                    b.ToTable("TempHtmls");
+                    b.ToTable("TempHtmls", (string)null);
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempPdf", b =>
@@ -746,7 +746,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("TempPdfs");
+                    b.ToTable("TempPdfs", (string)null);
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.LastDownNumber", b =>
@@ -767,7 +767,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LastDownNumbers");
+                    b.ToTable("LastDownNumbers", (string)null);
 
                     b.HasData(
                         new
