@@ -61,6 +61,7 @@ namespace PublicSalesKChSI.Core
         {
             "-ВИЖ СКАНИРАНОТО ОБЯВЛЕНИЕ",
             "ПОДРОБНОСТИ В ПРИКАЧЕНОТО СКАНИРАНО ОБЯВЛЕНИЕ",
+            "За повече информация вижте прикаченото обявление!"
         };
 
         public static String[] ArrayForHtmlSimbols = new string[]

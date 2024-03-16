@@ -74,9 +74,6 @@ namespace PublicSalesKChSI.Core.Services
                         }
                     }
                 }
-                //string publDate = GetPublishedDate(txtItem.Date);
-                //GetKlas(txtItem.LabelGroups);
-                //GetName(txtItem.Title, txtItem.Price, txtItem.Address, txtItem.LabelGroups);
             }
 
             ICollection<BrsFile> brsFilesWithValidationError = 
@@ -103,11 +100,11 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     if (countElemGroup >= 1 && countElemGroup<=8) 
                     {
-                            brsText += item.Text; 
+                            brsText += ReplaceSimbolsFromText(item.Text); 
                     }
                     else if (countElemGroup >= 9 && countElemGroup < 15)
                     {
-                        infoSI += item.Text;
+                        infoSI += ReplaceSimbolsFromText(item.Text);
                     }
                     countElemGroup++;
                 }
@@ -250,6 +247,10 @@ namespace PublicSalesKChSI.Core.Services
                     string incorrectSubstr = String.Concat("№", i.ToString());
                     string correctSubstr = String.Concat("№ ", i.ToString());
                     str = str.Replace(incorrectSubstr, correctSubstr);
+                }
+                foreach (var item in ArrayRemovmentFromText)
+                {
+                    str.Replace(item, "");
                 }
                 while (str.Contains("  "))
                 {
