@@ -24,7 +24,7 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int BrsFileNameMin = 4;
 
         public const int BrsFileScreMax = 50;
-        public const int BrsFileLicaMax = 200;
+        public const int BrsFileLicaMax = 2500;
         public const int BrsFileTelfMax = 120;
 
         //for HtmlTemp

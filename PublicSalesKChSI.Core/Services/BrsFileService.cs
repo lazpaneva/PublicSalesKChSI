@@ -27,7 +27,7 @@ namespace PublicSalesKChSI.Core.Services
         {
             //транзитен модел, пъхам в LabelGroups всички от //div[@class='label__group'],
             //нямам критерии да ги разделя, после взимам поотделно дата на публикуване, правя name и т.н.
-            var txtList = repo.AllReadOnly<TempHtml>()
+            var txtList = await repo.AllReadOnly<TempHtml>()
                 .Select(t => new BrsFileTransitModel()
                 {
                     Id = t.Id,
@@ -41,9 +41,15 @@ namespace PublicSalesKChSI.Core.Services
                     NameSI = ExtractTextFromHtml(t.Content, "//div[@class='person_info']//div[@class='title']"),
                     NumberInSite = t.NumberInSite,
 
-                    LabelGroups = ExtractFromLabelGroup(t.Content)
+                    LabelGroups = ExtractFromLabelGroup(t.Content),
+                    UrlPdf = repo.AllReadOnly<TempPdf>()
+                                .Where(tp => tp.TempHtmlId == t.Id)
+                                .Select(tp => new BrsFileUrlPdf()
+                                {
+                                    UrlPdf = tp.Url
+                                }).First().UrlPdf
                 })
-                .ToList();
+                .ToListAsync();
             //добавяне на ':', където е необходимо, изтриване на ненужна информация
             //и заместване на html-simbols
             foreach (var txtItem in txtList)
@@ -93,12 +99,24 @@ namespace PublicSalesKChSI.Core.Services
                     firstElement.Address, firstElement.LabelGroups);
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
-                brsFile.EmployeeId = userId;
+                brsFile.IsFileExported = false;
+                //brsFile.EmployeeId = userId;
+                if (firstElement.UrlPdf != null)
+                {
+                    brsFile.UrlPdf = firstElement.UrlPdf;
+                }
+                else
+                {
+                    brsFile.UrlPdf = "Няма pdf файл.";
+                }
+                
 
-                string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
+                //string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
+                string brsText = String.Concat(Enumerable.Repeat("-", 25));
                 string infoSI= string.Empty;
                 foreach (var item in group)
                 {
+                    brsText += item.LabelGroups.Take(13);
                     //if (countElemGroup >= 1 && countElemGroup<=8) 
                     //{
                     //        brsText += ReplaceSimbolsFromText(item.Text); 
@@ -110,6 +128,7 @@ namespace PublicSalesKChSI.Core.Services
                     brsText += ReplaceSimbolsFromText(item.Text)+ "\n";
                     brsText += "..TEXT:\n";
                     
+                    //попълване на virtual list
                     int numSite = item.NumberInSite;
                     TempHtml tempHtml = await repo.All<TempHtml>()
                             .Where(h => h.NumberInSite == numSite)

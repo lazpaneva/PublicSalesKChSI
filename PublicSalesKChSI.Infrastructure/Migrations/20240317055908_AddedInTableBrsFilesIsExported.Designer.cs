@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublicSalesKChSI.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317055908_AddedInTableBrsFilesIsExported")]
+    partial class AddedInTableBrsFilesIsExported
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,15 +145,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "49a17660-c47d-429c-ab77-4dd6a25a7176",
+                            ConcurrencyStamp = "67f558da-7525-4911-b531-2d67a9ac44ae",
                             Email = "ja.iv@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "JA.IV@ABV.BG",
                             NormalizedUserName = "JA.IV@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKZ+IH9qmP9gqFhyOoDkFojyDinPMQnEuhZsKHz2WhpwUR6xXYI+j1yVrfCSD4lIIA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED+RLatQ5zql+f0Kl7UkI9jNCY+T+tPVo8phATDk8mNXWGkdiZcPqUxX6IKPB1cjIg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1b3f8f60-e961-4d8f-b211-a5e481452efd",
+                            SecurityStamp = "e407fcf5-49e6-41a2-af7f-ba7d42a71ccf",
                             TwoFactorEnabled = false,
                             UserName = "ja.iv@abv.bg"
                         },
@@ -159,15 +161,15 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "50421ccc-c296-41e6-9e26-2d4c7e3218ac",
+                            ConcurrencyStamp = "b464739b-0b9b-4caf-9136-88a8d0631ecb",
                             Email = "ira1970@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "IRA1970@ABV.BG",
                             NormalizedUserName = "IRA1970@ABV.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOmcb/T77ZiB5ZcrBi4luyc5366zghGKmpuATnazwuT9hRWxc3VG73FsOht+kMV+bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENfmBY+aiAIlWFdYHTOUXiRuKrERe5rXVh+3Y0R+dl+Lr8uVpcs8ryNBBFGkgqlVgQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "716844e1-8c74-4646-8ab7-9281ecf2d624",
+                            SecurityStamp = "e29b4766-ce81-4085-8497-bfd81f9c4a56",
                             TwoFactorEnabled = false,
                             UserName = "ira1970@abv.bg"
                         });
@@ -289,6 +291,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
                         .HasComment("to be fill when file is Ready again");
 
                     b.Property<string>("EmployeeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsFileExported")
@@ -340,7 +343,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("BrsFiles", (string)null);
+                    b.ToTable("BrsFiles");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.Court", b =>
@@ -363,7 +366,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courts", (string)null);
+                    b.ToTable("Courts");
 
                     b.HasData(
                         new
@@ -612,7 +615,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeptorOlds", (string)null);
+                    b.ToTable("DeptorOlds");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.HtmlSeekAttrib", b =>
@@ -681,7 +684,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("HtmlSeekAttribs", (string)null);
+                    b.ToTable("HtmlSeekAttribs");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempHtml", b =>
@@ -714,7 +717,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("BrsFileId");
 
-                    b.ToTable("TempHtmls", (string)null);
+                    b.ToTable("TempHtmls");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempPdf", b =>
@@ -752,7 +755,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("TempPdfs", (string)null);
+                    b.ToTable("TempPdfs");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.LastDownNumber", b =>
@@ -773,7 +776,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LastDownNumbers", (string)null);
+                    b.ToTable("LastDownNumbers");
 
                     b.HasData(
                         new
@@ -855,7 +858,9 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DeptorOld");
 

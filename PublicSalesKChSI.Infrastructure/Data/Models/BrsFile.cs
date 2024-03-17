@@ -23,16 +23,20 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
 
         [Required]
         [StringLength(DateLengthMax)]
+        [Display(Name = "Дата на публикуване")]
         public string Dcng { get; set; } = null!;
 
         [Required]
         [StringLength(DateLengthMax)]
+        [Display(Name = "Дата на публикуване")]
         public string Date { get; set; } = null!;
 
         [Comment("to be fill when file is Ready again")]
+        [Display(Name = "Дата на обработване")]
         public DateTime? Time { get; set; }
 
         [Comment("to be fill when file is Ready again")]
+        [Display(Name = "Дата на експортване")]
         public DateTime? Dpos { get; set; } 
 
         [Required]
@@ -49,18 +53,27 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         [Required]
         public bool IsFindDeptor { get; set; }
 
+        [Required]
+        public bool IsFileExported { get; set; }
+
+        [Display(Name = "Линк към pdf-a в BCPEA")]
+        public string UrlPdf { get; set; } = null!;
+
         [StringLength(BrsFileScreMax)]
+        [Display(Name = "№ на изп. дело")]
         public string? Scre { get; set; }
 
         [StringLength(BrsFileLicaMax)]
+        [Display(Name = "Име и ЕГН на длъжници")]
         public string? Lica { get; set; }
 
         [StringLength(BrsFileTelfMax)]
         public string? Telf { get; set; }
                 
-        public string EmployeeId { get; set; } = null!;
+        public string? EmployeeId { get; set; }
         [ForeignKey(nameof(EmployeeId))]
-        public IdentityUser Employee { get; set; } = null!;
+        public IdentityUser? Employee { get; set; }
+
         //foreign key - по конвенция https://learn.microsoft.com/en-us/ef/core/modeling/relationships/conventions
         public int? DeptorOldID { get; set; } 
         public DeptorOld? DeptorOld { get; set; }
@@ -85,6 +98,6 @@ KSI22_11
 
 SCRE - попълва се от оператор, ако мога да го извличам от текста
 Lica
-Telf - в бъдеще, или сега да го попълвам както е в Telf отпреди
+Telf
 
  */

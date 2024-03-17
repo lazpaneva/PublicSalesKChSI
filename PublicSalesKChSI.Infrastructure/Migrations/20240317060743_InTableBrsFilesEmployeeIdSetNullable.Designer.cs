@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublicSalesKChSI.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PublicSalesKChSI.Infrastructure.Data;
 namespace PublicSalesKChSI.Infrastructure.Migrations
 {
     [DbContext(typeof(PublicSalesDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317060743_InTableBrsFilesEmployeeIdSetNullable")]
+    partial class InTableBrsFilesEmployeeIdSetNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -340,7 +342,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("BrsFiles", (string)null);
+                    b.ToTable("BrsFiles");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.Court", b =>
@@ -363,7 +365,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courts", (string)null);
+                    b.ToTable("Courts");
 
                     b.HasData(
                         new
@@ -612,7 +614,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeptorOlds", (string)null);
+                    b.ToTable("DeptorOlds");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.HtmlSeekAttrib", b =>
@@ -681,7 +683,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("HtmlSeekAttribs", (string)null);
+                    b.ToTable("HtmlSeekAttribs");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempHtml", b =>
@@ -714,7 +716,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("BrsFileId");
 
-                    b.ToTable("TempHtmls", (string)null);
+                    b.ToTable("TempHtmls");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.FromDownload.TempPdf", b =>
@@ -752,7 +754,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasIndex("TempHtmlId");
 
-                    b.ToTable("TempPdfs", (string)null);
+                    b.ToTable("TempPdfs");
                 });
 
             modelBuilder.Entity("PublicSalesKChSI.Infrastructure.Data.Models.LastDownNumber", b =>
@@ -773,7 +775,7 @@ namespace PublicSalesKChSI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LastDownNumbers", (string)null);
+                    b.ToTable("LastDownNumbers");
 
                     b.HasData(
                         new

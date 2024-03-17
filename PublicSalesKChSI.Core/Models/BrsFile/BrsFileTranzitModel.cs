@@ -25,6 +25,7 @@ namespace PublicSalesKChSI.Core.Models.BrsFile
 
         public string NameSI { get; set; } = null!; //name на съдебен изпълнител
         public string NumberSI { get; set; } = null!; //рег. № на съдебен изпълнител
-        
+
+        public string UrlPdf { get; set; } = null!;
     }
 }
