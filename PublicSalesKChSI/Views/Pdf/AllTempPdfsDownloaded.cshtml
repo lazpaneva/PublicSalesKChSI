@@ -1,14 +1,16 @@
 ﻿@model TempPdfViewModel
 
-<div class="container">
+<div class="container class="justify-content-center">
         <h2>ОБЩ БРОЙ СВАЛЕНИ ФАЙЛОВЕ: @Model.PdfFileCount</h2>
-        @if (@Model.TempPdfModels.Count() > 3)
+        @if (@Model.TempPdfModels.Count() >= 3)
         {
             <h4 class="text-danger mt-2">Може да се премине към следващата стъпка - Generate new BRS-files.</h4>
         }
     
     
     <div class="row">
+
+        
     @foreach (var pdf in Model.TempPdfModels)
     {
     

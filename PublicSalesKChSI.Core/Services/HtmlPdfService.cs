@@ -99,6 +99,12 @@ namespace PublicSalesKChSI.Core.Services
                     try
                     {
                         string htmlContent = await client.DownloadStringTaskAsync(urlAddress);
+                        int indexPodobni = htmlContent.IndexOf("Подобни обяви");
+                        if (indexPodobni != -1)
+                        {
+                            htmlContent = htmlContent.Substring(0, indexPodobni);
+                        }
+
                         string htmlAddForDb = RemoveScriptContent(htmlContent); //delete от <script to </script
 
                         htmlAdd = new TempHtml()
@@ -207,9 +213,9 @@ namespace PublicSalesKChSI.Core.Services
             return true;
         }
 
-        public async Task<TempPdfViewModel> ViewingPdfFilesIsDownloadingAsync()
+        public TempPdfViewModel ViewingPdfFilesIsDownloading()
         {
-            var pdfList = await repo.AllReadOnly<TempPdf>().ToListAsync();
+            var pdfList = repo.AllReadOnly<TempPdf>().ToList();
             TempPdfViewModel model = new TempPdfViewModel();
             model.PdfFileCount = pdfList.Count;
             model.TempPdfModels = pdfList

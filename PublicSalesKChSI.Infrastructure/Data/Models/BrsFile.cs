@@ -57,7 +57,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public bool IsFileExported { get; set; }
 
         [Display(Name = "Линк към pdf-a в BCPEA")]
-        public string UrlPdf { get; set; } = null!;
+        public string? UrlPdf { get; set; }
 
         [StringLength(BrsFileScreMax)]
         [Display(Name = "№ на изп. дело")]

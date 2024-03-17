@@ -31,7 +31,7 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public IActionResult AllTempPdfsDownloaded()
         {
-            var model = htmlPdfServices.ViewingPdfFilesIsDownloadingAsync();
+            var model = htmlPdfServices.ViewingPdfFilesIsDownloading();
 
             return View(model);
         }

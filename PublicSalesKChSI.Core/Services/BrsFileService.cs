@@ -112,7 +112,7 @@ namespace PublicSalesKChSI.Core.Services
                 
 
                 //string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
-                string brsText = String.Concat(Enumerable.Repeat("-", 25));
+                string brsText = "----------------------------------------\n";
                 string infoSI= string.Empty;
                 foreach (var item in group)
                 {
@@ -183,6 +183,7 @@ namespace PublicSalesKChSI.Core.Services
             if (contentDiv != null)
             {
                 string plainText = contentDiv.InnerText;
+                                
                 return plainText.Trim();
             }
             else
@@ -198,6 +199,7 @@ namespace PublicSalesKChSI.Core.Services
             doc.LoadHtml(htmlContent);
 
             var labelGroups = doc.DocumentNode.SelectNodes("//div[@class='label__group']");
+
             //var labelGroups = doc.DocumentNode.SelectNodes("/div[@class='col col--info']//div[@class='label__group']");
 
             if (labelGroups != null)
@@ -209,27 +211,34 @@ namespace PublicSalesKChSI.Core.Services
                     //var info = labelGroup.SelectSingleNode("//div[@class='info']").InnerText.Trim();
                     //labelGroupInfoList.Add($"{label}: {info}");
                     string labelText = labelGroup.InnerText;
+                    //int indexPodobni = labelText.IndexOf("Подобни обяви");
+                    //if (indexPodobni != -1)
+                    //{
+                    //    labelText = labelText.Substring(0, indexPodobni);
+                    //}
+
                     labelText = labelText.Replace("&quot;", "\"");
                     labelGroupInfoList.Add(labelText);
                 }
             }
 
-            //изчистване на излишните "населени места" от ПОДОБНИ ОБЯВИ, които също са с клас=label__group
-            int count = 0;
-            int listLength = 1;
-            foreach (var label in labelGroupInfoList)
-            {
-                if (label.Contains("НАСЕЛЕНО МЯСТО"))
-                {
-                    count++;
-                }
-                if (count > 1 && label.Contains("НАСЕЛЕНО МЯСТО"))
-                {
-                    break;
-                }
-                listLength++;
-            }
-            return labelGroupInfoList.Take(listLength-1).ToArray();
+            ////изчистване на излишните "населени места" от ПОДОБНИ ОБЯВИ, които също са с клас=label__group
+            //int count = 0;
+            //int listLength = 1;
+            //foreach (var label in labelGroupInfoList)
+            //{
+            //    if (label.Contains("НАСЕЛЕНО МЯСТО"))
+            //    {
+            //        count++;
+            //    }
+            //    if (count > 1 && label.Contains("НАСЕЛЕНО МЯСТО"))
+            //    {
+            //        break;
+            //    }
+            //    listLength++;
+            //}
+            //return labelGroupInfoList.Take(listLength-1).ToArray();
+            return labelGroupInfoList.ToArray();
         }
         private static string ReplaceMultipleSpacesWithNewLine(string input)
         {
@@ -360,7 +369,7 @@ namespace PublicSalesKChSI.Core.Services
         private string GetName(string title, string price, string address, string[] other)
         {
             string result = string.Empty;
-           
+            
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
 
@@ -370,12 +379,24 @@ namespace PublicSalesKChSI.Core.Services
                 int posAddress = address.IndexOf("Адрес:");
                 if (posAddress != -1) { address = address.Substring(posAddress + 7).Trim(); }
             }
-            string? area = Array.Find(other, element => element.Contains("ПЛОЩ: "));
-            area = area?.Substring(area.IndexOf("ПЛОЩ: ") + 6).Trim();
-            area = area?.Replace("кв.м", "кв. м");
 
-            string? town = Array.Find(other, element => element.Contains("НАСЕЛЕНО МЯСТО: "));
-            town = town?.Substring(town.IndexOf("НАСЕЛЕНО МЯСТО: ") + 16).Trim();
+            //string? area = Array.Find(subOther, element => element.Contains("ПЛОЩ: "));
+            string area = String.Empty;
+            string town = String.Empty;
+            string otherStr = string.Join("\n", other);
+            int indexArea = otherStr.IndexOf("ПЛОЩ: ");
+            int indexTown = otherStr.IndexOf("НАСЕЛЕНО МЯСТО: ");
+            if (indexArea != -1)
+            {
+                area = otherStr.Substring(indexArea + 6, otherStr.IndexOf("\n", indexArea+6) - indexArea).Trim();
+                area = area.Replace("кв.м", "кв. м");
+            }
+
+            //string? town = Array.Find(subOther, element => element.Contains("НАСЕЛЕНО МЯСТО: "));
+            if (indexTown != -1)
+            {
+                town = otherStr.Substring(indexTown+16, otherStr.IndexOf("\n", indexTown + 16) - indexTown);
+            }
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
             result = ReplaceSimbolsInName(result);
