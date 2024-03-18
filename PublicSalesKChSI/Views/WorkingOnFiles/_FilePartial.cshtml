@@ -1,0 +1,71 @@
+﻿@model FileServiceModel
+
+@*<div class="col-md-4">
+<table class="table">
+    <thead>
+        <tr>
+           <th>Дата на публ.</th>
+            <th>Класификатор за съда</th>
+            <th>Заглавие</th>
+            <th>Собственик/Длъжник</th>
+            <th>Готов ли е</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+*@            
+            <tr>
+                <td>@Model.Dcng</td>
+                <td>@Model.Klas</td>
+                <td>@Model.Name</td>
+                <td>@Model.Lica</td>
+                <td>@Model.IsFileReady</td>
+                <td><a href="@Url.Action("Edit", "WorkingOnFiles", new { id = Model.Id })">Edit</a></td>
+                <td><a href="@Url.Action("Delete", "WorkingOnFiles", new { id = Model.Id })">Delete</a></td>
+            </tr>
+  @*      }
+    </tbody>
+</table>
+</div>*@
+@*<div class="col-md-4">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.Dcng" alt="File Image">
+        <div class="card-body text-center">
+            <h4>@Model.Name</h4>
+            <h6>Address: <b>@Model.Address</b></h6>
+            <h6>
+                Price Per Month:
+                <b>@String.Format("{0:f2}", Model.PricePerMonth) BGN</b>
+            </h6>
+            <h6>(@(Model.IsRented ? "Rented" : "Not Rented"))</h6>
+            <br />
+            <a asp-controller="File" asp-action="Details" asp-route-id="@Model.Id"
+               class="btn btn-success">Details</a>
+            @if (this.User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="File" asp-action="Edit" asp-route-id="@Model.Id"
+                   class="btn btn-warning">Edit</a>
+                <a asp-controller="File" asp-action="Delete" asp-route-id="@Model.Id"
+                   class="btn btn-danger">Delete</a>
+                <p></p>
+                @if (!Model.IsRented)
+                {
+                    <form class="input-group-sm" asp-controller="File"
+                          asp-action="Rent" asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Rent" />
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="File" asp-action="Leave"
+                          asp-route-id="@Model.Id" method="post">
+                        <input class="btn btn-primary" type="submit" value="Leave" />
+                    </form>
+                }
+            }
+        </div>
+    </div>
+</div>*@
