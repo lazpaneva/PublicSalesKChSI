@@ -18,7 +18,7 @@ namespace PublicSalesKChSI.Controllers
         {
             await htmlPdfServices.FillTempPDfAsync();
                         
-            if (!await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf))
+            if (await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf) == false)
             {
                 return View("Index");
             }

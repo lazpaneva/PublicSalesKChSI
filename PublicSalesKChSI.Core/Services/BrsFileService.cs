@@ -95,8 +95,8 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.Date = GetPublishedDate(firstElement.Date);
                 brsFile.Dcng = GetPublishedDate(firstElement.Date);
                 brsFile.Klas = GetKlas(firstElement.LabelGroups);
-                brsFile.Name = GetName(firstElement.Title, firstElement.Price,
-                    firstElement.Address, firstElement.LabelGroups);
+                brsFile.Name = ReplaceSimbolsInName(GetName(firstElement.Title, firstElement.Price,
+                    firstElement.Address, firstElement.LabelGroups));
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.IsFileExported = false;
@@ -287,6 +287,7 @@ namespace PublicSalesKChSI.Core.Services
                     string correctSubstr = String.Concat("№ ", i.ToString());
                     str = str.Replace(incorrectSubstr, correctSubstr);
                 }
+                str.Replace("\"№", "\" №");
                 foreach (var item in ArrayRemovmentFromText)
                 {
                     str.Replace(item, "");
@@ -302,11 +303,16 @@ namespace PublicSalesKChSI.Core.Services
 
         private static string ReplaceSimbolsInName(string input)
         {
-            input = input.Replace(", , , , ", ", ").Trim();
-            input = input.Replace(", , , ", ", ").Trim();
-            input = input.Replace(", , ", ", ").Trim();
-            input = input.Replace(", , ", ", ").Trim();
-          
+            while (input.Contains(", , "))
+            {
+                input = input.Replace(", , ",", ");
+            }
+            while (input.Contains("  "))
+            {
+                input = input.Replace("  ", " ");
+            }
+
+
             if (input.Length >= 1)
             {
                 string substr = input.Substring(input.Length - 1, 1);
@@ -316,7 +322,7 @@ namespace PublicSalesKChSI.Core.Services
                 }
             }
             
-            return input;
+            return input.Trim();
         }
         private string GetPublishedDate(string dateFromBrsOnlyContent)
         {
