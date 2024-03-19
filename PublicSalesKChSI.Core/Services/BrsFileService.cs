@@ -112,7 +112,7 @@ namespace PublicSalesKChSI.Core.Services
                 
 
                 //string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
-                string brsText = "----------------------------------------\n";
+                string brsText = string.Empty; 
                 string infoSI= string.Empty;
                 foreach (var item in group)
                 {
@@ -126,7 +126,7 @@ namespace PublicSalesKChSI.Core.Services
                     //    infoSI += ReplaceSimbolsFromText(item.Text);
                     //}
                     brsText += ReplaceSimbolsFromText(item.Text)+ "\n";
-                    brsText += "..TEXT:\n";
+                    brsText += String.Concat(brsText, "..TEXT:\n");
                     
                     //попълване на virtual list
                     int numSite = item.NumberInSite;

@@ -20,5 +20,8 @@ namespace PublicSalesKChSI.Core.Contracts
             );
 
         Task<IEnumerable<string>> AllCourtsTownAsync();
+
+        Task<bool> ExistsAsync(int id);
+        Task<FileDetailsServiceModel> FileDetailsByIdAsync(int id);
     }
 }

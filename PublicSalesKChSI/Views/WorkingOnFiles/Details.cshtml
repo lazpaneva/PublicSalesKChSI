@@ -1,0 +1,69 @@
+﻿@model FileDetailsServiceModel
+
+@{
+    ViewBag.Title = "File Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="form-inline text-end">
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a class="btn btn-warning mx-5 mb-2 px-5" asp-controller="WorkingOnFiles" asp-action="Edit"
+           asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-danger mx-5 mb-2 px-5" asp-controller="WorkingOnFiles" asp-action="Delete"
+           asp-route-id="@Model.Id">Delete</a>
+    }
+</div>
+<div class="row-cols-1 mb-3">
+        <table class="table">
+        <tbody>
+            <tr class="bg-secondary bg-gradient text-white">
+                <td>Код</td>
+                <td>Дата на публ.</td>
+                <td>Име</td>
+                <td>Класификатор</td>
+                <td>Изп. дело</td>
+            </tr>
+            <tr>
+                <td>@Model.Code</td>
+                <td>@Model.Dcng</td>
+                <td>@Model.Name</td>
+                <td>@Model.Klas</td>
+                <td>@Model.Scre</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row-cols-1 mb-3">
+    <table class="table">
+        <tbody>
+            <tr class="bg-secondary bg-gradient text-white">
+                <td>Оператор</td>
+                <td>Готов/Нов</td>
+                <td>Собственик/Длъжник</td>
+            </tr>
+            <tr>
+                <td>@Model.Lica</td>
+                <td>(@(Model.IsFileReady ? "готов" : "нов"))</td>
+                <td>@Model.EmployeeId</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row-cols-1 mb-3">
+     <table class="table">
+        <tbody>
+            <tr class="bg-secondary bg-gradient text-white">
+                <td>Текст на документа</td>
+            </tr>
+            <tr>
+                <td>@Model.Text</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

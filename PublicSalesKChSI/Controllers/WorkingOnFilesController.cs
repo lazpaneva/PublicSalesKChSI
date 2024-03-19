@@ -32,5 +32,17 @@ namespace PublicSalesKChSI.Controllers
 
             return View(query);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (await _files.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+            var model = await _files.FileDetailsByIdAsync(id);
+
+            return View(model);
+        }
     }
 }

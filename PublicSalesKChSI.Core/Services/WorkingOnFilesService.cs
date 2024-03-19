@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
 
 namespace PublicSalesKChSI.Core.Services
@@ -31,9 +32,12 @@ namespace PublicSalesKChSI.Core.Services
                 var seekCourt = await repo.AllReadOnly<Court>()
                     .Where(c => c.Town == court)
                     .FirstOrDefaultAsync();
+                if (seekCourt != null)
+                {
+                    filesToShow = filesToShow
+                    .Where(f => f.Klas.Substring(6) == seekCourt.Number);
+                }
                 
-                filesToShow = filesToShow
-                    .Where(f => f.Klas.Substring(6) == seekCourt.Number); //да го дооправя
             }
 
             if (!string.IsNullOrWhiteSpace(searchFirstTermName))
@@ -97,6 +101,31 @@ namespace PublicSalesKChSI.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<bool> ExistsAsync(int id)
+        {
+            return await repo.AllReadOnly<BrsFile>()
+                .AnyAsync(f=> f.Id== id);
+        }
+
+        public async Task<FileDetailsServiceModel> FileDetailsByIdAsync(int id)
+        {
+            return await repo.AllReadOnly<BrsFile>()
+                .Where(f => f.Id == id)
+                .Select(h => new FileDetailsServiceModel()
+                {
+                    Id = h.Id,
+                    Code = h.Code,
+                    Klas =  h.Klas,
+                    Name = h.Name,
+                    Dcng= h.Dcng,
+                    Lica = h.Lica,
+                    Scre = h.Scre,
+                    EmployeeId = h.EmployeeId,
+                    IsFileReady = h.IsFileReady,
+                    Text = HttpUtility.HtmlEncode(h.Text)
+        })
+                .FirstAsync();
+        }
     }
 }
 
