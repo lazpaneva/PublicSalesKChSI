@@ -43,7 +43,7 @@ namespace PublicSalesKChSI.Controllers
                     Text = file.Text,
                     IsFileReady = file.IsFileReady,
                     IsFindDeptor = file.IsFindDeptor,
-                    UrlPdf = "Липсва"
+                    UrlPdf = "Липсва pdf файл"
                 });
             }
 

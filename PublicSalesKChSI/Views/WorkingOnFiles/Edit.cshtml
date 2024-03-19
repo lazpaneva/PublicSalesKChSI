@@ -8,8 +8,7 @@
 <hr />
 
 <div class="row-cols-1 mb-1">
-    @*//<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">*@
-        <form asp-action="Edit" method="post">
+    <form asp-controller="WorkingOnFiles" asp-action="Edit" method="post">
             <div class="mb-2">
                 <label asp-for="@Model.Klas" class="form-label-add-edit text-secondary">Edit Klas</label>
                 <input asp-for="@Model.Klas" class="form-control" aria-required="true" />
@@ -41,9 +40,16 @@
             </div>
 
             <div class="mb-2">
-                <label asp-for="@Model.Text" class="form-label-add-edit text-secondary">Edit text</label>
-                <textarea asp-for="@Model.Text" class="form-control" aria-required="true" rows="30" />
+                <label asp-for="@Model.Text" class="form-label-add-edit text-secondary">Edit Text</label>
+                <textarea asp-for="@Model.Text" class="form-control" aria-required="true" rows="10"></textarea>
                 <span asp-validation-for="@Model.Text" class="text-danger"></span>
             </div>
-            <</form>
+        <div class="mb-2">
+            <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Edit" />
+        </div>
+    </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

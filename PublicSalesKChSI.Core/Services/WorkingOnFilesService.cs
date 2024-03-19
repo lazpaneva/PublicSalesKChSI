@@ -122,7 +122,7 @@ namespace PublicSalesKChSI.Core.Services
                     Scre = h.Scre,
                     EmployeeId = h.EmployeeId,
                     IsFileReady = h.IsFileReady,
-                    Text = HttpUtility.HtmlEncode(h.Text)
+                    Text = h.Text
         })
                 .FirstAsync();
         }

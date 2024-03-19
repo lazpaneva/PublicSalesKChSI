@@ -96,7 +96,7 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.Dcng = GetPublishedDate(firstElement.Date);
                 brsFile.Klas = GetKlas(firstElement.LabelGroups);
                 brsFile.Name = ReplaceSimbolsInName(GetName(firstElement.Title, firstElement.Price,
-                    firstElement.Address, firstElement.LabelGroups));
+                    firstElement.Address, firstElement.LabelGroups)); //в адрес вид на търга явен търг
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.IsFileExported = false;
@@ -111,22 +111,14 @@ namespace PublicSalesKChSI.Core.Services
                 }
                 
 
-                //string brsText = String.Join("\n", firstElement.LabelGroups.Take(13));
-                string brsText = string.Empty; 
+                string brsText = String.Join("\n", firstElement.LabelGroups);
                 string infoSI= string.Empty;
+                int countElemGroup = 1;
                 foreach (var item in group)
                 {
-                    brsText += item.LabelGroups.Take(13);
-                    //if (countElemGroup >= 1 && countElemGroup<=8) 
-                    //{
-                    //        brsText += ReplaceSimbolsFromText(item.Text); 
-                    //}
-                    //else if (countElemGroup >= 9 && countElemGroup < 14)
-                    //{
-                    //    infoSI += ReplaceSimbolsFromText(item.Text);
-                    //}
-                    brsText += ReplaceSimbolsFromText(item.Text)+ "\n";
-                    brsText += String.Concat(brsText, "..TEXT:\n");
+                    brsText += item.LabelGroups.ToString();
+                    brsText += item.Text+ "\n";
+                    brsText += "..TEXT:\n";
                     
                     //попълване на virtual list
                     int numSite = item.NumberInSite;
@@ -136,11 +128,14 @@ namespace PublicSalesKChSI.Core.Services
                     
                     brsFile.HtmlFiles.Add(tempHtml);
                     await repo.SaveChangesAsync();
-                    //countElemGroup++;
+                    countElemGroup++;
                 }
                 brsFile.Text += firstElement.NameSI;
                 brsFile.Text += infoSI;
                 brsFile.Text = ReplaceSimbolsInName(brsText);
+                brsFile.Text = brsFile.Text.Replace("System.Linq.Enumerable+ListPartition`1[System.String]","");
+                brsFile.Text = brsFile.Text.Replace("System.String[]", "");
+
 
                 if (!IsValid(brsFile))
                 {
@@ -390,18 +385,23 @@ namespace PublicSalesKChSI.Core.Services
             string area = String.Empty;
             string town = String.Empty;
             string otherStr = string.Join("\n", other);
-            int indexArea = otherStr.IndexOf("ПЛОЩ: ");
-            int indexTown = otherStr.IndexOf("НАСЕЛЕНО МЯСТО: ");
+            int indexArea = otherStr.ToUpper().IndexOf("ПЛОЩ: ");
+            int indexTownNS = otherStr.ToUpper().IndexOf("НАСЕЛЕНО МЯСТО: ");
+            int indexTownMP = otherStr.ToUpper().IndexOf("МЯСТО НА ПРОВЕЖДАНЕ: ");
+            
             if (indexArea != -1)
             {
                 area = otherStr.Substring(indexArea + 6, otherStr.IndexOf("\n", indexArea+6) - indexArea).Trim();
                 area = area.Replace("кв.м", "кв. м");
             }
 
-            //string? town = Array.Find(subOther, element => element.Contains("НАСЕЛЕНО МЯСТО: "));
-            if (indexTown != -1)
+            if (indexTownNS != -1)
             {
-                town = otherStr.Substring(indexTown+16, otherStr.IndexOf("\n", indexTown + 16) - indexTown);
+                town = otherStr.Substring(indexTownNS+16, otherStr.IndexOf("\n", indexTownNS + 16) - indexTownNS);
+            }
+            if (indexTownMP != -1)
+            {
+                town = otherStr.Substring(indexTownMP + 16, otherStr.IndexOf("\n", indexTownMP + 21) - indexTownMP);
             }
 
             result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;

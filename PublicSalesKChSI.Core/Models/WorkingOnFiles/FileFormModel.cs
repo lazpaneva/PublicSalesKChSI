@@ -16,8 +16,6 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
 {
     public class FileFormModel
     {
-        //[Required] ???майче не трябва, ще се вземе от модела
-        //public int Id { get; set; }
 
         [Required]
         [StringLength(BrsFileKlasMax, MinimumLength = BrsFileKlasMin,
@@ -42,7 +40,6 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
         public string Name { get; set; } = null!;
 
         [Required]
-        [Column(TypeName = "ntext")] 
         public string Text { get; set; } = null!;
 
         [StringLength(BrsFileScreMax, MinimumLength = BrsFileScreMin,
