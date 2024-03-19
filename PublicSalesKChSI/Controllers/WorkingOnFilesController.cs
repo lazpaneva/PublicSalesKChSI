@@ -15,8 +15,9 @@ namespace PublicSalesKChSI.Controllers
         {
             var queryResult = await _files.AllAsync(
                 query.Court,
-                query.SearchTermName,
-                query.SearchTermText,
+                query.SearchFirstTermName,
+                query.SearchSecondTermName,
+                query.SearchThirdTermName,
                 query.Sorting,
                 query.CurrentPage,
                 AllFilesQueryModel.FilesPerPage

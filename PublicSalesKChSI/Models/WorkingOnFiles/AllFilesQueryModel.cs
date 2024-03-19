@@ -10,11 +10,14 @@ namespace PublicSalesKChSI.Models.WorkingOnFiles
         public const int FilesPerPage = 20;
 
         public string Court { get; init; } = null!;
-        [Display(Name = "Търсене в името")]
-        public string SearchTermName { get; init; } = null!;
+        [Display(Name = "Търсене в името И")]
+        public string SearchFirstTermName { get; init; } = null!;
 
-        [Display(Name = "Търсене в текста")]
-        public string SearchTermText { get; init; } = null!;
+        [Display(Name = "Търсене в името И")]
+        public string SearchSecondTermName { get; init; } = null!;
+
+        [Display(Name = "Търсене в името")]
+        public string SearchThirdTermName { get; init; } = null!;
         public FileSorting Sorting { get; init; }
         public int CurrentPage { get; init; } = 1;
         public int TotalFilesCount { get; set; }

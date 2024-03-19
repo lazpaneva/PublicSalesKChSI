@@ -9,6 +9,7 @@ namespace PublicSalesKChSI.Infrastructure.Constants
     public enum FileSorting
     {
         Newest = 0,
-        Dlajnici = 1
+        Dlajnici = 1,
+        Name = 2,
     }
 }

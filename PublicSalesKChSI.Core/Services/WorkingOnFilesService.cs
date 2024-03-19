@@ -20,36 +20,48 @@ namespace PublicSalesKChSI.Core.Services
         {
             repo = _repository;
         }
-        public async Task<FileQueryServiceModel> AllAsync(string? court = null, string? searchTermName = null,
-            string? searchTermText = null, FileSorting sorting = FileSorting.Newest,
+        public async Task<FileQueryServiceModel> AllAsync(string? court = null, string? searchFirstTermName = null,
+            string? searchSecondTermText = null, string? searchThirdTermText = null, FileSorting sorting = FileSorting.Newest,
             int currentPage = 1, int filesPerPage = 1)
         {
             var filesToShow = repo.AllReadOnly<BrsFile>();
 
             if (!string.IsNullOrWhiteSpace(court))
             {
+                var seekCourt = await repo.AllReadOnly<Court>()
+                    .Where(c => c.Town == court)
+                    .FirstOrDefaultAsync();
+                
                 filesToShow = filesToShow
-                    .Where(f => f.Klas.Substring(6) == court); //да го дооправя
+                    .Where(f => f.Klas.Substring(6) == seekCourt.Number); //да го дооправя
             }
 
-            if (!string.IsNullOrWhiteSpace(searchTermName))
+            if (!string.IsNullOrWhiteSpace(searchFirstTermName))
             {
-                string normalizedSearchTerm = searchTermName.ToLower();
+                string normalizedSearchTerm = searchFirstTermName.ToLower();
                 filesToShow = filesToShow
                     .Where(f => (f.Name.ToLower().Contains(normalizedSearchTerm)));
             }
 
-            if (!string.IsNullOrWhiteSpace(searchTermText))
+            if (!string.IsNullOrWhiteSpace(searchSecondTermText))
             {
-                string normalizedSearchTerm = searchTermText.ToLower();
+                string normalizedSearchTerm = searchSecondTermText.ToLower();
                 filesToShow = filesToShow
-                    .Where(f => (f.Text.ToLower().Contains(normalizedSearchTerm)));
+                    .Where(f => (f.Name.ToLower().Contains(normalizedSearchTerm)));
             }
 
+            if (!string.IsNullOrWhiteSpace(searchThirdTermText))
+            {
+                string normalizedSearchTerm = searchThirdTermText.ToLower();
+                filesToShow = filesToShow
+                    .Where(f => (f.Name.ToLower().Contains(normalizedSearchTerm)));
+            }
             filesToShow = sorting switch
             {
                 FileSorting.Dlajnici => filesToShow
                     .OrderBy(f => f.Lica),
+                FileSorting.Name => filesToShow
+                .OrderBy(f => f.Name),
                 _ => filesToShow
                     .OrderByDescending(f => f.Dcng)
             };

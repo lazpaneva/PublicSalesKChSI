@@ -11,8 +11,9 @@ namespace PublicSalesKChSI.Core.Contracts
     public interface IWorkingOnFilesService
     {
         Task<FileQueryServiceModel> AllAsync(string? court = null,
-            string? searchTermName = null,
-            string? searchTermText = null,
+            string? searchFirstTermName = null,
+            string? searchSeconTermName = null,
+            string? searchThirdTermName = null,
             FileSorting sorting = FileSorting.Newest,
             int currentPage = 1,
             int filesPerPage = 1
