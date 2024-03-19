@@ -11,6 +11,7 @@ namespace PublicSalesKChSI.Controllers
         {
             _files = files;
         }
+        [HttpGet]
         public async Task<IActionResult> All([FromQuery] AllFilesQueryModel query)
         {
             var queryResult = await _files.AllAsync(

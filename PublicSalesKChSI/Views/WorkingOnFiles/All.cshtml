@@ -108,10 +108,10 @@
         <thead>
             <tr>
                 <th>Дата на публ.</th>
-                <th>Класификатор за съда</th>
                 <th>Заглавие</th>
                 <th>Собственик/Длъжник</th>
                 <th>Готов/Нов</th>
+                <th>Details</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -122,10 +122,10 @@
     {
                 <tr>
                     <td>@file.Dcng</td>
-                    <td>@file.Klas</td>
                     <td>@file.Name</td>
                     <td>@file.Lica</td>
                     <td>(@(file.IsFileReady ? "готов" : "нов"))</td>
+                    <td><a href="@Url.Action("Details", "WorkingOnFiles", new { id = file.Id })">Details</a></td>
                     <td><a href="@Url.Action("Edit", "WorkingOnFiles", new { id = file.Id })">Edit</a></td>
                     <td><a href="@Url.Action("Delete", "WorkingOnFiles", new { id = file.Id })">Delete</a></td>
                 </tr>
