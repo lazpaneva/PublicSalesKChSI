@@ -23,5 +23,7 @@ namespace PublicSalesKChSI.Core.Contracts
 
         Task<bool> ExistsAsync(int id);
         Task<FileDetailsServiceModel> FileDetailsByIdAsync(int id);
+        Task EditAsync(int fileId, FileFormModel model);
+
     }
 }

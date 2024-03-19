@@ -17,6 +17,9 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
         [Display(Name = "Код")]
         public string Code { get; set; } = null!;
 
+        [Display(Name = "Отново дата на публ. (така е BRS-структурата)")]
+        public string Date { get; set; } = null!;
+
         [Display(Name = "изп. дело")]
         public string? Scre { get; set; }
 

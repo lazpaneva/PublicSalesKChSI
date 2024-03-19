@@ -100,7 +100,6 @@ namespace PublicSalesKChSI.Core.Services
                 .Distinct()
                 .ToListAsync();
         }
-
         public async Task<bool> ExistsAsync(int id)
         {
             return await repo.AllReadOnly<BrsFile>()
@@ -118,6 +117,7 @@ namespace PublicSalesKChSI.Core.Services
                     Klas =  h.Klas,
                     Name = h.Name,
                     Dcng= h.Dcng,
+                    Date= h.Date,
                     Lica = h.Lica,
                     Scre = h.Scre,
                     EmployeeId = h.EmployeeId,
@@ -125,6 +125,23 @@ namespace PublicSalesKChSI.Core.Services
                     Text = HttpUtility.HtmlEncode(h.Text)
         })
                 .FirstAsync();
+        }
+        public async Task EditAsync(int fileId, FileFormModel model)
+        {
+            var seekFile = await repo.GetByIdAsync<BrsFile>(fileId);
+
+            if (seekFile != null)
+            {
+                seekFile.Klas = model.Klas;
+                seekFile.Name = model.Name;
+                seekFile.Text = model.Text;
+                seekFile.Scre = model.Scre;
+                seekFile.Dcng = model.Dcng;
+                seekFile.Date = model.Date;
+                seekFile.Lica = model.Lica;
+                
+                await repo.SaveChangesAsync();
+            }
         }
     }
 }

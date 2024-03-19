@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PublicSalesKChSI.Core.Contracts;
+using PublicSalesKChSI.Core.Models.WorkingOnFiles;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 using PublicSalesKChSI.Models.WorkingOnFiles;
 
 namespace PublicSalesKChSI.Controllers
@@ -44,5 +46,45 @@ namespace PublicSalesKChSI.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (await _files.ExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            //някаква проверка дали юзера е автентикиран???
+            var modelDetails = await _files.FileDetailsByIdAsync(id);
+
+            FileFormModel model = new FileFormModel();
+            model.Klas = modelDetails.Klas;
+            model.Dcng = modelDetails.Dcng;
+            model.Date = modelDetails.Date;
+            model.Name = modelDetails.Name;
+            model.Text = modelDetails.Text;
+            model.Lica = modelDetails.Scre;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, FileFormModel model)
+        {
+            if (await _files.ExistsAsync(id) == false)
+            {
+                return this.View();
+            }
+            if (ModelState.IsValid == false)
+            {
+                return this.View();
+            }
+            
+            await _files.EditAsync(id, model);
+
+            return RedirectToAction(nameof(Details), new {id = id});
+        }
+
     }
 }
