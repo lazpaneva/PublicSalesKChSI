@@ -12,34 +12,35 @@
     <form asp-action="CreateBrsFile" method="post">
         @for (int i = 0; i < Model.Count; i++)
         {
-            <div>
+            <div class="row-cols-1 mb-3">
                 <h4>File @(i + 1)</h4>
                 <div class="col-md-6 col-sm-6 mb-2">
                     <label asp-for="@Model[i].Code"></label>
                     <input asp-for="@Model[i].Code" />
                     <span asp-validation-for="@Model[i].Code" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-2">
+                <div class="row-cols-1 mb-3">
+                @*<div class="col-md-6 col-sm-12 mb-2">*@
                     <label asp-for="@Model[i].Klas"></label>
                     <input asp-for="@Model[i].Klas" />
                     <span asp-validation-for="@Model[i].Klas" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-2">
+                <div class="row-cols-1 mb-3">
                     <label asp-for="@Model[i].Date"></label>
                     <input asp-for="@Model[i].Date" />
                     <span asp-validation-for="@Model[i].Date" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-2">
+                <div class="row-cols-1 mb-3">
                     <label asp-for="@Model[i].Dcng"></label>
                     <input asp-for="@Model[i].Dcng" />
                     <span asp-validation-for="@Model[i].Dcng" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-2">
+                <div class="row-cols-1 mb-3">
                     <label asp-for="@Model[i].Name"></label>
                     <input asp-for="@Model[i].Name" />
                     <span asp-validation-for="@Model[i].Name" class="text-danger"></span>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-2">
+                <div class="row-cols-1 mb-3">
                     <label asp-for="@Model[i].Text"></label>
                      <textarea asp-for="@Model[i].Text" class="form-control" aria-required="true" rows="5"></textarea>
                     <span asp-validation-for="@Model[i].Text" class="text-danger"></span>
@@ -51,7 +52,7 @@
 }
 else
 {
-    <p>Няма грешни файлове за валидация спрямо базата от данни BrsFiles</p>
+    <p>Няма грешни файлове за валидация спрямо таблица BrsFiles</p>
 }
 
 

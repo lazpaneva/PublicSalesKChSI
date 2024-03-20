@@ -100,7 +100,7 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.IsFileExported = false;
-                //brsFile.EmployeeId = userId;
+                brsFile.EmployeeId = userId;
                 if (firstElement.UrlPdf != null)
                 {
                     brsFile.UrlPdf = firstElement.UrlPdf;
@@ -112,6 +112,14 @@ namespace PublicSalesKChSI.Core.Services
                 
 
                 string brsText = String.Join("\n", firstElement.LabelGroups);
+                int indexRegNumber = brsText.ToUpper().IndexOf("РЕГ. № ЧСИ");
+                brsText = brsText.Substring(0, indexRegNumber);
+                string endBrsText = string.Empty;
+                if (indexRegNumber != -1)
+                {
+                    endBrsText = "\n"+ "-------------------------------\n"+brsText.Substring(indexRegNumber);
+                }
+                
                 string infoSI= string.Empty;
                 int countElemGroup = 1;
                 foreach (var item in group)
@@ -132,10 +140,10 @@ namespace PublicSalesKChSI.Core.Services
                 }
                 brsFile.Text += firstElement.NameSI;
                 brsFile.Text += infoSI;
+                brsFile.Text += endBrsText;
                 brsFile.Text = ReplaceSimbolsInName(brsText);
                 brsFile.Text = brsFile.Text.Replace("System.Linq.Enumerable+ListPartition`1[System.String]","");
                 brsFile.Text = brsFile.Text.Replace("System.String[]", "");
-
 
                 if (!IsValid(brsFile))
                 {

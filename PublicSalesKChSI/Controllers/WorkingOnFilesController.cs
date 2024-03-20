@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Models.WorkingOnFiles;
+using PublicSalesKChSI.Extensions;
 using PublicSalesKChSI.Infrastructure.Data.Models;
 using PublicSalesKChSI.Models.WorkingOnFiles;
 
@@ -38,7 +39,7 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (await _files.ExistsAsync(id) == false)
+            if (await _files.ExistsAsyncBrsFile(id) == false)
             {
                 return BadRequest();
             }
@@ -50,12 +51,18 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if (await _files.ExistsAsync(id) == false)
+            var brsFileExists = await _files.ExistsAsyncBrsFile(id);
+            if (brsFileExists == false)
             {
                 return BadRequest();
             }
 
-            //някаква проверка дали юзера е автентикиран???
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            {
+                return Unauthorized();
+            }
+
             var modelDetails = await _files.FileDetailsByIdAsync(id);
 
             FileFormModel model = new FileFormModel();
@@ -72,10 +79,17 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, FileFormModel model)
         {
-            if (await _files.ExistsAsync(id) == false)
+            if (await _files.ExistsAsyncBrsFile(id) == false)
             {
                 return this.View();
             }
+
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            {
+                return Unauthorized();
+            }
+
             if (ModelState.IsValid == false)
             {
                 return this.View();

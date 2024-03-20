@@ -100,7 +100,7 @@ namespace PublicSalesKChSI.Core.Services
                 .Distinct()
                 .ToListAsync();
         }
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<bool> ExistsAsyncBrsFile(int id)
         {
             return await repo.AllReadOnly<BrsFile>()
                 .AnyAsync(f=> f.Id== id);
@@ -120,7 +120,7 @@ namespace PublicSalesKChSI.Core.Services
                     Date= h.Date,
                     Lica = h.Lica,
                     Scre = h.Scre,
-                    EmployeeId = h.EmployeeId,
+                    EmployeeId = h.Employee.UserName,
                     IsFileReady = h.IsFileReady,
                     Text = h.Text
         })
@@ -139,9 +139,21 @@ namespace PublicSalesKChSI.Core.Services
                 seekFile.Dcng = model.Dcng;
                 seekFile.Date = model.Date;
                 seekFile.Lica = model.Lica;
-                
+                seekFile.Time = DateTime.Now;
+                seekFile.Dpos = DateTime.Now.AddDays(7);
+                seekFile.IsFileReady = true;
+                //DeptorOld след MINE да видя как ще се попълва TO DO
+                seekFile.IsFindDeptor = true;
+
                 await repo.SaveChangesAsync();
             }
+        }
+
+        public async Task<string> ExistsEmployeeIdWitrhIdAsync(int id)
+        {
+            var brsFile = await repo.GetByIdAsync<BrsFile>(id);
+
+            return brsFile.EmployeeId;
         }
     }
 }

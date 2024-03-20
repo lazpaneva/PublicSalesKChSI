@@ -12,8 +12,6 @@
     {
         <a class="btn btn-warning mx-5 mb-2 px-5" asp-controller="WorkingOnFiles" asp-action="Edit"
            asp-route-id="@Model.Id">Edit</a>
-        <a class="btn btn-danger mx-5 mb-2 px-5" asp-controller="WorkingOnFiles" asp-action="Delete"
-           asp-route-id="@Model.Id">Delete</a>
     }
 </div>
 <div class="row-cols-1 mb-3">
@@ -41,9 +39,9 @@
     <table class="table">
         <tbody>
             <tr class="bg-secondary bg-gradient text-white">
-                <td>Оператор</td>
-                <td>Готов/Нов</td>
                 <td>Собственик/Длъжник</td>
+                <td>Готов/Нов</td>
+                <td>Оператор</td>
             </tr>
             <tr>
                 <td>@Model.Lica</td>
