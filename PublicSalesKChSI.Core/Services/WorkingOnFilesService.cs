@@ -4,6 +4,7 @@ using PublicSalesKChSI.Core.Models.WorkingOnFiles;
 using PublicSalesKChSI.Infrastructure.Constants;
 using PublicSalesKChSI.Infrastructure.Data.Common;
 using PublicSalesKChSI.Infrastructure.Data.Models;
+using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,8 +67,8 @@ namespace PublicSalesKChSI.Core.Services
                     .OrderBy(f => f.Lica),
                 FileSorting.Name => filesToShow
                 .OrderBy(f => f.Name),
-                _ => filesToShow
-                    .OrderByDescending(f => f.Dcng)
+                _ => filesToShow    
+                    .OrderByDescending(f => f.Code)
             };
 
             var files = await filesToShow
@@ -76,6 +77,7 @@ namespace PublicSalesKChSI.Core.Services
                 .Select(f=> new FileServiceModel
                 { 
                     Id = f.Id,
+                    Code = f.Code,
                     Name = f.Name,
                     Dcng = f.Dcng,
                     Klas = f.Klas,
@@ -154,6 +156,24 @@ namespace PublicSalesKChSI.Core.Services
             var brsFile = await repo.GetByIdAsync<BrsFile>(id);
 
             return brsFile.EmployeeId;
+        }
+
+        public async Task DeleteBrsFileAsync(int fileId)
+        {
+            var brsFile = await repo.GetByIdAsync<BrsFile>(fileId);
+
+            await repo.DeleteAsync<BrsFile>(brsFile.Id);
+            await repo.SaveChangesAsync();
+        }
+
+        public async Task DeleteTempHtmlByBrsFileIdAsync(int brsFileId)
+        {
+            var tempHtml = await repo.All<TempHtml>().FirstOrDefaultAsync(th=> th.BrsFileId == brsFileId);
+            if (tempHtml != null)
+            {
+                repo.Delete<TempHtml>(tempHtml);
+                await repo.SaveChangesAsync();
+            }
         }
     }
 }

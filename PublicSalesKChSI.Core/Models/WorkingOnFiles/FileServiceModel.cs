@@ -11,6 +11,9 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
     {
         public int Id { get; set; }
 
+        [Display(Name = "Код докум.")]
+        public string Code { get; set; } = null!;
+
         [Display(Name = "Дата на публ.")]
         public string Dcng { get; set; } = null!;
 

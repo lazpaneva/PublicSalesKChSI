@@ -100,5 +100,51 @@ namespace PublicSalesKChSI.Controllers
             return RedirectToAction(nameof(Details), new {id = id});
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await _files.ExistsAsyncBrsFile(id) == false)
+            {
+                return BadRequest();
+            }
+
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            {
+                return Unauthorized();
+            }
+
+            var modelDetails = await _files.FileDetailsByIdAsync(id);
+
+            var model = new FileDetailsServiceModel()
+            {
+                Code = modelDetails.Code,
+                Name = modelDetails.Name,
+                Dcng = modelDetails.Dcng,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(FileDetailsServiceModel file)
+        {
+            if (await _files.ExistsAsyncBrsFile(file.Id) == false)
+            {
+                return BadRequest();
+            }
+
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(file.Id) != currUser)
+            {
+                return Unauthorized();
+            }
+
+            await _files.DeleteTempHtmlByBrsFileIdAsync(file.Id);
+
+            await _files.DeleteBrsFileAsync(file.Id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

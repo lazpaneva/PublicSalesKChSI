@@ -1,5 +1,7 @@
 ﻿using PublicSalesKChSI.Core.Models.WorkingOnFiles;
 using PublicSalesKChSI.Infrastructure.Constants;
+using PublicSalesKChSI.Infrastructure.Data.Models;
+using PublicSalesKChSI.Infrastructure.Data.Models.FromDownload;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,8 @@ namespace PublicSalesKChSI.Core.Contracts
         Task<string> ExistsEmployeeIdWitrhIdAsync(int id);
         Task<FileDetailsServiceModel> FileDetailsByIdAsync(int id);
         Task EditAsync(int fileId, FileFormModel model);
+        Task DeleteBrsFileAsync(int fileId);
+        Task DeleteTempHtmlByBrsFileIdAsync(int brsFileId);
 
     }
 }
