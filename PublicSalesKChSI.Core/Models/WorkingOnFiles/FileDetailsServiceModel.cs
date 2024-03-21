@@ -25,6 +25,7 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
 
         [Display(Name = "Оператор")]
         public string? EmployeeId { get; set; }
+
         [Display(Name = "Текст")]
         public string Text { get; set; } = null!;
     }

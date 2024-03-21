@@ -82,6 +82,7 @@ namespace PublicSalesKChSI.Core.Services
                     Dcng = f.Dcng,
                     Klas = f.Klas,
                     Lica = f.Lica,
+                    UrlPdf = f.UrlPdf,
                     IsFileReady = f.IsFileReady,
                 })
                 .ToListAsync();

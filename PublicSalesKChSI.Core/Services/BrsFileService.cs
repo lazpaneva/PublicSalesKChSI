@@ -117,7 +117,7 @@ namespace PublicSalesKChSI.Core.Services
                 string endBrsText = string.Empty;
                 if (indexRegNumber != -1)
                 {
-                    endBrsText = "\n"+ "-------------------------------\n"+brsText.Substring(indexRegNumber);
+                    endBrsText = string.Concat("\n-------------------------------\n", brsText.Substring(indexRegNumber));
                 }
                 
                 string infoSI= string.Empty;
@@ -377,8 +377,6 @@ namespace PublicSalesKChSI.Core.Services
         //ЛИПСВА НАСЕЛЕНО МЯСТО В АДРЕСА, освен това дали да го обвързвам с типа на обявата ??? И в tempHtml не се попълва, може би няма да е зле да го мисля???
         private string GetName(string title, string price, string address, string[] other)
         {
-            string result = string.Empty;
-            
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
             replacedPrice = replacedPrice.Substring(0, replacedPrice.IndexOf("лв.") + 3);
 
@@ -412,7 +410,7 @@ namespace PublicSalesKChSI.Core.Services
                 town = otherStr.Substring(indexTownMP + 16, otherStr.IndexOf("\n", indexTownMP + 21) - indexTownMP);
             }
 
-            result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
+            string result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
             result = ReplaceSimbolsInName(result);
 
             return result;

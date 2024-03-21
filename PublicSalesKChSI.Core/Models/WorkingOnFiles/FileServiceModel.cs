@@ -24,8 +24,10 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
         [Display(Name = "Заглавие")]
         public string Name { get; set; } = null!;
 
+        public string? UrlPdf { get; set; }
+
         [Display(Name = "Собственик/Длъжник")]
-        public string Lica { get; set; } = null!;
+        public string? Lica { get; set; }
 
         [Display(Name = "Готов ли е")]
         public bool IsFileReady { get; set; }

@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Statistics\" />
-    <Folder Include="Views\Sale\" />
   </ItemGroup>
 
 </Project>

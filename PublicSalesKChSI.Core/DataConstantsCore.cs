@@ -9,8 +9,8 @@ namespace PublicSalesKChSI.Core
     public static class DataConstantsCore
     {
         //for HtmlPdfService
-        public const string PathDownloadHtm = "c:/ksi_html";
-        public const string PathDownloadPdf = "c:/ksi_Pdf/";
+        public const string PathDownloadHtm = "~/ksi_html/";
+        public const string PathDownloadPdf = "~/ksi_Pdf/";
 
         public const string BcpeaPathAsset = "https://sales.bcpea.org/asset/";
         public const string BcpeaPathVechicle = "https://sales.bcpea.org/vehicles/";
@@ -81,6 +81,16 @@ namespace PublicSalesKChSI.Core
             "&nbsp;",
             "Начална цена\n"
     };
+
+      public static List<int> allPortions = new List<int>
+            {
+                150,
+                300,
+                450,
+                600,
+                750,
+                900,
+            };
 
     }
 }

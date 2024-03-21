@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Models\Deptor\" />
     <Folder Include="Models\Statistics\" />
-    <Folder Include="Models\Sale\" />
   </ItemGroup>
 
   <ItemGroup>
