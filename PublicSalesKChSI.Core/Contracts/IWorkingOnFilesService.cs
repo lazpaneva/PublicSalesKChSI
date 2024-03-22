@@ -18,7 +18,8 @@ namespace PublicSalesKChSI.Core.Contracts
             string? searchThirdTermName = null,
             FileSorting sorting = FileSorting.Newest,
             int currentPage = 1,
-            int filesPerPage = 1
+            int filesPerPage = 1,
+            bool notReady = false
             );
 
         Task<IEnumerable<string>> AllCourtsTownAsync();
@@ -29,6 +30,13 @@ namespace PublicSalesKChSI.Core.Contracts
         Task EditAsync(int fileId, FileFormModel model);
         Task DeleteBrsFileAsync(int fileId);
         Task DeleteTempHtmlByBrsFileIdAsync(int brsFileId);
+        //Task<FileQueryServiceModel> GetAllNotReadyFilesAsync(string? court = null,
+        //    string? searchFirstTermName = null,
+        //    string? searchSeconTermName = null,
+        //    string? searchThirdTermName = null,
+        //    FileSorting sorting = FileSorting.Newest,
+        //    int currentPage = 1,
+        //    int filesPerPage = 1);
 
     }
 }

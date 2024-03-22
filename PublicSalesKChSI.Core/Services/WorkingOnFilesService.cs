@@ -24,7 +24,7 @@ namespace PublicSalesKChSI.Core.Services
         }
         public async Task<FileQueryServiceModel> AllAsync(string? court = null, string? searchFirstTermName = null,
             string? searchSecondTermText = null, string? searchThirdTermText = null, FileSorting sorting = FileSorting.Newest,
-            int currentPage = 1, int filesPerPage = 1)
+            int currentPage = 1, int filesPerPage = 1, bool notReady = false)
         {
             var filesToShow = repo.AllReadOnly<BrsFile>();
 
@@ -38,7 +38,6 @@ namespace PublicSalesKChSI.Core.Services
                     filesToShow = filesToShow
                     .Where(f => f.Klas.Substring(6) == seekCourt.Number);
                 }
-                
             }
 
             if (!string.IsNullOrWhiteSpace(searchFirstTermName))
@@ -70,6 +69,10 @@ namespace PublicSalesKChSI.Core.Services
                 _ => filesToShow    
                     .OrderByDescending(f => f.Code)
             };
+            if (notReady)
+            {
+                filesToShow = filesToShow.Where(f => f.IsFileReady == false);
+            }
 
             var files = await filesToShow
                 .Skip((currentPage - 1) * filesPerPage)
@@ -82,6 +85,7 @@ namespace PublicSalesKChSI.Core.Services
                     Dcng = f.Dcng,
                     Klas = f.Klas,
                     Lica = f.Lica,
+                    Scre = f.Scre,
                     UrlPdf = f.UrlPdf,
                     IsFileReady = f.IsFileReady,
                 })
@@ -176,6 +180,19 @@ namespace PublicSalesKChSI.Core.Services
                 await repo.SaveChangesAsync();
             }
         }
+
+        //public async Task<FileQueryServiceModel> GetAllNotReadyFilesAsync(string? court = null, 
+        //    string? searchFirstTermName = null, string? searchSeconTermName = null, 
+        //    string? searchThirdTermName = null, FileSorting sorting = FileSorting.Newest, 
+        //    int currentPage = 1, int filesPerPage = 1)
+        //{
+        //    var filesToWork = repo.AllReadOnly<BrsFile>();
+        //    filesToWork = filesToWork.Where(f => f.IsFileReady == false);
+
+                
+        //}
+
+
     }
 }
 

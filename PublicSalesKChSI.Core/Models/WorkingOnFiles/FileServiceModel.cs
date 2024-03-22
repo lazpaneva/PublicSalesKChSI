@@ -23,8 +23,8 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
 
         [Display(Name = "Заглавие")]
         public string Name { get; set; } = null!;
-
         public string? UrlPdf { get; set; }
+        public string? Scre { get; set; }
 
         [Display(Name = "Собственик/Длъжник")]
         public string? Lica { get; set; }

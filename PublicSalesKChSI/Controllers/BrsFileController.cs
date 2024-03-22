@@ -5,6 +5,7 @@ using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Models.BrsFile;
 using PublicSalesKChSI.Extensions;
 using PublicSalesKChSI.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using PublicSalesKChSI.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using PublicSalesKChSI.Infrastructure.Data;

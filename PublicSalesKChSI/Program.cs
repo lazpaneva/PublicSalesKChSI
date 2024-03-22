@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PublicSalesKChSI.Core.Contracts;
-using PublicSalesKChSI.Core.Services;
 using PublicSalesKChSI.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +31,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();    
+app.MapDefaultControllerRoute();
 app.MapRazorPages();
 
 await app.RunAsync();

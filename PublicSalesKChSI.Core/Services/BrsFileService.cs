@@ -100,7 +100,7 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.IsFileExported = false;
-                brsFile.EmployeeId = userId;
+                brsFile.EmployeeId = userId; 
                 if (firstElement.UrlPdf != null)
                 {
                     brsFile.UrlPdf = firstElement.UrlPdf;
@@ -422,8 +422,7 @@ namespace PublicSalesKChSI.Core.Services
 
             return Validator.TryValidateObject(dto, validationContext, validationResult, true);
         }
-
-
+       
     }
 
 }

@@ -21,6 +21,7 @@ namespace PublicSalesKChSI.Models.WorkingOnFiles
         public FileSorting Sorting { get; init; }
         public int CurrentPage { get; init; } = 1;
         public int TotalFilesCount { get; set; }
+        public bool NotReady { get; set; } = false;
 
         public IEnumerable<string> Courts { get; set; } = new List<string>();
 

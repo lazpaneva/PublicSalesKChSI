@@ -24,7 +24,8 @@ namespace PublicSalesKChSI.Controllers
                 query.SearchThirdTermName,
                 query.Sorting,
                 query.CurrentPage,
-                AllFilesQueryModel.FilesPerPage
+                AllFilesQueryModel.FilesPerPage,
+                query.NotReady
                 );
 
             query.TotalFilesCount = queryResult.TotalFilesCount;
@@ -71,7 +72,8 @@ namespace PublicSalesKChSI.Controllers
             model.Date = modelDetails.Date;
             model.Name = modelDetails.Name;
             model.Text = modelDetails.Text;
-            model.Lica = modelDetails.Scre;
+            model.Lica = modelDetails.Lica;
+            model.Scre = modelDetails.Scre;
 
             return View(model);
         }
@@ -145,6 +147,29 @@ namespace PublicSalesKChSI.Controllers
             await _files.DeleteBrsFileAsync(file.Id);
 
             return RedirectToAction(nameof(All));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Mine([FromQuery] AllFilesQueryModel query)
+        {
+            var queryResult = await _files.AllAsync(
+                query.Court,
+                query.SearchFirstTermName,
+                query.SearchSecondTermName,
+                query.SearchThirdTermName,
+                query.Sorting,
+                query.CurrentPage,
+                AllFilesQueryModel.FilesPerPage,
+                true
+                );
+
+            query.TotalFilesCount = queryResult.TotalFilesCount;
+            query.Files = queryResult.Files;
+
+            var courtCategories = await _files.AllCourtsTownAsync();
+            query.Courts = (IEnumerable<string>)courtCategories;
+
+            return View(query);
         }
     }
 }
