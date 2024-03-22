@@ -148,6 +148,58 @@ namespace PublicSalesKChSI.Controllers
 
             return RedirectToAction(nameof(All));
         }
+        [HttpGet]
+        public async Task<IActionResult> ShortEdit(int id)
+        {
+            var brsFileExists = await _files.ExistsAsyncBrsFile(id);
+            if (brsFileExists == false)
+            {
+                return BadRequest();
+            }
+
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            {
+                return Unauthorized();
+            }
+
+            var modelDetails = await _files.FileDetailsByIdAsync(id);
+
+            FileFormModel model = new FileFormModel();
+            model.Klas = modelDetails.Klas;
+            model.Dcng = modelDetails.Dcng;
+            model.Date = modelDetails.Date;
+            model.Name = modelDetails.Name;
+            model.Text = modelDetails.Text;
+            model.Lica = modelDetails.Lica;
+            model.Scre = modelDetails.Scre;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ShortEdit(int id, FileFormModel model)
+        {
+            if (await _files.ExistsAsyncBrsFile(id) == false)
+            {
+                return this.View();
+            }
+
+            string currUser = User.Id();
+            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            {
+                return Unauthorized();
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return this.View();
+            }
+
+            await _files.EditAsync(id, model);
+
+            return RedirectToAction("Mine");
+        }
 
         [HttpGet]
         public async Task<IActionResult> Mine([FromQuery] AllFilesQueryModel query)

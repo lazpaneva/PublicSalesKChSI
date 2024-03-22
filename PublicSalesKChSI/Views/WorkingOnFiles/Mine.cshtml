@@ -107,13 +107,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Код</th>
                 <th>Дата на публ.</th>
                 <th>Заглавие</th>
-                <th>Собственик/Длъжник</th>
                 <th>Готов/Нов</th>
                 <th>Линк Pdf</th>
-                <th>Details</th>
                 <th>Edit</th>
             </tr>
         </thead>
@@ -122,14 +119,11 @@
             @foreach (var file in Model.Files)
             {
                 <tr>
-                    <td>@file.Code</td>
                     <td>@file.Dcng</td>
-                    <td>@file.Name</td>
-                    <td>@file.Lica</td>
+                    <td><a href="https://web.apis.bg/srch.php?dt=38&sr=@file.Name" target="_blank">@(file.Name)</a></td>
                     <td>(@(file.IsFileReady ? "готов" : "нов"))</td>
                     <td><a class="link-opacity-10" href="@file.UrlPdf">Link PDF</a></td>
-                    <td><a href="@Url.Action("Details", "WorkingOnFiles", new { id = file.Id })">Details</a></td>
-                    <td><a href="@Url.Action("Edit", "WorkingOnFiles", new { id = file.Id })">Edit</a></td>
+                    <td><a href="@Url.Action("ShortEdit", "WorkingOnFiles", new { id = file.Id })">ShortEdit</a></td>
                 </tr>
             }
     </table>

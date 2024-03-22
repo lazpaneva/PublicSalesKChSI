@@ -113,8 +113,8 @@
                 <th>Собственик/Длъжник</th>
                 <th>Готов/Нов</th>
                 <th>Линк Pdf</th>
-                <th>Details</th>
                 <th>Edit</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
@@ -128,8 +128,8 @@
                     <td>@file.Lica</td>
                     <td>(@(file.IsFileReady ? "готов" : "нов"))</td>
                     <td><a class="link-opacity-10" href="@file.UrlPdf">Link PDF</a></td>
-                    <td><a href="@Url.Action("Details", "WorkingOnFiles", new { id = file.Id })">Details</a></td>
                     <td><a href="@Url.Action("Edit", "WorkingOnFiles", new { id = file.Id })">Edit</a></td>
+                    <td><a href="@Url.Action("Details", "WorkingOnFiles", new { id = file.Id })">Details</a></td>
                 </tr>
     }
     </table>

@@ -68,6 +68,7 @@ namespace PublicSalesKChSI.Core.Services
                 .OrderBy(f => f.Name),
                 _ => filesToShow    
                     .OrderByDescending(f => f.Code)
+                    .ThenBy(f => f.Klas)
             };
             if (notReady)
             {
@@ -77,8 +78,8 @@ namespace PublicSalesKChSI.Core.Services
             var files = await filesToShow
                 .Skip((currentPage - 1) * filesPerPage)
                 .Take(filesPerPage)
-                .Select(f=> new FileServiceModel
-                { 
+                .Select(f => new FileServiceModel
+                {
                     Id = f.Id,
                     Code = f.Code,
                     Name = f.Name,
@@ -189,7 +190,7 @@ namespace PublicSalesKChSI.Core.Services
         //    var filesToWork = repo.AllReadOnly<BrsFile>();
         //    filesToWork = filesToWork.Where(f => f.IsFileReady == false);
 
-                
+
         //}
 
 
