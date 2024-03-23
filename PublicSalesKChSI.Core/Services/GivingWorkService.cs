@@ -25,14 +25,15 @@ namespace PublicSalesKChSI.Core.Services
             userManager = _userManager;
         }
 
-        public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel distributionWorkModel)
+        public DistributionWorkModel GetUsersAndNotReadyCountFiles()
+        //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel distributionWorkModel)
         {
             ICollection<IdentityUser> users = userManager.Users.ToList();
 
-            //DistributionWorkModel distributionWorkModel = new DistributionWorkModel()
-            //{
-            //    EmployesNumbFiles = new List<EmplNumbFilesModel>(),
-            //};
+            DistributionWorkModel distributionWorkModel = new DistributionWorkModel()
+            {
+                EmployesNumbFiles = new List<EmplNumbFilesModel>(),
+            };
 
             var notReadyFiles = repo.AllReadOnly<BrsFile>()
                 .Where(f => f.IsFileReady == false);
@@ -44,11 +45,10 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     EmplUserName = user.UserName,
                     EmplUserId = user.Id,
-                    NumbFiles = distributionWorkModel.EmployesNumbFiles.Where(u => u.EmplUserId == user.Id)
-                    .FirstOrDefault().NumbFiles
+                   
                 });
             }
-
+           
             return distributionWorkModel;
         }
         public async Task FillEmployeeIdInBrsFiles(DistributionWorkModel model)
@@ -63,10 +63,9 @@ namespace PublicSalesKChSI.Core.Services
                 foreach (var file in files)
                 {
                     file.EmployeeId = item.EmplUserId;
+                    await repo.SaveChangesAsync();
                 }
-                await repo.SaveChangesAsync();
             }
-            
         }
     }
 }

@@ -9,26 +9,26 @@
 
 <div class="justify-content-center">
 
-    @if (Model!= null && Model.NotReadyFilesCount>0)
+    @if (@Model.NotReadyFilesCount>0)
     {
         <h2>ОБЩ БРОЙ ФАЙЛОВЕ ЗА ЗА РАБОТА: @Model.NotReadyFilesCount</h2>
         <div class="row">
-        <form asp-controller="GivingWorkToEmplyees" asp-action="DistrubuteFiles" method="post">
-            @foreach (var file in Model.EmployesNumbFiles)
+            <form method="post">
+            @foreach (var file in @Model.EmployesNumbFiles)
             {
                     <div class="mb-2 w-100">
-                   
                         <div class="form-group">
-                            <p>@file.EmplUserName</p>
+                            <label asp-for="@file.EmplUserName" class="form-label-add-edit">Брой файлове за работа</label>
+                            <input asp-for="@file.EmplUserName" class="form-control" aria-required="true" />
                         </div>
                         <div class="form-group">
                             <label asp-for="@file.NumbFiles" class="form-label-add-edit">Брой файлове за работа</label>
-                            <input asp-controller="GivingWorkToEmplyees" asp-action="DistrubuteFiles" asp-for="@file.NumbFiles" class="form-control" aria-required="true" />
+                            <input asp-for="@file.NumbFiles" class="form-control" aria-required="true" />
                         </div>
                     </div>
             }
                 <div class="m-3">
-                    <input asp-controller="GivingWorkToEmplyees" asp-action="DistrubuteFiles" class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
+                    <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
                 </div>
         </form>
         </div>
