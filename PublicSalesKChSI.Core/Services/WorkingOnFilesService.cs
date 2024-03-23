@@ -89,6 +89,7 @@ namespace PublicSalesKChSI.Core.Services
                     Scre = f.Scre,
                     UrlPdf = f.UrlPdf,
                     IsFileReady = f.IsFileReady,
+                    EmployeeId = f.EmployeeId,
                 })
                 .ToListAsync();
 
@@ -157,7 +158,7 @@ namespace PublicSalesKChSI.Core.Services
             }
         }
 
-        public async Task<string> ExistsEmployeeIdWitrhIdAsync(int id)
+        public async Task<string?> ExistsEmployeeIdWitrhIdAsync(int id)
         {
             var brsFile = await repo.GetByIdAsync<BrsFile>(id);
 

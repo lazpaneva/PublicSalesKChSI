@@ -374,7 +374,6 @@ namespace PublicSalesKChSI.Core.Services
             return result;
         }
 
-        //ЛИПСВА НАСЕЛЕНО МЯСТО В АДРЕСА, освен това дали да го обвързвам с типа на обявата ??? И в tempHtml не се попълва, може би няма да е зле да го мисля???
         private string GetName(string title, string price, string address, string[] other)
         {
             string replacedPrice = price.Replace("Начална цена: ", "нач. цена ").Trim();
@@ -387,7 +386,6 @@ namespace PublicSalesKChSI.Core.Services
                 if (posAddress != -1) { address = address.Substring(posAddress + 7).Trim(); }
             }
 
-            //string? area = Array.Find(subOther, element => element.Contains("ПЛОЩ: "));
             string area = String.Empty;
             string town = String.Empty;
             string otherStr = string.Join("\n", other);

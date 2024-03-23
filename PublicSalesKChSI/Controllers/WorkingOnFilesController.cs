@@ -25,8 +25,7 @@ namespace PublicSalesKChSI.Controllers
                 query.Sorting,
                 query.CurrentPage,
                 AllFilesQueryModel.FilesPerPage,
-                query.NotReady
-                );
+                query.NotReady);
 
             query.TotalFilesCount = queryResult.TotalFilesCount;
             query.Files = queryResult.Files;
@@ -212,11 +211,10 @@ namespace PublicSalesKChSI.Controllers
                 query.Sorting,
                 query.CurrentPage,
                 AllFilesQueryModel.FilesPerPage,
-                true
-                );
+                true);
 
             query.TotalFilesCount = queryResult.TotalFilesCount;
-            query.Files = queryResult.Files;
+            query.Files = queryResult.Files.Where(f=>f.EmployeeId == User.Id());
 
             var courtCategories = await _files.AllCourtsTownAsync();
             query.Courts = (IEnumerable<string>)courtCategories;

@@ -27,6 +27,7 @@ namespace PublicSalesKChSI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Error(int statusCode)
         {
             if (statusCode == 400)
