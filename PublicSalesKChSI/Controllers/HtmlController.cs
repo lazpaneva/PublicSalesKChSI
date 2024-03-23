@@ -59,7 +59,7 @@ namespace PublicSalesKChSI.Controllers
 
             if (assetDownloading && vechicleDownloading && propertyDownloading)
             {
-                return RedirectToAction("Index", "Pdf");
+                return RedirectToAction("DistrubuteFiles", "Pdf");
             }
             else
             {

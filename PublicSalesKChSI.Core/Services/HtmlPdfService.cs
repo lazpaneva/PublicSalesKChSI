@@ -30,7 +30,6 @@ namespace PublicSalesKChSI.Core.Services
             repo = _repository;
         }
 
-        [HttpGet]
         public async Task<int[]> GetLastNumbersAsync()
         {
             int[] lastNumsForThreeDifferentTypes = new int[3];
@@ -59,7 +58,7 @@ namespace PublicSalesKChSI.Core.Services
             return lastNumsForThreeDifferentTypes;
         }
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<bool> DownloadHtmlFilesAsync(int numberBegin, int numberEnd, string type)
         {
             //bool result = false;
@@ -133,7 +132,7 @@ namespace PublicSalesKChSI.Core.Services
             //return result;
         }
 
-        [HttpGet]
+        //[HttpGet]
         public async Task FillTempPDfAsync()
         {
             var pdfList = repo.AllReadOnly<TempHtml>()
@@ -177,7 +176,7 @@ namespace PublicSalesKChSI.Core.Services
             }
         }
 
-        [HttpGet]
+        //[HttpGet]
         public async Task<bool> DownloadPdfFilesAsync(string folderPath)
         {
             DeleteAndCreateDirectory(folderPath);
@@ -279,7 +278,7 @@ namespace PublicSalesKChSI.Core.Services
             return result;
         }
 
-        private string RemoveScriptContent(string input)
+        private static string RemoveScriptContent(string input)
         {
             string pattern = @"<script\b[^<]*(?:(?!</script>)<[^<]*)*</script>";
             Regex regex = new Regex(pattern);

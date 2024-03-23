@@ -14,6 +14,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IHtmlPdfService, HtmlPdfService>();
             services.AddScoped<IBrsFileService, BrsFileService>();
             services.AddScoped<IWorkingOnFilesService, WorkingOnFilesService>();
+            services.AddScoped<IGivingWorkService, GivingWorkService>();
 
             return services;
         }
@@ -31,7 +32,8 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, 
+            IConfiguration config)
         {
             services.AddDefaultIdentity<IdentityUser>(options =>
             {

@@ -50,7 +50,7 @@ namespace PublicSalesKChSI.Controllers
 
             dbContext.SaveChanges();
 
-           return RedirectToAction("Index", "Home");
+           return RedirectToAction("DistrubuteFiles", "Home");
         }
     }
 }

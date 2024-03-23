@@ -20,7 +20,7 @@ namespace PublicSalesKChSI.Controllers
                         
             if (await htmlPdfServices.DownloadPdfFilesAsync(PathDownloadPdf) == false)
             {
-                return View("Index");
+                return View("DistrubuteFiles");
             }
             else
             {
