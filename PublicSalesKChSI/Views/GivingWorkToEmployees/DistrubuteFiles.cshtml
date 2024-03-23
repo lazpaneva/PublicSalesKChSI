@@ -13,22 +13,24 @@
     {
         <h2>ОБЩ БРОЙ ФАЙЛОВЕ ЗА ЗА РАБОТА: @Model.NotReadyFilesCount</h2>
         <div class="row">
-            <form method="post">
+            <form asp-controller="GivingWorkToEmployees" asp-action="DistrubuteFiles" method="post">
             @foreach (var file in @Model.EmployesNumbFiles)
             {
                     <div class="mb-2 w-100">
                         <div class="form-group">
                             <label asp-for="@file.EmplUserName" class="form-label-add-edit">Брой файлове за работа</label>
                             <input asp-for="@file.EmplUserName" class="form-control" aria-required="true" />
+                            <span asp-validation-for="@file.EmplUserName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="@file.NumbFiles" class="form-label-add-edit">Брой файлове за работа</label>
                             <input asp-for="@file.NumbFiles" class="form-control" aria-required="true" />
+                            <span asp-validation-for="@file.NumbFiles" class="text-danger"></span>
                         </div>
                     </div>
             }
                 <div class="m-3">
-                    <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
+                    <input asp-controller="GivingWorkToEmployees" asp-action="DistrubuteFiles" class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
                 </div>
         </form>
         </div>
