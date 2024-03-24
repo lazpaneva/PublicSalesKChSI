@@ -90,7 +90,9 @@ namespace PublicSalesKChSI.Core.Services
             var txtListGroupedByBrsFileNumber = txtList.GroupBy(x => x.BrsFileNumber);
             foreach (var group in txtListGroupedByBrsFileNumber)
             {
+
                 var brsFile = new BrsFile();
+                string brsText = string.Empty;
                 var firstElement = group.First();
                 brsFile.Code = GetCode(firstElement.NumberInSite);
                 brsFile.Date = GetPublishedDate(firstElement.Date).Trim();
@@ -101,7 +103,7 @@ namespace PublicSalesKChSI.Core.Services
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
                 brsFile.IsFileExported = false;
-                brsFile.EmployeeId = userId; 
+                brsFile.EmployeeId = userId;
                 if (firstElement.UrlPdf != null)
                 {
                     brsFile.UrlPdf = firstElement.UrlPdf;
@@ -110,25 +112,24 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     brsFile.UrlPdf = "Няма pdf файл.";
                 }
-                
+                //to do in function ако остане време
+                string price = string.Join("\n------------------------\n", group.Select(x => $"{x.Price}"));
+                string groupElements = string.Join("\n------------------------\n", group.Select(x => $"{string.Join("\n", x.LabelGroups)}"));
+                string text = string.Join("\n------------------------\n", group.Select(x => $"{x.Text}"));
 
-                string brsText = String.Join("\n", firstElement.LabelGroups);
-                int indexRegNumber = brsText.ToUpper().IndexOf("РЕГ. № ЧСИ");
-                brsText = brsText.Substring(0, indexRegNumber);
-                string endBrsText = string.Empty;
-                if (indexRegNumber != -1)
+                string[] priceArr = price.Split("\n------------------------\n");
+                string[] groupElementsArr = groupElements.Split("\n------------------------\n");
+                string[] textArr = text.Split("\n------------------------\n");
+                for (int i = 0; i < priceArr.Length; i++)
                 {
-                    endBrsText = string.Concat("\n-------------------------------\n", brsText.Substring(indexRegNumber));
+                    brsText += priceArr[i].Replace("\n ", " ").Trim() + "\n" 
+                        + groupElementsArr[i].Trim() 
+                        + "\nПОДРОБНА ИНФОРМАЦИЯ:\n" + textArr[i].Trim();
+                    brsText += "\n----------------------------------------\n";
                 }
-                
-                string infoSI= string.Empty;
-                int countElemGroup = 1;
+
                 foreach (var item in group)
                 {
-                    brsText += item.LabelGroups.ToString();
-                    brsText += item.Text+ "\n";
-                    brsText += "..TEXT:\n";
-                    
                     //попълване на virtual list
                     int numSite = item.NumberInSite;
                     TempHtml tempHtml = await repo.All<TempHtml>()
@@ -137,12 +138,10 @@ namespace PublicSalesKChSI.Core.Services
                     
                     brsFile.HtmlFiles.Add(tempHtml);
                     await repo.SaveChangesAsync();
-                    countElemGroup++;
                 }
                 brsFile.Text += firstElement.NameSI.Trim();
-                brsFile.Text += infoSI.Trim();
-                brsFile.Text += endBrsText;
                 brsFile.Text = ReplaceSimbolsInName(brsText);
+                brsFile.Text = ReplaceSimbolsFromText(brsText);
                 brsFile.Text = brsFile.Text.Replace("System.Linq.Enumerable+ListPartition`1[System.String]","");
                 brsFile.Text = brsFile.Text.Replace("System.String[]", "").Trim();
 
@@ -307,7 +306,6 @@ namespace PublicSalesKChSI.Core.Services
             {
                 input = input.Replace("  ", " ");
             }
-
 
             if (input.Length >= 1)
             {
