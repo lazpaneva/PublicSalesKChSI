@@ -72,7 +72,7 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
                 
         public string? EmployeeId { get; set; }
         [ForeignKey(nameof(EmployeeId))]
-        public IdentityUser? Employee { get; set; }
+        public ApplicationUser? Employee { get; set; }
 
         //foreign key - по конвенция https://learn.microsoft.com/en-us/ef/core/modeling/relationships/conventions
         public int? DeptorOldID { get; set; } 

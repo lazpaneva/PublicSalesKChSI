@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using PublicSalesKChSI.Infrastructure.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IBrsFileService brsFileService
+@inject IGivingWorkService givingWorkService
+@inject IWorkingOnFilesService workingOnFilesService
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

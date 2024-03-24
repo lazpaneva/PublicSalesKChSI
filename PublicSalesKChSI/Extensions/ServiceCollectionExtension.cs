@@ -4,6 +4,7 @@ using PublicSalesKChSI.Core.Contracts;
 using PublicSalesKChSI.Core.Services;
 using PublicSalesKChSI.Infrastructure.Data;
 using PublicSalesKChSI.Infrastructure.Data.Common;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -35,12 +36,11 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, 
             IConfiguration config)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 })
     .AddEntityFrameworkStores<PublicSalesDbContext>();

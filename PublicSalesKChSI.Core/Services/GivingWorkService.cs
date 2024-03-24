@@ -17,9 +17,9 @@ namespace PublicSalesKChSI.Core.Services
 {
     public class GivingWorkService : IGivingWorkService
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IRepository repo;
-        public GivingWorkService(IRepository _repo, UserManager<IdentityUser> _userManager)
+        public GivingWorkService(IRepository _repo, UserManager<ApplicationUser> _userManager)
         {
             repo = _repo;
             userManager = _userManager;
@@ -28,7 +28,7 @@ namespace PublicSalesKChSI.Core.Services
         public DistributionWorkModel GetUsersAndNotReadyCountFiles()
         //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel distributionWorkModel)
         {
-            ICollection<IdentityUser> users = userManager.Users.ToList();
+            ICollection<ApplicationUser> users = userManager.Users.ToList();
 
             DistributionWorkModel distributionWorkModel = new DistributionWorkModel()
             {

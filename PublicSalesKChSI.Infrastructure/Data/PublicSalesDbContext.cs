@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 
 namespace PublicSalesKChSI.Infrastructure.Data
 {
-    public class PublicSalesDbContext : IdentityDbContext
+    public class PublicSalesDbContext : IdentityDbContext<ApplicationUser>
     {
         public PublicSalesDbContext(DbContextOptions<PublicSalesDbContext> options)
             : base(options)

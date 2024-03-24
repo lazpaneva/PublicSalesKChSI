@@ -52,29 +52,6 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int LastDownNumberSaleTypeMin = 5;
         public const int LastDownNumberSaleTypeMax = 15;
 
-        //for HtmlSeekAttrib
-        public const int HtmlSeekAttribPriceMin = 1;
-        public const int HtmlSeekAttribPriceMax = 18;
-
-        public const int HtmlSeekAttribCityMin = 2;
-        public const int HtmlSeekAttribCityMax = 150;
-
-        public const int HtmlSeekAttribCourtMin = 3;
-        public const int HtmlSeekAttribCourtMax = 150;
-
-        public const int HtmlSeekAttribTypeSeekObjMin = 1;
-        public const int HtmlSeekAttribTypeSeekObjMax = 3;
-
-        public const int HtmlSeekAttribAddressMin = 5;
-        public const int HtmlSeekAttribAddressMax = 250;
-
-        public const int HtmlSeekAttribReceiverMin = 5;
-        public const int HtmlSeekAttribReceiverMax = 200;
-
-        public const int HtmlSeekAttribPropertyNumMin = 4;
-        public const int HtmlSeekAttribPropertyNumMax = 70;
-
-
         //for DeptorOld
         public const int DeptorOldCourtExtractFromKlasMin = 2;
         public const int DeptorOldCourtExtractFromKlasMax = 2;
@@ -104,28 +81,38 @@ namespace PublicSalesKChSI.Infrastructure.Constants
         public const int CourtNumberMin = 2;
         public const int CourtNumberMax = 2;
 
+        //for ApplicationUser
+        public const int FirstNameMaxLength = 12;
+        public const int FirstNameMinLength = 1;
 
+        public const int LastNameMaxLength = 15;
+        public const int LastNameMinLength = 3;
+
+        //Error messages
         public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters long";
         public const string ValueRangeErrorMessage = "Value for {0} must be between {1} and {2}.";
+
+        //for HtmlSeekAttrib НЕ СЕ ИЗПОЛЗВАТ ЗАСЕГА
+        //МОЖЕ БИ ЩЕ МИ ТРЯБВАТ, ако правя добро мачване към такива, които вече имат Deptor
+        public const int HtmlSeekAttribPriceMin = 1;
+        public const int HtmlSeekAttribPriceMax = 18;
+
+        public const int HtmlSeekAttribCityMin = 2;
+        public const int HtmlSeekAttribCityMax = 150;
+
+        public const int HtmlSeekAttribCourtMin = 3;
+        public const int HtmlSeekAttribCourtMax = 150;
+
+        public const int HtmlSeekAttribTypeSeekObjMin = 1;
+        public const int HtmlSeekAttribTypeSeekObjMax = 3;
+
+        public const int HtmlSeekAttribAddressMin = 5;
+        public const int HtmlSeekAttribAddressMax = 250;
+
+        public const int HtmlSeekAttribReceiverMin = 5;
+        public const int HtmlSeekAttribReceiverMax = 200;
+
+        public const int HtmlSeekAttribPropertyNumMin = 4;
+        public const int HtmlSeekAttribPropertyNumMax = 70;
     }
 }
-/*
- * ..FUNC:
-1
-..TYPE:
-6
-..MTOM:
-48
-..MRAZ:
-36
-..SCOD:
-11
-..CODV:
-99
-..CODA:
-..SORC:
-Кама░а на ╖а▒▓ни▓е ▒║дебни изп║лни▓ели
-..IMEF:
-
-
- */

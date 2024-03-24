@@ -39,9 +39,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.SeedDb
         public LastDownNumber LastNumberVeichles { get; set; } = null!;
         public LastDownNumber LastNumberProperties { get; set; } = null!;
 
-        public IdentityUser EmloyeeFirst { get; set; } = null!;
+        public ApplicationUser EmloyeeFirst { get; set; } = null!;
 
-        public IdentityUser EmloyeeSecond { get; set; } = null!;
+        public ApplicationUser EmloyeeSecond { get; set; } = null!;
         public SeedData()
         {
             SeedUsers();
@@ -51,27 +51,31 @@ namespace PublicSalesKChSI.Infrastructure.Data.SeedDb
 
         private void SeedUsers()
         {
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            EmloyeeFirst = new IdentityUser()
+            EmloyeeFirst = new ApplicationUser()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "ja.iv@abv.bg",
                 NormalizedUserName = "JA.IV@ABV.BG",
                 Email = "ja.iv@abv.bg",
-                NormalizedEmail = "JA.IV@ABV.BG"
+                NormalizedEmail = "JA.IV@ABV.BG",
+                FirstName = "Jana",
+                LastName = "Ivancheva"
             };
 
             EmloyeeFirst.PasswordHash =
                  hasher.HashPassword(EmloyeeFirst, "jana123");
 
-            EmloyeeSecond = new IdentityUser()
+            EmloyeeSecond = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "ira1970@abv.bg",
                 NormalizedUserName = "IRA1970@ABV.BG",
                 Email = "ira1970@abv.bg",
-                NormalizedEmail = "IRA1970@ABV.BG"
+                NormalizedEmail = "IRA1970@ABV.BG",
+                FirstName = "Ira",
+                LastName = "Kotseva"
             };
 
             EmloyeeSecond.PasswordHash =
