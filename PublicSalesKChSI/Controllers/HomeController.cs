@@ -38,6 +38,10 @@ namespace PublicSalesKChSI.Controllers
             {
                 return View("Error400");
             }
+            if (statusCode == 500)
+            {
+                return View("Error500");
+            }
             return View();
         }
 
