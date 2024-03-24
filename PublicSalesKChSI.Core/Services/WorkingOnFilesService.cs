@@ -140,6 +140,24 @@ namespace PublicSalesKChSI.Core.Services
             var seekFile = await repo.GetByIdAsync<BrsFile>(fileId);
             model.Id = seekFile.Id;
 
+            int posNumberCourt = model.Klas.LastIndexOf("_");
+            int posPlace = PosOfGradOrSelo(model.Name);
+            
+            DeptorOld deptorOld = new DeptorOld();
+            if (model.Lica != null)
+            {
+                deptorOld.DeptorsInfo = model.Lica;
+                deptorOld.Name = model.Name;
+                deptorOld.CourtExtractFromKlas = model.Klas.Substring(posNumberCourt+1);
+                deptorOld.Place = model.Name.Substring(posPlace+1);
+            }
+            
+            if (deptorOld != null)
+            {
+                await repo.AddAsync<DeptorOld>(deptorOld);
+                await repo.SaveChangesAsync();
+            }
+
             if (seekFile != null)
             {
                 seekFile.Klas = model.Klas;
@@ -152,13 +170,12 @@ namespace PublicSalesKChSI.Core.Services
                 seekFile.Time = DateTime.Now;
                 seekFile.Dpos = DateTime.Now.AddDays(7);
                 seekFile.IsFileReady = true;
-                //DeptorOld след MINE да видя как ще се попълва TO DO
+                seekFile.DeptorOld = deptorOld;
                 seekFile.IsFindDeptor = true;
 
                 await repo.SaveChangesAsync();
             }
         }
-
         public async Task<string?> ExistsEmployeeIdWitrhIdAsync(int brsId)
         {
             var brsFile = await repo.GetByIdAsync<BrsFile>(brsId);
@@ -194,9 +211,24 @@ namespace PublicSalesKChSI.Core.Services
 
 
         //}
+        private static int PosOfGradOrSelo(string name)
+        {
+            int pos = name.ToUpper().LastIndexOf(" ГР.");
+            if (pos == -1) 
+            {
+                pos = name.ToUpper().LastIndexOf(" С.");
+            }
 
+            if (pos == -1)
+            {
+                return 0;
+            }
+            return pos;
+        }
 
     }
+
+   
 }
 
 

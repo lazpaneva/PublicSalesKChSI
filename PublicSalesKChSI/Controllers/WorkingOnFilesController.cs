@@ -57,7 +57,7 @@ namespace PublicSalesKChSI.Controllers
                 return BadRequest();
             }
 
-            //string currUser = User.Id();
+            //string currUser = User.Id(); //!!!TO DO - да го направя с роля АДМИНИСТРАТОР
             //if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
             //{
             //    return Unauthorized();
@@ -85,11 +85,11 @@ namespace PublicSalesKChSI.Controllers
                 return this.View();
             }
 
-            string currUser = User.Id();
-            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
-            {
-                return Unauthorized();
-            }
+            //string currUser = User.Id(); !!!TO DO - да го направя с роля АДМИНИСТРАТОР
+            //if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            //{
+            //    return Unauthorized();
+            //}
 
             if (ModelState.IsValid == false)
             {
