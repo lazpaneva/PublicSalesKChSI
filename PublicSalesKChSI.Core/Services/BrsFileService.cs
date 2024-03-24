@@ -123,7 +123,8 @@ namespace PublicSalesKChSI.Core.Services
                 for (int i = 0; i < priceArr.Length; i++)
                 {
                     brsText += priceArr[i].Replace("\n ", " ").Trim() + "\n" 
-                        + groupElementsArr[i].Trim() 
+                        + groupElementsArr[i].Trim()
+                        + "\n------------------------\n"
                         + "\nПОДРОБНА ИНФОРМАЦИЯ:\n" + textArr[i].Trim();
                     brsText += "\n----------------------------------------\n";
                 }

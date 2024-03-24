@@ -1,15 +1,28 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PublicSalesKChSI.Infrastructure.Data;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PublicSalesKChSIContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'PublicSalesKChSIContextConnection' not found.");
 
-builder.Services.AddApplicationDbContext(builder.Configuration);
-builder.Services.AddApplicationIdentity(builder.Configuration);
+builder.Services.AddDbContext<PublicSalesDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+})
+.AddEntityFrameworkStores<PublicSalesDbContext>();
 
 builder.Services.AddApplicationServices();
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
