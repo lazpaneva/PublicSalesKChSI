@@ -16,6 +16,8 @@ namespace PublicSalesKChSI.Core.Models.WorkingOnFiles
 {
     public class FileFormModel
     {
+        [Required]
+        public int Id { get; set; }
 
         [Required]
         [StringLength(BrsFileKlasMax, MinimumLength = BrsFileKlasMin,

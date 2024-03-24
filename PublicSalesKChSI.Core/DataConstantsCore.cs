@@ -63,7 +63,7 @@ namespace PublicSalesKChSI.Core
         {
             "-ВИЖ СКАНИРАНОТО ОБЯВЛЕНИЕ",
             "ПОДРОБНОСТИ В ПРИКАЧЕНОТО СКАНИРАНО ОБЯВЛЕНИЕ",
-            "За повече информация вижте прикаченото обявление!"
+            "За повече информация вижте прикаченото обявление!",
         };
 
         public static String[] ArrayForHtmlSimbols = new string[]
@@ -82,15 +82,15 @@ namespace PublicSalesKChSI.Core
             "Начална цена\n"
     };
 
-      public static List<int> allPortions = new List<int>
-            {
-                150,
-                300,
-                450,
-                600,
-                750,
-                900,
-            };
+      //public static List<int> allPortions = new List<int>
+      //      {
+      //          150,
+      //          300,
+      //          450,
+      //          600,
+      //          750,
+      //          900,
+      //      };
 
     }
 }

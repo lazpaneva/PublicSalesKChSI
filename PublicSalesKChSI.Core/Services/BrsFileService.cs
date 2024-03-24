@@ -61,7 +61,8 @@ namespace PublicSalesKChSI.Core.Services
                         if (txtItem.LabelGroups[j].Contains(ArrayForReplacementWithPoints[i]))
                         {
                             txtItem.LabelGroups[j] = txtItem.LabelGroups[j]
-                                .Replace(ArrayForReplacementWithPoints[i], ArrayForReplacementWithPoints[i].Trim()+": ");
+                                .Replace(ArrayForReplacementWithPoints[i], 
+                                ArrayForReplacementWithPoints[i].Trim()+": ").Trim();
                         }
                     }
                 }
@@ -92,8 +93,8 @@ namespace PublicSalesKChSI.Core.Services
                 var brsFile = new BrsFile();
                 var firstElement = group.First();
                 brsFile.Code = GetCode(firstElement.NumberInSite);
-                brsFile.Date = GetPublishedDate(firstElement.Date);
-                brsFile.Dcng = GetPublishedDate(firstElement.Date);
+                brsFile.Date = GetPublishedDate(firstElement.Date).Trim();
+                brsFile.Dcng = GetPublishedDate(firstElement.Date).Trim();
                 brsFile.Klas = GetKlas(firstElement.LabelGroups);
                 brsFile.Name = ReplaceSimbolsInName(GetName(firstElement.Title, firstElement.Price,
                     firstElement.Address, firstElement.LabelGroups)); //в адрес вид на търга явен търг
@@ -138,12 +139,12 @@ namespace PublicSalesKChSI.Core.Services
                     await repo.SaveChangesAsync();
                     countElemGroup++;
                 }
-                brsFile.Text += firstElement.NameSI;
-                brsFile.Text += infoSI;
+                brsFile.Text += firstElement.NameSI.Trim();
+                brsFile.Text += infoSI.Trim();
                 brsFile.Text += endBrsText;
                 brsFile.Text = ReplaceSimbolsInName(brsText);
                 brsFile.Text = brsFile.Text.Replace("System.Linq.Enumerable+ListPartition`1[System.String]","");
-                brsFile.Text = brsFile.Text.Replace("System.String[]", "");
+                brsFile.Text = brsFile.Text.Replace("System.String[]", "").Trim();
 
                 if (!IsValid(brsFile))
                 {
@@ -214,33 +215,12 @@ namespace PublicSalesKChSI.Core.Services
                     //var info = labelGroup.SelectSingleNode("//div[@class='info']").InnerText.Trim();
                     //labelGroupInfoList.Add($"{label}: {info}");
                     string labelText = labelGroup.InnerText;
-                    //int indexPodobni = labelText.IndexOf("Подобни обяви");
-                    //if (indexPodobni != -1)
-                    //{
-                    //    labelText = labelText.Substring(0, indexPodobni);
-                    //}
-
+                    
                     labelText = labelText.Replace("&quot;", "\"");
                     labelGroupInfoList.Add(labelText);
                 }
             }
-
-            ////изчистване на излишните "населени места" от ПОДОБНИ ОБЯВИ, които също са с клас=label__group
-            //int count = 0;
-            //int listLength = 1;
-            //foreach (var label in labelGroupInfoList)
-            //{
-            //    if (label.Contains("НАСЕЛЕНО МЯСТО"))
-            //    {
-            //        count++;
-            //    }
-            //    if (count > 1 && label.Contains("НАСЕЛЕНО МЯСТО"))
-            //    {
-            //        break;
-            //    }
-            //    listLength++;
-            //}
-            //return labelGroupInfoList.Take(listLength-1).ToArray();
+           
             return labelGroupInfoList.ToArray();
         }
         private static string ReplaceMultipleSpacesWithNewLine(string input)
@@ -298,6 +278,19 @@ namespace PublicSalesKChSI.Core.Services
                 while (str.Contains("  "))
                 {
                     str = str.Replace("  ", " ");
+                }
+                str = str.Trim();
+                //while (str.Contains(" \n")) ???не вървят
+                //{
+                //    str = str.Replace(" \n", "\n");
+                //}
+                //while (str.Contains("\n "))
+                //{
+                //    str = str.Replace("\n ", "\n");
+                //}
+                while (str.Contains("\n\n"))
+                {
+                    str = str.Replace("\n\n", "\n");
                 }
             }
             

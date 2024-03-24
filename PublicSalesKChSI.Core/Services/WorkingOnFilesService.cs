@@ -138,6 +138,7 @@ namespace PublicSalesKChSI.Core.Services
         public async Task EditAsync(int fileId, FileFormModel model)
         {
             var seekFile = await repo.GetByIdAsync<BrsFile>(fileId);
+            model.Id = seekFile.Id;
 
             if (seekFile != null)
             {
@@ -158,13 +159,13 @@ namespace PublicSalesKChSI.Core.Services
             }
         }
 
-        public async Task<string?> ExistsEmployeeIdWitrhIdAsync(int id)
+        public async Task<string?> ExistsEmployeeIdWitrhIdAsync(int brsId)
         {
-            var brsFile = await repo.GetByIdAsync<BrsFile>(id);
+            var brsFile = await repo.GetByIdAsync<BrsFile>(brsId);
 
             return brsFile.EmployeeId;
         }
-
+        
         public async Task DeleteBrsFileAsync(int fileId)
         {
             var brsFile = await repo.GetByIdAsync<BrsFile>(fileId);

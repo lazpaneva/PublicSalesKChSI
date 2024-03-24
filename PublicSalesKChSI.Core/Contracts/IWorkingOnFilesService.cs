@@ -25,7 +25,7 @@ namespace PublicSalesKChSI.Core.Contracts
         Task<IEnumerable<string>> AllCourtsTownAsync();
 
         Task<bool> ExistsAsyncBrsFile(int id);
-        Task<string> ExistsEmployeeIdWitrhIdAsync(int id);
+        Task<string> ExistsEmployeeIdWitrhIdAsync(int brsId);
         Task<FileDetailsServiceModel> FileDetailsByIdAsync(int id);
         Task EditAsync(int fileId, FileFormModel model);
         Task DeleteBrsFileAsync(int fileId);

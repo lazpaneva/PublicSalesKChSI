@@ -57,11 +57,11 @@ namespace PublicSalesKChSI.Controllers
                 return BadRequest();
             }
 
-            string currUser = User.Id();
-            if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
-            {
-                return Unauthorized();
-            }
+            //string currUser = User.Id();
+            //if (await _files.ExistsEmployeeIdWitrhIdAsync(id) != currUser)
+            //{
+            //    return Unauthorized();
+            //}
 
             var modelDetails = await _files.FileDetailsByIdAsync(id);
 
@@ -165,6 +165,7 @@ namespace PublicSalesKChSI.Controllers
             var modelDetails = await _files.FileDetailsByIdAsync(id);
 
             FileFormModel model = new FileFormModel();
+            model.Id = id;
             model.Klas = modelDetails.Klas;
             model.Dcng = modelDetails.Dcng;
             model.Date = modelDetails.Date;
