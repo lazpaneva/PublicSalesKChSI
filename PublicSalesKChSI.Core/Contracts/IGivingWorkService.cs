@@ -11,7 +11,8 @@ namespace PublicSalesKChSI.Core.Contracts
     public interface IGivingWorkService
     {
         //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel model);
-        public DistributionWorkModel GetUsersAndNotReadyCountFiles();
+        //public DistributionWorkModel GetUsersAndNotReadyCountFiles();
+        Task<DistributionWorkModel> GetUsersAndNotReadyCountFiles();
         Task FillEmployeeIdInBrsFiles(DistributionWorkModel model);
     }
 }

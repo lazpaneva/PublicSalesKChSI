@@ -25,7 +25,7 @@ namespace PublicSalesKChSI.Core.Services
             userManager = _userManager;
         }
 
-        public DistributionWorkModel GetUsersAndNotReadyCountFiles()
+        public async Task<DistributionWorkModel> GetUsersAndNotReadyCountFiles()
         //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel distributionWorkModel)
         {
             ICollection<ApplicationUser> users = userManager.Users.ToList();
@@ -35,8 +35,9 @@ namespace PublicSalesKChSI.Core.Services
                 EmployesNumbFiles = new List<EmplNumbFilesModel>(),
             };
 
-            var notReadyFiles = repo.AllReadOnly<BrsFile>()
-                .Where(f => f.IsFileReady == false);
+            var notReadyFiles = await repo.All<BrsFile>()
+                .Where(f => f.IsFileReady == false)
+                .ToListAsync();
             distributionWorkModel.NotReadyFilesCount = notReadyFiles.Count();
 
             foreach (var user in users)
@@ -45,7 +46,7 @@ namespace PublicSalesKChSI.Core.Services
                 {
                     EmplUserName = user.UserName,
                     EmplUserId = user.Id,
-                   
+                    EmplFullName = user.FirstName + " " + user.LastName,
                 });
             }
            

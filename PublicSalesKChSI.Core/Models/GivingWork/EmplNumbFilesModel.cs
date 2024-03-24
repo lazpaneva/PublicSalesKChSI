@@ -8,6 +8,7 @@ namespace PublicSalesKChSI.Core.Models.GivingWork
 {
     public class EmplNumbFilesModel
     {
+        public string EmplFullName { get; set; } = null;
         public string EmplUserName { get; set; } = null!;
         public string EmplUserId { get; set; } = null!;
         public int NumbFiles { get; set; } 

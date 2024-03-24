@@ -19,10 +19,10 @@ namespace PublicSalesKChSI.Controllers
         }
 
         [HttpGet]
-        public IActionResult DistrubuteFiles()
+        public async Task<IActionResult> DistrubuteFiles()
         {
              DistributionWorkModel model = new DistributionWorkModel();
-             model = givingWorkService.GetUsersAndNotReadyCountFiles();
+             model = await givingWorkService.GetUsersAndNotReadyCountFiles();
 
             return View(model);
         }
@@ -30,7 +30,7 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public async Task<IActionResult> DistrubuteFiles(DistributionWorkModel model)
         {
-            var userFileCount = givingWorkService.GetUsersAndNotReadyCountFiles();
+            var userFileCount = await givingWorkService.GetUsersAndNotReadyCountFiles();
 
             foreach (var item in model.EmployesNumbFiles)
             {

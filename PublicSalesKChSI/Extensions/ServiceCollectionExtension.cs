@@ -16,6 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IBrsFileService, BrsFileService>();
             services.AddScoped<IWorkingOnFilesService, WorkingOnFilesService>();
             services.AddScoped<IGivingWorkService, GivingWorkService>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
             services.AddScoped<IRepository, Repository>();
 
             return services;

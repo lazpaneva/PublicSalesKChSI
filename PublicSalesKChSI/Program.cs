@@ -4,7 +4,7 @@ using PublicSalesKChSI.Infrastructure.Data;
 using PublicSalesKChSI.Infrastructure.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("PublicSalesKChSIContextConnection")
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'PublicSalesKChSIContextConnection' not found.");
 
 builder.Services.AddDbContext<PublicSalesDbContext>(options =>
