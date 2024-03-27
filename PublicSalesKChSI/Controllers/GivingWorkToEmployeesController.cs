@@ -31,9 +31,17 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public async Task<IActionResult> DistrubuteFiles(DistributionWorkModel model)
         {
+            model.NotReadyFilesCount = await givingWorkService.GetNotReadyCountFiles(); //нещо не се получава с проверката !!!TO DO
+            if (!ModelState.IsValid)
+            {
+                model.usersInfo = await givingWorkService.GetFullUsers();
+                return View(model);
+            }
+
             model.usersInfo = await givingWorkService.GetFullUsers();
             await givingWorkService.FillEmployeeIdInBrsFiles(model);
             model.NotReadyFilesCount = await givingWorkService.GetNotReadyCountFiles();
+
 
             return View(model);
         }

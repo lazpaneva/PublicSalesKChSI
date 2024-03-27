@@ -142,21 +142,24 @@ namespace PublicSalesKChSI.Core.Services
 
             int posNumberCourt = model.Klas.LastIndexOf("_");
             int posPlace = PosOfGradOrSelo(model.Name);
-            
+            string klas = model.Klas.Substring(posNumberCourt + 1);
+
+
             DeptorOld deptorOld = new DeptorOld();
-            if (model.Lica != null)
+            if (!string.IsNullOrEmpty(model.Lica) && !string.IsNullOrEmpty(klas))
             {
                 deptorOld.DeptorsInfo = model.Lica;
                 deptorOld.Name = model.Name;
-                deptorOld.CourtExtractFromKlas = model.Klas.Substring(posNumberCourt+1);
+                deptorOld.CourtExtractFromKlas = klas;  //to do нещо идва празно и гърми
                 deptorOld.Place = model.Name.Substring(posPlace+1);
-            }
-            
-            if (deptorOld != null)
-            {
                 await repo.AddAsync<DeptorOld>(deptorOld);
                 await repo.SaveChangesAsync();
             }
+            
+            //if (deptorOld != null)
+            //{
+                
+            //}
 
             if (seekFile != null)
             {

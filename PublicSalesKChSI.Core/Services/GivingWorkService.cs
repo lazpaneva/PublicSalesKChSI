@@ -48,13 +48,6 @@ namespace PublicSalesKChSI.Core.Services
                 }
         }
 
-        //public async Task<ICollection<ApplicationUser>> GetFullUsers()
-        //{
-        //    ICollection<ApplicationUser> users = await userManager.Users.ToListAsync();
-
-        //    return users;
-        //}
-
         public async Task<ICollection<EmployeeWithFullName>> GetFullUsers()
         {
             ICollection<EmployeeWithFullName> users = await userManager.Users

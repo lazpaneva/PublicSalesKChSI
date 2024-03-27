@@ -27,12 +27,16 @@
             </div>
 
             <div class="mb-3">
+                <input asp-for="@Model.NotReadyFilesCount" type="hidden" class="form-control" value="@Model.NotReadyFilesCount" aria-required="true" />
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="@Model.FilesToWorkForEmoloyee" class="form-label-add-edit">Изберете колко файла ще дадете на избрания операотр: </label>
-                <input asp-for="@Model.FilesToWorkForEmoloyee" class="form-control" aria-required="true" />
+                <input asp-for="@Model.FilesToWorkForEmoloyee" class="form-control" value="@Model.NotReadyFilesCount" aria-required="true" />
                 <span asp-validation-for="@Model.FilesToWorkForEmoloyee" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" id="submit-numbers" type="submit" value="Разпредели" />
+                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
             </div>
         </form>
     </div>

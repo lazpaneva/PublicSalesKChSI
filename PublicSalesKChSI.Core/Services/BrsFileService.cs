@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace PublicSalesKChSI.Core.Services
 {
@@ -282,14 +283,7 @@ namespace PublicSalesKChSI.Core.Services
                     str = str.Replace("  ", " ");
                 }
                 str = str.Trim();
-                //while (str.Contains(" \n")) ???не вървят
-                //{
-                //    str = str.Replace(" \n", "\n");
-                //}
-                //while (str.Contains("\n "))
-                //{
-                //    str = str.Replace("\n ", "\n");
-                //}
+
                 while (str.Contains("\n\n"))
                 {
                     str = str.Replace("\n\n", "\n");
@@ -382,31 +376,53 @@ namespace PublicSalesKChSI.Core.Services
 
             string area = String.Empty;
             string town = String.Empty;
-            string otherStr = string.Join("\n", other);
-            int indexArea = otherStr.ToUpper().IndexOf("ПЛОЩ: ");
-            int indexTownNS = otherStr.ToUpper().IndexOf("НАСЕЛЕНО МЯСТО: ");
-            int indexTownMP = otherStr.ToUpper().IndexOf("МЯСТО НА ПРОВЕЖДАНЕ: ");
             
-            if (indexArea != -1)
+            foreach (string element in other)
             {
-                area = otherStr.Substring(indexArea + 6, otherStr.IndexOf("\n", indexArea+6) - indexArea).Trim();
-                area = area.Replace("кв.м", "кв. м");
+                if (element.ToUpper().StartsWith("НАСЕЛЕНО МЯСТО: "))
+                {
+                    town = element.Trim();
+                    town = town.Replace("НАСЕЛЕНО МЯСТО: ","");
+                    town = town.Replace("Населено място: ","");
+                }
+                else if (element.StartsWith("МЯСТО НА ПРОВЕЖДАНЕ: "))
+                {
+                    town = element.Trim();
+                    town = town.Replace("МЯСТО НА ПРОВЕЖДАНЕ: ", "");
+                    town = town.Replace("Място на провеждане: ", "");
+                }
+                if (element.ToUpper().StartsWith("ПЛОЩ: "))
+                {
+                    area = element;
+                    area = area.Replace("ПЛОЩ: ", "");
+                    area = area.Replace("Площ: ", "");
+                }
             }
-
-            if (indexTownNS != -1)
-            {
-                town = otherStr.Substring(indexTownNS+16, otherStr.IndexOf("\n", indexTownNS + 16) - indexTownNS);
-            }
-            if (indexTownMP != -1)
-            {
-                town = otherStr.Substring(indexTownMP + 16, otherStr.IndexOf("\n", indexTownMP + 21) - indexTownMP);
-            }
-
+            
             string result = title + ", " + replacedPrice + ", " + area + ", " + town + ", " + address;
             result = ReplaceSimbolsInName(result);
-
+            result = DeleteDublParts(result);
+            //връща първия от дублирани елементи между две запетаи
+            //не работи string result = Regex.Replace(resultOne, @"\b(\w+)\b(?:,\s+\1)+", "$1", RegexOptions.IgnoreCase);
             return result;
         }
+
+        private static string DeleteDublParts(string result)
+        {
+            result = result.Replace(", c.", ", c. ");
+            result = result.Replace(", гр.", ", гр. ");
+            result = result.Replace("  ", " ");
+            string[] parts = result.Split(',').Select(p => p.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+
+            // Сглобяваме нов низ от премахнатите дубликати
+            result = string.Join(", ", parts).Trim();
+            if (result.EndsWith(","))
+            {
+                result = result.Substring(0, result.Length - 1);    
+            }
+            return result;
+        }
+
         private static bool IsValid(object dto)
         {
             var validationContext = new ValidationContext(dto);
