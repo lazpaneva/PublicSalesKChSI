@@ -25,48 +25,48 @@ namespace PublicSalesKChSI.Core.Services
             userManager = _userManager;
         }
 
-        public async Task<DistributionWorkModel> GetUsersAndNotReadyCountFiles()
-        //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel distributionWorkModel)
+        public async Task<int> GetNotReadyCountFiles()
         {
-            ICollection<ApplicationUser> users = userManager.Users.ToList();
-
-            DistributionWorkModel distributionWorkModel = new DistributionWorkModel()
-            {
-                EmployesNumbFiles = new List<EmplNumbFilesModel>(),
-            };
-
             var notReadyFiles = await repo.All<BrsFile>()
-                .Where(f => f.IsFileReady == false)
+                .Where(f => f.IsFileReady == false && f.IsGivenFitstTime == false)
                 .ToListAsync();
-            distributionWorkModel.NotReadyFilesCount = notReadyFiles.Count();
-
-            foreach (var user in users)
-            {
-                distributionWorkModel.EmployesNumbFiles.Add(new EmplNumbFilesModel
-                {
-                    EmplUserName = user.UserName,
-                    EmplUserId = user.Id,
-                    EmplFullName = user.FirstName + " " + user.LastName,
-                });
-            }
-           
-            return distributionWorkModel;
+            int notReadyFilesCount = notReadyFiles.Count();
+            return notReadyFilesCount;
         }
         public async Task FillEmployeeIdInBrsFiles(DistributionWorkModel model)
         {
-            foreach (var item in model.EmployesNumbFiles)
-            {
-                    var files = await repo.All<BrsFile>()
-                      .Where(f => f.IsFileReady == false)
-                      .Take(item.NumbFiles)
-                      .ToListAsync();
+            var files = await repo.All<BrsFile>()
+                .Where(f=> f.IsFileReady == false && f.IsGivenFitstTime == false)
+                .Take(model.FilesToWorkForEmoloyee)
+                .ToListAsync();
 
-                foreach (var file in files)
+            foreach (var file in files)
                 {
-                    file.EmployeeId = item.EmplUserId;
+                    file.EmployeeId = model.appUser;
+                    file.IsGivenFitstTime = true;
                     await repo.SaveChangesAsync();
                 }
-            }
+        }
+
+        //public async Task<ICollection<ApplicationUser>> GetFullUsers()
+        //{
+        //    ICollection<ApplicationUser> users = await userManager.Users.ToListAsync();
+
+        //    return users;
+        //}
+
+        public async Task<ICollection<EmployeeWithFullName>> GetFullUsers()
+        {
+            ICollection<EmployeeWithFullName> users = await userManager.Users
+                .Select(u=> new EmployeeWithFullName { 
+                    EmplUserId = u.Id,
+                    EmplUserName = u.UserName,
+                    EmplFullName = u.FirstName + " " + u.LastName
+                }
+                )
+                .ToListAsync();
+
+            return users;
         }
     }
 }

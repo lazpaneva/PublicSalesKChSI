@@ -1,47 +1,43 @@
 ﻿@model DistributionWorkModel
 @{
     ViewBag.Title = "РАЗПРЕДЕЛЯНЕ НА ФАЙЛОВЕ ЗА РАБОТА";
-    ViewBag.NotFiles = "НЯМА ФАЙЛОВЕ ЗА РАБОТА.";
+    ViewBag.Notefs = "НЯМА ФАЙЛОВЕ ЗА РАБОТА.";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="justify-content-center">
+<h2>ОБЩ БРОЙ ФАЙЛОВЕ ЗА ЗА РАБОТА: @Model.NotReadyFilesCount</h2>
 
-    @if (@Model.NotReadyFilesCount>0)
-    {
-        <h2>ОБЩ БРОЙ ФАЙЛОВЕ ЗА ЗА РАБОТА: @Model.NotReadyFilesCount</h2>
-        <div class="row">
-            <form asp-controller="GivingWorkToEmployees" asp-action="DistrubuteFiles" method="post">
-            @foreach (var file in @Model.EmployesNumbFiles)
-            {
-                    <div class="mb-2 w-100">
-                        <div class="form-group">
-                            <label asp-for="@file.EmplFullName" class="form-label-add-edit">Брой файлове за работа</label>
-                            <input asp-for="@file.EmplFullName" class="form-control" aria-required="true" />
-                            <span asp-validation-for="@file.EmplFullName" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="@file.NumbFiles" class="form-label-add-edit">Брой файлове за работа</label>
-                            <input asp-for="@file.NumbFiles" class="form-control" aria-required="true" />
-                            <span asp-validation-for="@file.NumbFiles" class="text-danger"></span>
-                        </div>
-                    </div>
-            }
-                <div class="m-3">
-                    <input asp-controller="GivingWorkToEmployees" asp-action="DistrubuteFiles" class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Разпредели" />
-                </div>
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="DistrubuteFiles" method="post">
+            
+           
+            <div class="mb-3">
+                <label asp-for="@Model.appUser" class="form-label-add-edit">Избери оператор</label>
+                <select asp-for="@Model.appUser" class="form-control" aria-required="true">
+                    <option disabled selected value="">Избери оператор ...</option>
+                    @foreach (var user in Model.usersInfo)
+                    {
+                        <option value="@user.EmplUserId">@user.EmplFullName</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.appUser" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.FilesToWorkForEmoloyee" class="form-label-add-edit">Изберете колко файла ще дадете на избрания операотр: </label>
+                <input asp-for="@Model.FilesToWorkForEmoloyee" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.FilesToWorkForEmoloyee" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" id="submit-numbers" type="submit" value="Разпредели" />
+            </div>
         </form>
-        </div>
-    }
-    else
-    {
-        <h2>@ViewBag.NotFiles</h2>
-    }
+    </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

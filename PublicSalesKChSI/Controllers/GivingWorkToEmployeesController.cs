@@ -21,8 +21,9 @@ namespace PublicSalesKChSI.Controllers
         [HttpGet]
         public async Task<IActionResult> DistrubuteFiles()
         {
-             DistributionWorkModel model = new DistributionWorkModel();
-             model = await givingWorkService.GetUsersAndNotReadyCountFiles();
+            DistributionWorkModel model = new DistributionWorkModel();
+            model.NotReadyFilesCount = await givingWorkService.GetNotReadyCountFiles();
+            model.usersInfo = await givingWorkService.GetFullUsers();
 
             return View(model);
         }
@@ -30,17 +31,11 @@ namespace PublicSalesKChSI.Controllers
         [HttpPost]
         public async Task<IActionResult> DistrubuteFiles(DistributionWorkModel model)
         {
-            var userFileCount = await givingWorkService.GetUsersAndNotReadyCountFiles();
+            model.usersInfo = await givingWorkService.GetFullUsers();
+            await givingWorkService.FillEmployeeIdInBrsFiles(model);
+            model.NotReadyFilesCount = await givingWorkService.GetNotReadyCountFiles();
 
-            foreach (var item in model.EmployesNumbFiles)
-            {
-                userFileCount.EmployesNumbFiles.Where(en => en.EmplUserId == item.EmplUserId)
-                    .First().NumbFiles = item.NumbFiles;
-            }
-
-            await givingWorkService.FillEmployeeIdInBrsFiles(userFileCount);
-            
-            return RedirectToAction("Mine", "WorkingOnFiles");
+            return View(model);
         }
 
     }

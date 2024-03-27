@@ -102,6 +102,7 @@ namespace PublicSalesKChSI.Core.Services
                     firstElement.Address, firstElement.LabelGroups)); //в адрес вид на търга явен търг
                 brsFile.IsFindDeptor = false;
                 brsFile.IsFileReady = false;
+                brsFile.IsGivenFitstTime = false;
                 brsFile.IsFileExported = false;
                 brsFile.EmployeeId = userId;
                 if (firstElement.UrlPdf != null)
@@ -167,6 +168,7 @@ namespace PublicSalesKChSI.Core.Services
                     Name = f.Name,
                     Text = f.Text,
                     IsFileReady = f.IsFileReady,
+	                IsGivenFitstTime = f.IsGivenFitstTime,
                     IsFindDeptor = f.IsFindDeptor,
                 })
                 .ToList();

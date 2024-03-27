@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PublicSalesKChSI.Core.Models.GivingWork;
+using PublicSalesKChSI.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace PublicSalesKChSI.Core.Contracts
 {
     public interface IGivingWorkService
     {
-        //public DistributionWorkModel GetUsersAndNotReadyCountFiles(DistributionWorkModel model);
-        //public DistributionWorkModel GetUsersAndNotReadyCountFiles();
-        Task<DistributionWorkModel> GetUsersAndNotReadyCountFiles();
+        Task<int> GetNotReadyCountFiles();
         Task FillEmployeeIdInBrsFiles(DistributionWorkModel model);
+
+        Task<ICollection<EmployeeWithFullName>> GetFullUsers();
     }
 }

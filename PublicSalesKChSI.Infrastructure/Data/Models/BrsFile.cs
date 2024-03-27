@@ -51,6 +51,9 @@ namespace PublicSalesKChSI.Infrastructure.Data.Models
         public bool IsFileReady { get; set; }
 
         [Required]
+        public bool IsGivenFitstTime { get; set; }
+
+        [Required]
         public bool IsFindDeptor { get; set; }
 
         [Required]

@@ -214,8 +214,10 @@ namespace PublicSalesKChSI.Controllers
                 AllFilesQueryModel.FilesPerPage,
                 true);
 
-            query.TotalFilesCount = queryResult.TotalFilesCount;
-            query.Files = queryResult.Files.Where(f=>f.EmployeeId == User.Id());
+            query.Files = queryResult.Files.Where(f => f.EmployeeId == User.Id());
+            query.TotalFilesCount = query.Files.Count();
+            //query.TotalFilesCount = queryResult.TotalFilesCount;
+
 
             var courtCategories = await _files.AllCourtsTownAsync();
             query.Courts = (IEnumerable<string>)courtCategories;
